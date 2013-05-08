@@ -184,16 +184,16 @@ foreach ($subscriptions['items'] as $subscription) {
   <div class="hero-unit">
     <h1>Your Recent Timeline</h1>
     <?php if ($message != "") { ?>
-    <span class="label label-warning">Message: <?= $message ?> </span>
+    <span class="label label-warning">Message: <?php echo $message ?> </span>
     <?php } ?>
 
     <div style="margin-top: 5px;">
       <?php foreach ($timeline['items'] as $timeline_item) { ?>
       <ul class="span3 tile">
-        <li><strong>ID: </strong> <?= $timeline_item['id'] ?>
+        <li><strong>ID: </strong> <?php echo $timeline_item['id'] ?>
         </li>
         <li>
-          <strong>Text: </strong> <?= $timeline_item['text'] ?>
+          <strong>Text: </strong> <?php echo $timeline_item['text'] ?>
         </li>
         <li>
           <strong>Attachments: </strong>
@@ -201,7 +201,7 @@ foreach ($subscriptions['items'] as $subscription) {
           if (isset($timeline_item['attachments'])) {
             $attachments = $timeline_item['attachments'];
             foreach ($attachments as $attachment) { ?>
-                <img src="<?= $base_url .
+                <img src="<?php echo $base_url .
                     '/attachment-proxy.php?timeline_item_id='.
                     $timeline_item['id'].'&attachment_id='.$attachment['id'] ?>" />
             <?php
@@ -236,12 +236,12 @@ foreach ($subscriptions['items'] as $subscription) {
         <input type="hidden" name="operation" value="insertItem">
         <input type="hidden" name="message"
                value="Chipotle says hi!">
-        <input type="hidden" name="imageUrl" value="<?= $base_url .
+        <input type="hidden" name="imageUrl" value="<?php echo $base_url .
             "/static/images/chipotle-tube-640x360.jpg" ?>">
         <input type="hidden" name="contentType" value="image/jpeg">
 
         <button class="btn" type="submit">A picture
-          <img class="button-icon" src="<?= $base_url .
+          <img class="button-icon" src="<?php echo $base_url .
              "/static/images/chipotle-tube-640x360.jpg" ?>">
         </button>
       </form>
@@ -265,7 +265,7 @@ foreach ($subscriptions['items'] as $subscription) {
       <?php if ($contact == null) { ?>
       <form class="span3"method="post">
         <input type="hidden" name="operation" value="insertContact">
-        <input type="hidden" name="iconUrl" value="<?= $base_url .
+        <input type="hidden" name="iconUrl" value="<?php echo $base_url .
             "/static/images/chipotle-tube-640x360.jpg" ?>">
         <input type="hidden" name="name" value="PHP Quick Start">
         <input type="hidden" name="id" value="php-quick-start">
@@ -277,7 +277,7 @@ foreach ($subscriptions['items'] as $subscription) {
         <input type="hidden" name="id" value="php-quick-start">
         <button class="btn" type="submit">Delete PHP Quick Start Contact</button>
       </form>
-    <? } ?>
+    <?php } ?>
     </div>
 
     <div class="span4">
@@ -297,7 +297,7 @@ foreach ($subscriptions['items'] as $subscription) {
       <button class="btn" type="submit">Unsubscribe from
         timeline updates</button>
     </form>
-  <? } else { ?>
+  <?php } else { ?>
     <form method="post">
       <input type="hidden" name="operation" value="insertSubscription">
       <input type="hidden" name="subscriptionId" value="timeline">
