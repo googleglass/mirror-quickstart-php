@@ -21,30 +21,6 @@ require_once 'mirror-client.php';
 require_once 'google-api-php-client/src/Google_Client.php';
 require_once 'google-api-php-client/src/contrib/Google_MirrorService.php';
 
-// Returns an unauthenticated service
-function get_google_api_client() {
-  global $api_client_id, $api_client_secret, $api_simple_key, $base_url;
-  // Set your cached access token. Remember to replace $_SESSION with a
-  // real database or memcached.
-  session_start();
-
-  $client = new Google_Client();
-
-  $client->setApplicationName('Google Mirror API PHP Quick Start');
-
-  // These are set in config.php
-  $client->setClientId($api_client_id);
-  $client->setClientSecret($api_client_secret);
-  $client->setDeveloperKey($api_simple_key);
-  $client->setRedirectUri($base_url."/oauth2callback.php");
-
-  $client->setScopes(array(
-    'https://www.googleapis.com/auth/glass.timeline',
-    'https://www.googleapis.com/auth/glass.location',
-    'https://www.googleapis.com/auth/userinfo.profile'));
-
-  return $client;
-}
 
 function store_credentials($user_id, $credentials) {
   $db = init_db();

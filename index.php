@@ -37,7 +37,7 @@ $mirror_service = new Google_MirrorService($client);
 
 // But first, handle POST data from the form (if there is any)
 switch ($_POST['operation']) {
-  case "insertItem":
+  case 'insertItem':
     $new_timeline_item = new Google_TimelineItem();
     $new_timeline_item->setText($_POST['message']);
 
@@ -54,7 +54,7 @@ switch ($_POST['operation']) {
 
     $message = "Timeline Item inserted!";
     break;
-  case "insertItemWithAction":
+  case 'insertItemWithAction':
     $new_timeline_item = new Google_TimelineItem();
     $new_timeline_item->setText("What did you have for lunch?");
 
@@ -92,7 +92,7 @@ switch ($_POST['operation']) {
 
     $message = "Inserted a timeline item you can reply to";
     break;
-  case "insertTimelineAllUsers":
+  case 'insertTimelineAllUsers':
     $credentials = list_credentials();
     if (count($credentials) > 10) {
       $message = "Found " . count($credentials) . " users. Aborting to save your quota.";
@@ -111,19 +111,19 @@ switch ($_POST['operation']) {
       $message = "Sent a cat fact to " . count($credentials) . " users.";
     }
     break;
-  case "insertSubscription":
+  case 'insertSubscription':
     $message = subscribeToNotifications($mirror_service, $_POST['subscriptionId'],
       $_SESSION['userid'], $base_url . "/notify.php");
     break;
-  case "deleteSubscription":
+  case 'deleteSubscription':
     $message = $mirror_service->subscriptions->delete($_POST['subscriptionId']);
     break;
-  case "insertContact":
+  case 'insertContact':
     insertContact($mirror_service, $_POST['id'], $_POST['name'],
         $base_url . "/static/images/chipotle-tube-640x360.jpg");
     $message = "Contact inserted. Enable it on MyGlass.";
     break;
-  case "deleteContact":
+  case 'deleteContact':
     deleteContact($mirror_service, $_POST['id']);
     $message = "Contact deleted.";
     break;
