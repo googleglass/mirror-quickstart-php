@@ -18,9 +18,9 @@
 
 // TODO: You must configure these fields for the starter project to function.
 // Visit https://developers.google.com/glass/getting-started to learn more
-$api_client_id = "465303650846.apps.googleusercontent.com";
-$api_client_secret = "wZgGkyRosOTHQkPnCB2zvb5L";
-$api_simple_key = "AIzaSyCCbHcqDanbwH5eb0oycQ9niV8P3n0F0qM";
+$api_client_id = "API_CLIENT_ID";
+$api_client_secret = "API_CLIENT_SECRET";
+$api_simple_key = "API_KEY";
 
 $base_url = "http://localhost/mirror-quickstart-php";
 
