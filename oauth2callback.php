@@ -34,11 +34,11 @@ if (isset($_GET['code'])) {
   $identity_client->setAccessToken($access_token);
   $identity_service = new Google_Oauth2Service($identity_client);
   $user = $identity_service->userinfo->get();
-  $userid = $user['id'];
+  $user_id = $user->getId();
 
   // Store their credentials and register their ID with their session
-  $_SESSION['userid'] = $userid;
-  store_credentials($userid, $client->getAccessToken());
+  $_SESSION['userid'] = $user_id;
+  store_credentials($user_id, $client->getAccessToken());
 
   // Bootstrap the new user by inserting a welcome message, a contact,
   // and subscribing them to timeline notifications
