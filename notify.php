@@ -31,7 +31,7 @@ ignore_user_abort(true);
 set_time_limit(0);
 
 // And one more thing to try: forking the heavy lifting into a new process. Yeah, crazy eh?
-if(function_exists('pcntl_fork')) {
+if (function_exists('pcntl_fork')) {
   $pid = pcntl_fork();
   if ($pid == -1) {
     error_log("could not fork!");
@@ -49,7 +49,7 @@ require_once 'google-api-php-client/src/Google_Client.php';
 require_once 'google-api-php-client/src/contrib/Google_MirrorService.php';
 require_once 'util.php';
 
-if($_SERVER['REQUEST_METHOD'] != "POST") {
+if ($_SERVER['REQUEST_METHOD'] != "POST") {
   echo "method not supported";
   exit();
 }
@@ -70,26 +70,34 @@ $client->setAccessToken($access_token);
 // A glass service for interacting with the Mirror API
 $mirror_service = new Google_MirrorService($client);
 
-switch($request['collection']) {
-  case "timeline":
-    $timeline_item_id = $request['itemId'];
+switch ($request['collection']) {
+  case 'timeline':
+    // Verify that it's a share
+    foreach ($request['userActions'] as $i => $user_action) {
+      if ($user_action['type'] == 'SHARE') {
 
-    $timeline_item = new Google_TimelineItem($mirror_service->timeline->get($timeline_item_id));
+        $timeline_item_id = $request['itemId'];
 
-    $attachments = $timeline_item->getAttachments();
-    $attachment = $attachments[0];
+        $timeline_item = $mirror_service->timeline->get($timeline_item_id);
 
-    $bytes = downloadAttachment($timeline_item_id, $attachment);
+        foreach($timeline_item->getAttachments() as $j => $attachment) {
+          $attachment = $mirror_service->timeline->attachments->get($timeline_item_id, $attachment.getId());
+          $bytes = downloadAttachment($timeline_item_id, $attachment);
 
-    // Insert a new timeline card, with a copy of that photo attached
-    $echo_timeline_item = new Google_TimelineItem();
-    $echo_timeline_item->setText("Echoing your shared photo");
-    $echo_timeline_item->setNotification(
-      new google_NotificationConfig(array("level"=>"DEFAULT")));
-    insertTimelineItem($mirror_service, $echo_timeline_item, "image/jpeg", $bytes);
+          // Insert a new timeline card, with a copy of that photo attached
+          $echo_timeline_item = new Google_TimelineItem();
+          $echo_timeline_item->setText("Echoing your shared photo");
+          $echo_timeline_item->setNotification(
+            new google_NotificationConfig(array("level"=>"DEFAULT")));
+          insertTimelineItem($mirror_service, $echo_timeline_item, "image/jpeg", $bytes);
+        }
+        break;
+      }
+    }
+
     break;
-  case "locations":
-    $location = new Google_Location($mirror_service->locations->get("latest"));
+  case 'locations':
+    $location = $mirror_service->locations->get("latest");
     // Insert a new timeline card, with a copy of that photo attached
     $loc_timeline_item = new Google_TimelineItem();
     $loc_timeline_item->setText("You are at " . $location->getLatitude() . " by " .
@@ -98,6 +106,6 @@ switch($request['collection']) {
     insertTimelineItem($mirror_service, $loc_timeline_item, null, null);
     break;
   default:
-    error_log("I don't know how to process this notification:" . $request);
+    error_log("I don't know how to process this notification: $request");
 }
 
