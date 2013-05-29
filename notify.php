@@ -14,8 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-//  Author: Jenny Murphy - http://google.com/+JennyMurphy
-// Modified by: Winnie Tong
+// Author: Jenny Murphy - http://google.com/+JennyMurphy
 
 
 
@@ -82,14 +81,14 @@ switch ($request['collection']) {
 
         foreach($timeline_item->getAttachments() as $j => $attachment) {
           $attachment = $mirror_service->timeline->attachments->get($timeline_item_id, $attachment.getId());
-          $bytes = downloadAttachment($timeline_item_id, $attachment);
+          $bytes = download_attachment($timeline_item_id, $attachment);
 
           // Insert a new timeline card, with a copy of that photo attached
           $echo_timeline_item = new Google_TimelineItem();
           $echo_timeline_item->setText("Echoing your shared photo");
           $echo_timeline_item->setNotification(
             new google_NotificationConfig(array("level"=>"DEFAULT")));
-          insertTimelineItem($mirror_service, $echo_timeline_item, "image/jpeg", $bytes);
+          insert_timeline_item($mirror_service, $echo_timeline_item, "image/jpeg", $bytes);
         }
         break;
       }
@@ -103,7 +102,7 @@ switch ($request['collection']) {
     $loc_timeline_item->setText("You are at " . $location->getLatitude() . " by " .
         $location->getLongitude());
 
-    insertTimelineItem($mirror_service, $loc_timeline_item, null, null);
+    insert_timeline_item($mirror_service, $loc_timeline_item, null, null);
     break;
   default:
     error_log("I don't know how to process this notification: $request");
