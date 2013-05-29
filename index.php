@@ -46,10 +46,10 @@ switch ($_POST['operation']) {
     $new_timeline_item->setNotification($notification);
 
     if (isset($_POST['imageUrl']) && isset($_POST['contentType'])) {
-      insertTimelineItem($mirror_service, $new_timeline_item,
+      insert_timeline_item($mirror_service, $new_timeline_item,
         $_POST['contentType'], file_get_contents($_POST['imageUrl']));
     } else {
-      insertTimelineItem($mirror_service, $new_timeline_item, null, null);
+      insert_timeline_item($mirror_service, $new_timeline_item, null, null);
     }
 
     $message = "Timeline Item inserted!";
@@ -62,33 +62,33 @@ switch ($_POST['operation']) {
     $notification->setLevel("DEFAULT");
     $new_timeline_item->setNotification($notification);
 
-    $menuItems = array();
+    $menu_items = array();
 
     // A couple of built in menu items
-    $menuItem = new Google_MenuItem();
-    $menuItem->setAction("READ_ALOUD");
-    array_push($menuItems, $menuItem);
+    $menu_item = new Google_MenuItem();
+    $menu_item->setAction("READ_ALOUD");
+    array_push($menu_items, $menu_item);
     $new_timeline_item->setSpeakableText("What did you eat? Bacon?");
 
-    $menuItem = new Google_MenuItem();
-    $menuItem->setAction("SHARE");
-    array_push($menuItems, $menuItem);
+    $menu_item = new Google_MenuItem();
+    $menu_item->setAction("SHARE");
+    array_push($menu_items, $menu_item);
 
     // A custom menu item
-    $customMenuItem = new Google_MenuItem();
-    $customMenuValue = new Google_MenuValue();
-    $customMenuValue->setDisplayName("Drill Into");
-    $customMenuValue->setIconUrl($service_base_url . "/static/images/drill.png");
+    $custom_menu_item = new Google_MenuItem();
+    $custom_menu_value = new Google_MenuValue();
+    $custom_menu_value->setDisplayName("Drill Into");
+    $custom_menu_value->setIconUrl($service_base_url . "/static/images/drill.png");
 
-    $customMenuItem->setValues(array($customMenuValue));
-    $customMenuItem->setAction("CUSTOM");
+    $custom_menu_item->setValues(array($custom_menu_value));
+    $custom_menu_item->setAction("CUSTOM");
     // This is how you identify it on the notification ping
-    $customMenuItem->setId("safe-for-later");
-    array_push($menuItems, $customMenuItem);
+    $custom_menu_item->setId("safe-for-later");
+    array_push($menu_items, $custom_menu_item);
 
-    $new_timeline_item->setMenuItems($menuItems);
+    $new_timeline_item->setMenuItems($menu_items);
 
-    insertTimelineItem($mirror_service, $new_timeline_item, null, null);
+    insert_timeline_item($mirror_service, $new_timeline_item, null, null);
 
     $message = "Inserted a timeline item you can reply to";
     break;
@@ -106,25 +106,25 @@ switch ($_POST['operation']) {
 
         $user_specific_mirror_service = new Google_MirrorService($user_specific_client);
 
-        insertTimelineItem($user_specific_mirror_service, $new_timeline_item, null, null);
+        insert_timeline_item($user_specific_mirror_service, $new_timeline_item, null, null);
       }
       $message = "Sent a cat fact to " . count($credentials) . " users.";
     }
     break;
   case 'insertSubscription':
-    $message = subscribeToNotifications($mirror_service, $_POST['subscriptionId'],
+    $message = subscribe_to_notifications($mirror_service, $_POST['subscriptionId'],
       $_SESSION['userid'], $base_url . "/notify.php");
     break;
   case 'deleteSubscription':
     $message = $mirror_service->subscriptions->delete($_POST['subscriptionId']);
     break;
   case 'insertContact':
-    insertContact($mirror_service, $_POST['id'], $_POST['name'],
+    insert_contact($mirror_service, $_POST['id'], $_POST['name'],
         $base_url . "/static/images/chipotle-tube-640x360.jpg");
     $message = "Contact inserted. Enable it on MyGlass.";
     break;
   case 'deleteContact':
-    deleteContact($mirror_service, $_POST['id']);
+    delete_contact($mirror_service, $_POST['id']);
     $message = "Contact deleted.";
     break;
 }
@@ -138,13 +138,13 @@ try {
   $contact = null;
 }
 $subscriptions = $mirror_service->subscriptions->listSubscriptions();
-$timelineSubscriptionExists = false;
-$locationSubscriptionExists = false;
-foreach ($subscriptions['items'] as $subscription) {
-  if ($subscription['id'] == 'timeline') {
-    $timelineSubscriptionExists = true;
-  } elseif ($subscription['id'] == 'location') {
-    $locationSubscriptionExists = true;
+$timeline_subscription_exists = false;
+$location_subscription_exists = false;
+foreach ($subscriptions->getItems() as $subscription) {
+  if ($subscription->getId() == 'timeline') {
+    $timeline_subscription_exists = true;
+  } elseif ($subscription->getId() == 'location') {
+    $location_subscription_exists = true;
   }
 }
 
@@ -184,26 +184,27 @@ foreach ($subscriptions['items'] as $subscription) {
   <div class="hero-unit">
     <h1>Your Recent Timeline</h1>
     <?php if ($message != "") { ?>
-    <span class="label label-warning">Message: <?= $message ?> </span>
+    <span class="label label-warning">Message: <?php echo $message; ?> </span>
     <?php } ?>
 
     <div style="margin-top: 5px;">
-      <?php foreach ($timeline['items'] as $timeline_item) { ?>
+      <?php foreach ($timeline->getItems() as $timeline_item) { ?>
       <ul class="span3 tile">
-        <li><strong>ID: </strong> <?= $timeline_item['id'] ?>
+        <li><strong>ID: </strong> <?php echo $timeline_item->getId(); ?>
         </li>
         <li>
-          <strong>Text: </strong> <?= $timeline_item['text'] ?>
+          <strong>Text: </strong> <?php echo $timeline_item->getId(); ?>
         </li>
         <li>
           <strong>Attachments: </strong>
           <?php
-          if (isset($timeline_item['attachments'])) {
-            $attachments = $timeline_item['attachments'];
+          if ($timeline_item->getAttachments() != null) {
+            $attachments = $timeline_item->getAttachments();
             foreach ($attachments as $attachment) { ?>
-                <img src="<?= $base_url .
-                    '/attachment-proxy.php?timeline_item_id='.
-                    $timeline_item['id'].'&attachment_id='.$attachment['id'] ?>" />
+                <img src="<?php echo $base_url .
+                    '/attachment-proxy.php?timeline_item_id=' .
+                    $timeline_item->getId() . '&attachment_id=' .
+                    $attachment->getId() ?>" />
             <?php
             }
           }
@@ -236,12 +237,12 @@ foreach ($subscriptions['items'] as $subscription) {
         <input type="hidden" name="operation" value="insertItem">
         <input type="hidden" name="message"
                value="Chipotle says hi!">
-        <input type="hidden" name="imageUrl" value="<?= $base_url .
+        <input type="hidden" name="imageUrl" value="<?php echo $base_url .
             "/static/images/chipotle-tube-640x360.jpg" ?>">
         <input type="hidden" name="contentType" value="image/jpeg">
 
         <button class="btn" type="submit">A picture
-          <img class="button-icon" src="<?= $base_url .
+          <img class="button-icon" src="<?php echo $base_url .
              "/static/images/chipotle-tube-640x360.jpg" ?>">
         </button>
       </form>
@@ -265,7 +266,7 @@ foreach ($subscriptions['items'] as $subscription) {
       <?php if ($contact == null) { ?>
       <form class="span3"method="post">
         <input type="hidden" name="operation" value="insertContact">
-        <input type="hidden" name="iconUrl" value="<?= $base_url .
+        <input type="hidden" name="iconUrl" value="<?php echo $base_url .
             "/static/images/chipotle-tube-640x360.jpg" ?>">
         <input type="hidden" name="name" value="PHP Quick Start">
         <input type="hidden" name="id" value="php-quick-start">
@@ -277,7 +278,7 @@ foreach ($subscriptions['items'] as $subscription) {
         <input type="hidden" name="id" value="php-quick-start">
         <button class="btn" type="submit">Delete PHP Quick Start Contact</button>
       </form>
-    <? } ?>
+    <?php } ?>
     </div>
 
     <div class="span4">
@@ -290,14 +291,14 @@ foreach ($subscriptions['items'] as $subscription) {
   <p class="label label-info">Note: Subscriptions require SSL. <br>They will
     not work on localhost.</p>
 
-  <?php if ($timelineSubscriptionExists) { ?>
+  <?php if ($timeline_subscription_exists) { ?>
     <form method="post">
       <input type="hidden" name="subscriptionId" value="timeline">
       <input type="hidden" name="operation" value="deleteSubscription">
       <button class="btn" type="submit">Unsubscribe from
         timeline updates</button>
     </form>
-  <? } else { ?>
+  <?php } else { ?>
     <form method="post">
       <input type="hidden" name="operation" value="insertSubscription">
       <input type="hidden" name="subscriptionId" value="timeline">
@@ -305,7 +306,7 @@ foreach ($subscriptions['items'] as $subscription) {
     </form>
   <?php } ?>
 
-  <?php if ($locationSubscriptionExists) { ?>
+  <?php if ($location_subscription_exists) { ?>
     <form method="post">
       <input type="hidden" name="subscriptionId" value="location">
       <input type="hidden" name="operation" value="deleteSubscription">

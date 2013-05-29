@@ -77,11 +77,11 @@ function bootstrap_new_user() {
   $timeline_item = new Google_TimelineItem();
   $timeline_item->setText("Welcome to the Mirror API PHP Quick Start");
 
-  insertTimelineItem($mirror_service, $timeline_item, null, null);
+  insert_timeline_item($mirror_service, $timeline_item, null, null);
 
-  insertContact($mirror_service, "php-quick-start", "PHP Quick Start",
+  insert_contact($mirror_service, "php-quick-start", "PHP Quick Start",
       $base_url . "/static/images/chipotle-tube-640x360.jpg");
 
-  subscribeToNotifications($mirror_service, "timeline",
+  subscribe_to_notifications($mirror_service, "timeline",
     $_SESSION['userid'], $base_url . "/notify.php");
 }
