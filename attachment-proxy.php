@@ -47,7 +47,7 @@ $attachment = $mirror_service->timeline_attachments->get(
   $_GET['timeline_item_id'], $_GET['attachment_id']);
 
 // set the content type header
-header('Content-type: '. $attachment['contentType']);
+header('Content-type: '. $attachment->getContentType());
 
 // echo the bytes
-echo downloadAttachment($_GET['timeline_item_id'], $attachment);
+echo download_attachment($_GET['timeline_item_id'], $attachment);

@@ -21,30 +21,6 @@ require_once 'mirror-client.php';
 require_once 'google-api-php-client/src/Google_Client.php';
 require_once 'google-api-php-client/src/contrib/Google_MirrorService.php';
 
-// Returns an unauthenticated service
-function get_google_api_client() {
-  global $api_client_id, $api_client_secret, $api_simple_key, $base_url;
-  // Set your cached access token. Remember to replace $_SESSION with a
-  // real database or memcached.
-  session_start();
-
-  $client = new Google_Client();
-
-  $client->setApplicationName('Google Mirror API PHP Quick Start');
-
-  // These are set in config.php
-  $client->setClientId($api_client_id);
-  $client->setClientSecret($api_client_secret);
-  $client->setDeveloperKey($api_simple_key);
-  $client->setRedirectUri($base_url."/oauth2callback.php");
-
-  $client->setScopes(array(
-    'https://www.googleapis.com/auth/glass.timeline',
-    'https://www.googleapis.com/auth/glass.location',
-    'https://www.googleapis.com/auth/userinfo.profile'));
-
-  return $client;
-}
 
 function store_credentials($user_id, $credentials) {
   $db = init_db();
@@ -101,11 +77,11 @@ function bootstrap_new_user() {
   $timeline_item = new Google_TimelineItem();
   $timeline_item->setText("Welcome to the Mirror API PHP Quick Start");
 
-  insertTimelineItem($mirror_service, $timeline_item, null, null);
+  insert_timeline_item($mirror_service, $timeline_item, null, null);
 
-  insertContact($mirror_service, "php-quick-start", "PHP Quick Start",
+  insert_contact($mirror_service, "php-quick-start", "PHP Quick Start",
       $base_url . "/static/images/chipotle-tube-640x360.jpg");
 
-  subscribeToNotifications($mirror_service, "timeline",
+  subscribe_to_notifications($mirror_service, "timeline",
     $_SESSION['userid'], $base_url . "/notify.php");
 }
