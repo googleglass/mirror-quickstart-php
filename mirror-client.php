@@ -23,15 +23,41 @@
 
 require_once 'config.php';
 
-function insertTimelineItem($service, $timelineItem, $contentType, $attachment)
+// Returns an unauthenticated service
+function get_google_api_client() {
+  global $api_client_id, $api_client_secret, $api_simple_key, $base_url;
+  // Set your cached access token. Remember to replace $_SESSION with a
+  // real database or memcached.
+  session_start();
+
+  $client = new Google_Client();
+
+  $client->setUseObjects(true);
+  $client->setApplicationName('Google Mirror API PHP Quick Start');
+
+  // These are set in config.php
+  $client->setClientId($api_client_id);
+  $client->setClientSecret($api_client_secret);
+  $client->setDeveloperKey($api_simple_key);
+  $client->setRedirectUri($base_url."/oauth2callback.php");
+
+  $client->setScopes(array(
+    'https://www.googleapis.com/auth/glass.timeline',
+    'https://www.googleapis.com/auth/glass.location',
+    'https://www.googleapis.com/auth/userinfo.profile'));
+
+  return $client;
+}
+
+function insert_timeline_item($service, $timeline_item, $content_type, $attachment)
 {
   try {
-    $optParams = array();
-    if ($contentType != null && $attachment != null) {
-      $optParams['data'] = $attachment;
-      $optParams['mimeType'] = $contentType;
+    $opt_params = array();
+    if ($content_type != null && $attachment != null) {
+      $opt_params['data'] = $attachment;
+      $opt_params['mimeType'] = $content_type;
     }
-    return $service->timeline->insert($timelineItem, $optParams);
+    return $service->timeline->insert($timeline_item, $opt_params);
   } catch (Exception $e) {
     print 'An error ocurred: ' . $e->getMessage();
     return null;
@@ -44,18 +70,18 @@ function insertTimelineItem($service, $timelineItem, $contentType, $attachment)
  * @param Google_MirrorService $service Authorized Mirror service.
  * @param string $collection Collection to subscribe to (supported
  *                           values are "timeline" and "locations").
- * @param string $userToken Opaque token used by the Service to
+ * @param string $user_token Opaque token used by the Service to
  *                          identify the  user the notification pings
  *                          are sent for (recommended).
- * @param string $callbackUrl URL receiving notification pings (must be HTTPS).
+ * @param string $callback_url URL receiving notification pings (must be HTTPS).
  */
-function subscribeToNotifications($service, $collection, $userToken, $callbackUrl)
+function subscribe_to_notifications($service, $collection, $user_token, $callback_url)
 {
   try {
     $subscription = new Google_Subscription();
     $subscription->setCollection($collection);
-    $subscription->setUserToken($userToken);
-    $subscription->setCallbackUrl($callbackUrl);
+    $subscription->setUserToken($user_token);
+    $subscription->setCallbackUrl($callback_url);
     $service->subscriptions->insert($subscription);
     return "Subscription inserted!";
   } catch (Exception $e) {
@@ -63,13 +89,13 @@ function subscribeToNotifications($service, $collection, $userToken, $callbackUr
   }
 }
 
-function insertContact($service, $contactId, $displayName, $iconUrl)
+function insert_contact($service, $contact_id, $display_name, $icon_url)
 {
   try {
     $contact = new Google_Contact();
-    $contact->setId($contactId);
-    $contact->setDisplayName($displayName);
-    $contact->setImageUrls(array($iconUrl));
+    $contact->setId($contact_id);
+    $contact->setDisplayName($display_name);
+    $contact->setImageUrls(array($icon_url));
     return $service->contacts->insert($contact);
   } catch (Exception $e) {
     print 'An error ocurred: ' . $e->getMessage();
@@ -81,11 +107,11 @@ function insertContact($service, $contactId, $displayName, $iconUrl)
  * Delete a contact for the current user.
  *
  * @param Google_MirrorService $service Authorized Mirror service.
- * @param string $contactId ID of the Contact to delete.
+ * @param string $contact_id ID of the Contact to delete.
  */
-function deleteContact($service, $contactId) {
+function delete_contact($service, $contact_id) {
   try {
-    $service->contacts->delete($contactId);
+    $service->contacts->delete($contact_id);
   } catch (Exception $e) {
     print 'An error occurred: ' . $e->getMessage();
   }
@@ -94,12 +120,12 @@ function deleteContact($service, $contactId) {
 /**
  * Download an attachment's content.
  *
- * @param string $timelineId ID of the timeline item the attachment belongs to.
+ * @param string item_id ID of the timeline item the attachment belongs to.
  * @param Google_Attachment $attachment Attachment's metadata.
  * @return string The attachment's content if successful, null otherwise.
  */
-function downloadAttachment($itemId, $attachment) {
-  $request = new Google_HttpRequest($attachment['contentUrl'], 'GET', null, null);
+function download_attachment($item_id, $attachment) {
+  $request = new Google_HttpRequest($attachment->getContentUrl(), 'GET', null, null);
   $httpRequest = Google_Client::$io->authenticatedRequest($request);
   if ($httpRequest->getResponseHttpCode() == 200) {
     return $httpRequest->getResponseBody();

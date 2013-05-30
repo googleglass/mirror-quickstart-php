@@ -18,4 +18,4 @@ require_once 'config.php';
 session_start();
 session_destroy();
 ?>
-You have been signed out. <a href="<?= $base_url ?>">Sign back in</a>
+You have been signed out. <a href="<?php echo $base_url ?>">Sign back in</a>
