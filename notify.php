@@ -17,6 +17,12 @@
 // Author: Jenny Murphy - http://google.com/+JennyMurphy
 
 
+// Only process POST requests
+if ($_SERVER['REQUEST_METHOD'] != "POST") {
+  header("HTTP/1.0 405 Method not supported");
+  echo("Method not supported");
+  exit();
+}
 
 // Always respond with a 200 right away and then terminate the connection to prevent notification
 // retries. How this is done depends on your HTTP server configs. I'll try a few common techniques
@@ -47,11 +53,6 @@ require_once 'mirror-client.php';
 require_once 'google-api-php-client/src/Google_Client.php';
 require_once 'google-api-php-client/src/contrib/Google_MirrorService.php';
 require_once 'util.php';
-
-if ($_SERVER['REQUEST_METHOD'] != "POST") {
-  echo "method not supported";
-  exit();
-}
 
 // Parse the request body
 $request_bytes = @file_get_contents('php://input');
@@ -96,7 +97,8 @@ switch ($request['collection']) {
 
     break;
   case 'locations':
-    $location = $mirror_service->locations->get("latest");
+    $location_id = $request['itemId'];
+    $location = $mirror_service->locations->get($location_id);
     // Insert a new timeline card, with a copy of that photo attached
     $loc_timeline_item = new Google_TimelineItem();
     $loc_timeline_item->setText("You are at " . $location->getLatitude() . " by " .
