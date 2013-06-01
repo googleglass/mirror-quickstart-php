@@ -193,7 +193,7 @@ foreach ($subscriptions->getItems() as $subscription) {
         <li><strong>ID: </strong> <?php echo $timeline_item->getId(); ?>
         </li>
         <li>
-          <strong>Text: </strong> <?php echo $timeline_item->getId(); ?>
+          <strong>Text: </strong> <?php echo $timeline_item->getText(); ?>
         </li>
         <li>
           <strong>Attachments: </strong>
