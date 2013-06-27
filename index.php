@@ -54,6 +54,23 @@ switch ($_POST['operation']) {
 
     $message = "Timeline Item inserted!";
     break;
+  case 'insertItemHtml':
+    $new_timeline_item = new Google_TimelineItem();
+    $new_timeline_item->setHTML($_POST['message']);
+
+    $notification = new Google_NotificationConfig();
+    $notification->setLevel("DEFAULT");
+    $new_timeline_item->setNotification($notification);
+
+    if (isset($_POST['imageUrl']) && isset($_POST['contentType'])) {
+      insert_timeline_item($mirror_service, $new_timeline_item,
+    	$_POST['contentType'], file_get_contents($_POST['imageUrl']));
+    } else {
+      insert_timeline_item($mirror_service, $new_timeline_item, null, null);
+    }
+
+    $message = "Timeline HTML Item inserted!";
+    break;
   case 'insertItemWithAction':
     $new_timeline_item = new Google_TimelineItem();
     $new_timeline_item->setText("What did you have for lunch?");
@@ -231,6 +248,12 @@ foreach ($subscriptions->getItems() as $subscription) {
         <input type="hidden" name="operation" value="insertItem">
         <textarea name="message">Hello World!</textarea><br/>
         <button class="btn" type="submit">The above message</button>
+      </form>
+
+      <form method="post">
+        <input type="hidden" name="operation" value="insertItemHtml">
+        <textarea name="message"><article><section><p class="text-auto-size">This <em class="yellow">paragraph</em> auto-resizes according to the <strong class="blue">HTML</strong> content length.</p></section></article></textarea><br/>
+        <button class="btn" type="submit">The above HTML</button>
       </form>
 
       <form method="post">
