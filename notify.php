@@ -81,7 +81,7 @@ switch ($request['collection']) {
         $timeline_item = $mirror_service->timeline->get($timeline_item_id);
 
         foreach($timeline_item->getAttachments() as $j => $attachment) {
-          $attachment = $mirror_service->timeline->attachments->get($timeline_item_id, $attachment.getId());
+          $attachment = $mirror_service->timeline_attachments->get($timeline_item_id, $attachment.getId());
           $bytes = download_attachment($timeline_item_id, $attachment);
 
           // Insert a new timeline card, with a copy of that photo attached
