@@ -28,7 +28,7 @@ function store_credentials($user_id, $credentials) {
   $user_id = sqlite_escape_string(strip_tags($user_id));
   $credentials = sqlite_escape_string(strip_tags($credentials));
 
-  $insert = "insert into credentials values ('$user_id', '$credentials')";
+  $insert = "insert or replace into credentials values ('$user_id', '$credentials')";
   sqlite_exec($db, $insert);
 
 }
@@ -59,7 +59,8 @@ function init_db() {
   $db = sqlite_open($sqlite_database);
   $test_query = "select count(*) from sqlite_master where name = 'credentials'";
   if (sqlite_fetch_single(sqlite_query($db, $test_query)) == 0) {
-    $create_table = "create table credentials (userid text, credentials text);";
+    $create_table = "create table credentials (userid text not null unique, " .
+        "credentials text not null);";
     sqlite_exec($db, $create_table);
   }
   return $db;
