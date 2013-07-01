@@ -24,4 +24,5 @@ $api_simple_key = "API_KEY";
 
 $base_url = "http://localhost/mirror-quickstart-php";
 
+// This should be writable by your web server's user
 $sqlite_database = "/tmp/database.sqlite";
