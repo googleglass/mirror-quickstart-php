@@ -22,6 +22,8 @@
 // found at https://developers.google.com/glass/v1/reference
 
 require_once 'config.php';
+require_once 'google-api-php-client/src/Google_Client.php';
+require_once 'google-api-php-client/src/contrib/Google_Oauth2Service.php';
 
 // Returns an unauthenticated service
 function get_google_api_client() {
@@ -47,6 +49,38 @@ function get_google_api_client() {
     'https://www.googleapis.com/auth/userinfo.profile'));
 
   return $client;
+}
+
+/*
+ * Verify the credentials. If they're broken, attempt to re-auth
+ * This will only work if you haven't printed anything yet (since
+ * it uses an HTTP header for the redirect)
+ */
+function verify_credentials($credentials) {
+  //TODO: Use the oauth2.tokeninfo() method instead once it's
+  //      exposed by the PHP client library
+  global $base_url;
+
+  $client = get_google_api_client();
+  $client->setAccessToken($credentials);
+
+  $token_checker = new Google_Oauth2Service($client);
+  try {
+    $token_checker->userinfo->get();
+  } catch (Google_ServiceException $e) {
+    if($e->getCode() == 401) {
+      // This user may have disabled the Glassware on MyGlass.
+      // Clean up the mess and attempt to re-auth.
+      unset($_SESSION['userid']);
+      header('Location: ' . $base_url . '/oauth2callback.php');
+      exit;
+
+    } else {
+      // Let it go...
+      throw $e;
+    }
+  }
+
 }
 
 function insert_timeline_item($service, $timeline_item, $content_type, $attachment)
