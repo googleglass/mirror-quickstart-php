@@ -29,6 +29,7 @@ if (!isset($_SESSION['userid']) || get_credentials($_SESSION['userid']) == null)
   header('Location: ' . $base_url . '/oauth2callback.php');
   exit;
 } else {
+  verify_credentials(get_credentials($_SESSION['userid']));
   $client->setAccessToken(get_credentials($_SESSION['userid']));
 }
 
@@ -170,11 +171,6 @@ foreach ($subscriptions->getItems() as $subscription) {
   <div class="navbar-inner">
     <div class="container">
       <a class="brand" href="#">Glassware Starter Project: PHP Edition</a>
-      <div class="nav-collapse collapse">
-        <form class="navbar-form pull-right" action="signout.php" method="post">
-          <button type="submit" class="btn">Sign out</button>
-        </form>
-      </div>
     </div>
   </div>
 </div>
