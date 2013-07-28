@@ -58,7 +58,7 @@ function init_db() {
   $db = new SQLite3($sqlite_database);
   $test_query = "select count(*) from sqlite_master where name = 'credentials'";
 
-  if ($db->querySingle($testQuery) == 0) {
+  if ($db->querySingle($test_query) == 0) {
     $create_table = "create table credentials (userid text not null unique, " .
         "credentials text not null);";
     $db->exec($create_table);
