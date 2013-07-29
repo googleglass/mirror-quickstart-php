@@ -169,3 +169,17 @@ function download_attachment($item_id, $attachment) {
   }
 }
 
+/**
+ * Delete a timeline item for the current user.
+ *
+ * @param Google_MirrorService $service Authorized Mirror service.
+ * @param string $item_id ID of the Timeline Item to delete.
+ */
+function delete_timeline_item($service, $item_id) {
+  try {
+    $service->timeline->delete($item_id);
+  } catch (Exception $e) {
+    print 'An error occurred: ' . $e->getMessage();
+  }
+}
+
