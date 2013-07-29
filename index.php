@@ -128,6 +128,10 @@ switch ($_POST['operation']) {
     delete_contact($mirror_service, $_POST['id']);
     $message = "Contact deleted.";
     break;
+  case 'deleteTimelineItem':
+    delete_timeline_item($mirror_service, $_POST['itemId']);
+    $message = "A timeline item has been deleted.";
+    break;
 }
 
 //Load cool stuff to show them.
@@ -206,7 +210,13 @@ foreach ($subscriptions->getItems() as $subscription) {
           }
           ?>
         </li>
-
+        <li>
+          <form action="/" method="post">
+            <input type="hidden" name="itemId" value="<?php echo $timeline_item->getId(); ?>">
+            <input type="hidden" name="operation" value="deleteTimelineItem">
+            <button class="btn" type="submit">Delete Item</button>
+          </form>
+        </li>
       </ul>
       <?php } ?>
     </div>
