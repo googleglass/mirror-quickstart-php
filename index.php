@@ -67,6 +67,10 @@ switch ($_POST['operation']) {
 
     // A couple of built in menu items
     $menu_item = new Google_MenuItem();
+    $menu_item->setAction("REPLY");
+    array_push($menu_items, $menu_item);
+
+    $menu_item = new Google_MenuItem();
     $menu_item->setAction("READ_ALOUD");
     array_push($menu_items, $menu_item);
     $new_timeline_item->setSpeakableText("What did you eat? Bacon?");
