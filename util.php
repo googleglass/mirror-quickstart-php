@@ -47,7 +47,11 @@ function list_credentials() {
 
   // Must use explicit select instead of * to get the rowid
   $query = $db->query('select userid, credentials from credentials');
-  return $query->fetchArray(SQLITE3_ASSOC);
+  $result = array();
+  while ($singleResult = $query->fetchArray(SQLITE3_ASSOC)){
+    array_push($result,$singleResult);
+  }
+  return $result;
 
 }
 
