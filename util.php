@@ -24,22 +24,21 @@ require_once 'google-api-php-client/src/contrib/Google_MirrorService.php';
 
 function store_credentials($user_id, $credentials) {
   $db = init_db();
-
-  $user_id = sqlite_escape_string(strip_tags($user_id));
-  $credentials = sqlite_escape_string(strip_tags($credentials));
+  $user_id = SQLite3::escapeString(strip_tags($user_id));
+  $credentials = SQLite3::escapeString(strip_tags($credentials));
 
   $insert = "insert or replace into credentials values ('$user_id', '$credentials')";
-  sqlite_exec($db, $insert);
+  $db->exec($insert);
 
 }
 
 function get_credentials($user_id) {
   $db = init_db();
-  $user_id = sqlite_escape_string(strip_tags($user_id));
+  $user_id = SQLite3::escapeString(strip_tags($user_id));
 
-  $query = sqlite_query($db, "select * from credentials where userid = '$user_id'");
+  $query = $db->query("select * from credentials where userid = '$user_id'");
 
-  $row = sqlite_fetch_array($query);
+  $row = $query->fetchArray(SQLITE3_ASSOC);
   return $row['credentials'];
 }
 
@@ -47,8 +46,12 @@ function list_credentials() {
   $db = init_db();
 
   // Must use explicit select instead of * to get the rowid
-  $query = sqlite_query($db, 'select userid, credentials from credentials');
-  return sqlite_fetch_all($query, SQLITE_ASSOC);
+  $query = $db->query('select userid, credentials from credentials');
+  $result = array();
+  while ($singleResult = $query->fetchArray(SQLITE3_ASSOC)){
+    array_push($result,$singleResult);
+  }
+  return $result;
 
 }
 
@@ -56,12 +59,13 @@ function list_credentials() {
 function init_db() {
   global $sqlite_database;
 
-  $db = sqlite_open($sqlite_database);
+  $db = new SQLite3($sqlite_database);
   $test_query = "select count(*) from sqlite_master where name = 'credentials'";
-  if (sqlite_fetch_single(sqlite_query($db, $test_query)) == 0) {
+
+  if ($db->querySingle($test_query) == 0) {
     $create_table = "create table credentials (userid text not null unique, " .
         "credentials text not null);";
-    sqlite_exec($db, $create_table);
+    $db->exec($create_table);
   }
   return $db;
 }
