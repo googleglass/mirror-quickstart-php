@@ -215,7 +215,7 @@ foreach ($subscriptions->getItems() as $subscription) {
           ?>
         </li>
         <li>
-          <form action="/" method="post">
+          <form method="post">
             <input type="hidden" name="itemId" value="<?php echo $timeline_item->getId(); ?>">
             <input type="hidden" name="operation" value="deleteTimelineItem">
             <button class="btn" type="submit">Delete Item</button>
