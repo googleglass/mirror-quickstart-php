@@ -152,7 +152,7 @@ $location_subscription_exists = false;
 foreach ($subscriptions->getItems() as $subscription) {
   if ($subscription->getId() == 'timeline') {
     $timeline_subscription_exists = true;
-  } elseif ($subscription->getId() == 'location') {
+  } elseif ($subscription->getId() == 'locations') {
     $location_subscription_exists = true;
   }
 }
@@ -318,7 +318,7 @@ foreach ($subscriptions->getItems() as $subscription) {
 
   <?php if ($location_subscription_exists) { ?>
     <form method="post">
-      <input type="hidden" name="subscriptionId" value="location">
+      <input type="hidden" name="subscriptionId" value="locations">
       <input type="hidden" name="operation" value="deleteSubscription">
       <button class="btn" type="submit">Unsubscribe from
         location updates</button>
