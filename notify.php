@@ -80,17 +80,14 @@ switch ($request['collection']) {
 
         $timeline_item = $mirror_service->timeline->get($timeline_item_id);
 
-        foreach($timeline_item->getAttachments() as $j => $attachment) {
-          $attachment = $mirror_service->timeline_attachments->get($timeline_item_id, $attachment.getId());
-          $bytes = download_attachment($timeline_item_id, $attachment);
-
-          // Insert a new timeline card, with a copy of that photo attached
-          $echo_timeline_item = new Google_TimelineItem();
-          $echo_timeline_item->setText("Echoing your shared photo");
-          $echo_timeline_item->setNotification(
-            new google_NotificationConfig(array("level"=>"DEFAULT")));
-          insert_timeline_item($mirror_service, $echo_timeline_item, "image/jpeg", $bytes);
-        }
+        // Patch the item. Notice that since we retrieved the entire item above
+        // in order to access the caption, we could have just changed the text
+        // in place and used the update method, but we wanted to illustrate the
+        // patch method here.
+        $patch = new Google_TimelineItem();
+        $patch->setText("PHP Quick Start got your photo! " .
+            $timeline_item->getText());
+        $mirror_service->timeline->patch($timeline_item_id, $patch);
         break;
       }
     }

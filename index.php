@@ -164,15 +164,8 @@ foreach ($subscriptions->getItems() as $subscription) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Glassware Starter Project</title>
   <link href="./static/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
-  <style>
-    .button-icon { max-width: 75px; }
-    .tile {
-      border-left: 1px solid #444;
-      padding: 5px;
-      list-style: none;
-    }
-    .btn { width: 100%; }
-  </style>
+  <link href="./static/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
+  <link href="./static/main.css" rel="stylesheet" media="screen">
 </head>
 <body>
 <div class="navbar navbar-inverse navbar-fixed-top">
@@ -185,46 +178,72 @@ foreach ($subscriptions->getItems() as $subscription) {
 
 <div class="container">
 
-  <div class="hero-unit">
-    <h1>Your Recent Timeline</h1>
-    <?php if ($message != "") { ?>
-    <span class="label label-warning">Message: <?php echo $message; ?> </span>
-    <?php } ?>
+  <?php if ($message != "") { ?>
+  <div class="alert alert-info"><?php echo $message; ?> </div>
+  <?php } ?>
+
+  <h1>Your Recent Timeline</h1>
+  <div class="row">
 
     <div style="margin-top: 5px;">
-      <?php foreach ($timeline->getItems() as $timeline_item) { ?>
-      <ul class="span3 tile">
-        <li><strong>ID: </strong> <?php echo $timeline_item->getId(); ?>
-        </li>
-        <li>
-          <strong>Text: </strong> <?php echo $timeline_item->getText(); ?>
-        </li>
-        <li>
-          <strong>Attachments: </strong>
-          <?php
-          if ($timeline_item->getAttachments() != null) {
-            $attachments = $timeline_item->getAttachments();
-            foreach ($attachments as $attachment) { ?>
-                <img src="<?php echo $base_url .
-                    '/attachment-proxy.php?timeline_item_id=' .
-                    $timeline_item->getId() . '&attachment_id=' .
-                    $attachment->getId() ?>" />
-            <?php
-            }
-          }
-          ?>
-        </li>
-        <li>
-          <form method="post">
-            <input type="hidden" name="itemId" value="<?php echo $timeline_item->getId(); ?>">
-            <input type="hidden" name="operation" value="deleteTimelineItem">
-            <button class="btn" type="submit">Delete Item</button>
-          </form>
-        </li>
-      </ul>
-      <?php } ?>
+      <?php if ($timeline->getItems()) { ?>
+        <?php foreach ($timeline->getItems() as $timeline_item) { ?>
+        <div class="span4">
+          <table class="table table-bordered">
+            <tbody>
+              <tr>
+                <th>ID</th>
+                <td><?php echo $timeline_item->getId(); ?></td>
+              </tr>
+              <tr>
+                <th>Text</th>
+                <td><?php echo htmlspecialchars($timeline_item->getText()); ?></td>
+              </tr>
+              <tr>
+                <th>HTML</th>
+                <td><?php echo htmlspecialchars($timeline_item->getHtml()); ?></td>
+              </tr>
+              <tr>
+                <th>Attachments</th>
+                <td>
+                  <?php
+                  if ($timeline_item->getAttachments() != null) {
+                    $attachments = $timeline_item->getAttachments();
+                    foreach ($attachments as $attachment) { ?>
+                        <img src="<?php echo $base_url .
+                            '/attachment-proxy.php?timeline_item_id=' .
+                            $timeline_item->getId() . '&attachment_id=' .
+                            $attachment->getId() ?>" />
+                    <?php
+                    }
+                  }
+                  ?>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  <form class="form-inline" method="post">
+                    <input type="hidden" name="itemId" value="<?php echo $timeline_item->getId(); ?>">
+                    <input type="hidden" name="operation" value="deleteTimelineItem">
+                    <button class="btn btn-danger btn-block" type="submit">Delete Item</button>
+                  </form>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <?php 
+        }
+      } else { ?>
+      <div class="span12">
+        <div class="alert alert-info">
+          You haven't added any items to your timeline yet. Use the controls
+          below to add something!
+        </div>
+      </div>
+      <?php
+      } ?>
     </div>
-    <div style="clear:both;"></div>
   </div>
 
   <div class="row">
@@ -234,36 +253,41 @@ foreach ($subscriptions->getItems() as $subscription) {
       <p>When you first sign in, this Glassware inserts a welcome message. Use
         these controls to insert more items into your timeline. Learn more about
         the timeline APIs
-        <a href="https://developers.google.com/glass/timeline">here</a></p>
+        <a href="https://developers.google.com/glass/timeline">here</a>.</p>
 
 
       <form method="post">
         <input type="hidden" name="operation" value="insertItem">
-        <textarea name="message">Hello World!</textarea><br/>
-        <button class="btn" type="submit">The above message</button>
+        <textarea name="message" class="span4">Hello World!</textarea><br/>
+        <button class="btn btn-block" type="submit">
+          Insert the above message
+        </button>
       </form>
 
       <form method="post">
         <input type="hidden" name="operation" value="insertItem">
-        <input type="hidden" name="message"
-               value="Chipotle says hi!">
+        <input type="hidden" name="message" value="Chipotle says hi!">
         <input type="hidden" name="imageUrl" value="<?php echo $base_url .
             "/static/images/chipotle-tube-640x360.jpg" ?>">
         <input type="hidden" name="contentType" value="image/jpeg">
 
-        <button class="btn" type="submit">A picture
+        <button class="btn btn-block" type="submit">Insert a picture
           <img class="button-icon" src="<?php echo $base_url .
              "/static/images/chipotle-tube-640x360.jpg" ?>">
         </button>
       </form>
       <form method="post">
         <input type="hidden" name="operation" value="insertItemWithAction">
-        <button class="btn" type="submit">A card you can reply to</button>
+        <button class="btn btn-block" type="submit">
+          Insert a card you can reply to
+        </button>
       </form>
       <hr>
       <form method="post">
         <input type="hidden" name="operation" value="insertTimelineAllUsers">
-        <button class="btn" type="submit">A card to all users</button>
+        <button class="btn btn-block" type="submit">
+          Insert a card to all users
+        </button>
       </form>
     </div>
 
@@ -274,19 +298,23 @@ foreach ($subscriptions->getItems() as $subscription) {
       <a href="https://developers.google.com/glass/contacts">here</a>.</p>
 
       <?php if ($contact == null) { ?>
-      <form class="span3"method="post">
+      <form method="post">
         <input type="hidden" name="operation" value="insertContact">
         <input type="hidden" name="iconUrl" value="<?php echo $base_url .
             "/static/images/chipotle-tube-640x360.jpg" ?>">
         <input type="hidden" name="name" value="PHP Quick Start">
         <input type="hidden" name="id" value="php-quick-start">
-        <button class="btn" type="submit">Insert PHP Quick Start Contact</button>
+        <button class="btn btn-block btn-success" type="submit">
+          Insert PHP Quick Start Contact
+        </button>
       </form>
       <?php } else { ?>
-      <form class="span3" method="post">
+      <form method="post">
         <input type="hidden" name="operation" value="deleteContact">
         <input type="hidden" name="id" value="php-quick-start">
-        <button class="btn" type="submit">Delete PHP Quick Start Contact</button>
+        <button class="btn btn-block btn-danger" type="submit">
+          Delete PHP Quick Start Contact
+        </button>
       </form>
     <?php } ?>
     </div>
@@ -296,23 +324,27 @@ foreach ($subscriptions->getItems() as $subscription) {
 
   <p>By default a subscription is inserted for changes to the
     <code>timeline</code> collection. Learn more about subscriptions
-    <a href="https://developers.google.com/glass/subscriptions">here</a></p>
+    <a href="https://developers.google.com/glass/subscriptions">here</a>.</p>
 
-  <p class="label label-info">Note: Subscriptions require SSL. <br>They will
-    not work on localhost.</p>
+  <div class="alert alert-info">
+    Note: Subscriptions require SSL. They will not work on localhost.
+  </div>
 
   <?php if ($timeline_subscription_exists) { ?>
     <form method="post">
       <input type="hidden" name="subscriptionId" value="timeline">
       <input type="hidden" name="operation" value="deleteSubscription">
-      <button class="btn" type="submit">Unsubscribe from
-        timeline updates</button>
+      <button class="btn btn-block btn-danger" type="submit">
+        Unsubscribe from timeline updates
+      </button>
     </form>
   <?php } else { ?>
     <form method="post">
       <input type="hidden" name="operation" value="insertSubscription">
       <input type="hidden" name="subscriptionId" value="timeline">
-      <button class="btn" type="submit">Subscribe to timeline updates</button>
+      <button class="btn btn-block btn-success" type="submit">
+        Subscribe to timeline updates
+      </button>
     </form>
   <?php } ?>
 
@@ -320,14 +352,17 @@ foreach ($subscriptions->getItems() as $subscription) {
     <form method="post">
       <input type="hidden" name="subscriptionId" value="locations">
       <input type="hidden" name="operation" value="deleteSubscription">
-      <button class="btn" type="submit">Unsubscribe from
-        location updates</button>
+      <button class="btn btn-block btn-danger" type="submit">
+        Unsubscribe from location updates
+      </button>
     </form>
   <?php } else { ?>
     <form method="post">
       <input type="hidden" name="operation" value="insertSubscription">
       <input type="hidden" name="subscriptionId" value="locations">
-      <button class="btn" type="submit">Subscribe to location updates</button>
+      <button class="btn btn-block btn-success" type="submit">
+        Subscribe to location updates
+      </button>
     </form>
   <?php } ?>
     </div>
