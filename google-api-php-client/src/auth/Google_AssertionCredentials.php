@@ -43,7 +43,6 @@ class Google_AssertionCredentials {
    * @param string $assertionType
    * @param bool|string $sub The email address of the user for which the
    *               application is requesting delegated access.
-   *
    */
   public function __construct(
       $serviceAccountName,

@@ -24,10 +24,7 @@
 
 require_once 'Google_CacheParser.php';
 
-class Google_CurlIO implements Google_IO {
-  const CONNECTION_ESTABLISHED = "HTTP/1.0 200 Connection established\r\n\r\n";
-  const FORM_URLENCODED = 'application/x-www-form-urlencoded';
-
+class Google_CurlIO extends Google_IO {
   private static $ENTITY_HTTP_METHODS = array("POST" => null, "PUT" => null);
   private static $HOP_BY_HOP = array(
       'connection', 'keep-alive', 'proxy-authenticate', 'proxy-authorization',
@@ -41,6 +38,16 @@ class Google_CurlIO implements Google_IO {
       CURLOPT_HEADER => true,
       CURLOPT_VERBOSE => false,
   );
+
+  /**
+   * Check for cURL availability.
+   */
+  public function __construct() {
+    if (! function_exists('curl_init')) {
+      throw new Exception(
+        'Google CurlIO client requires the CURL PHP extension');
+    }
+  }
 
   /**
    * Perform an authenticated / signed apiHttpRequest.
@@ -69,19 +76,7 @@ class Google_CurlIO implements Google_IO {
     // First, check to see if we have a valid cached version.
     $cached = $this->getCachedRequest($request);
     if ($cached !== false) {
-      if (Google_CacheParser::mustRevalidate($cached)) {
-        $addHeaders = array();
-        if ($cached->getResponseHeader('etag')) {
-          // [13.3.4] If an entity tag has been provided by the origin server,
-          // we must use that entity tag in any cache-conditional request.
-          $addHeaders['If-None-Match'] = $cached->getResponseHeader('etag');
-        } elseif ($cached->getResponseHeader('date')) {
-          $addHeaders['If-Modified-Since'] = $cached->getResponseHeader('date');
-        }
-
-        $request->setRequestHeaders($addHeaders);
-      } else {
-        // No need to revalidate the request, return it directly
+      if (!$this->checkMustRevaliadateCachedRequest($cached, $request)) {
         return $cached;
       }
     }
@@ -134,20 +129,7 @@ class Google_CurlIO implements Google_IO {
 
     if ($respHttpCode == 304 && $cached) {
       // If the server responded NOT_MODIFIED, return the cached request.
-      if (isset($responseHeaders['connection'])) {
-        $hopByHop = array_merge(
-          self::$HOP_BY_HOP,
-          explode(',', $responseHeaders['connection'])
-        );
-
-        $endToEnd = array();
-        foreach($hopByHop as $key) {
-          if (isset($responseHeaders[$key])) {
-            $endToEnd[$key] = $responseHeaders[$key];
-          }
-        }
-        $cached->setResponseHeaders($endToEnd);
-      }
+      $this->updateCachedRequest($cached, $responseHeaders);
       return $cached;
     }
 
@@ -163,34 +145,16 @@ class Google_CurlIO implements Google_IO {
   }
 
   /**
-   * @visible for testing.
-   * Cache the response to an HTTP request if it is cacheable.
-   * @param Google_HttpRequest $request
-   * @return bool Returns true if the insertion was successful.
-   * Otherwise, return false.
+   * Set options that update cURL's default behavior.
+   * The list of accepted options are:
+   * {@link http://php.net/manual/en/function.curl-setopt.php]
+   *
+   * @param array $optCurlParams Multiple options used by a cURL session.
    */
-  public function setCachedRequest(Google_HttpRequest $request) {
-    // Determine if the request is cacheable.
-    if (Google_CacheParser::isResponseCacheable($request)) {
-      Google_Client::$cache->set($request->getCacheKey(), $request);
-      return true;
+  public function setOptions($optCurlParams) {
+    foreach ($optCurlParams as $key => $val) {
+      $this->curlParams[$key] = $val;
     }
-
-    return false;
-  }
-
-  /**
-   * @visible for testing.
-   * @param Google_HttpRequest $request
-   * @return Google_HttpRequest|bool Returns the cached object or
-   * false if the operation was unsuccessful.
-   */
-  public function getCachedRequest(Google_HttpRequest $request) {
-    if (false == Google_CacheParser::isRequestCacheable($request)) {
-      false;
-    }
-
-    return Google_Client::$cache->get($request->getCacheKey());
   }
 
   /**
@@ -198,9 +162,9 @@ class Google_CurlIO implements Google_IO {
    * @param $headerSize
    * @return array
    */
-  public static function parseHttpResponse($respData, $headerSize) {
-    if (stripos($respData, self::CONNECTION_ESTABLISHED) !== false) {
-      $respData = str_ireplace(self::CONNECTION_ESTABLISHED, '', $respData);
+  private static function parseHttpResponse($respData, $headerSize) {
+    if (stripos($respData, parent::CONNECTION_ESTABLISHED) !== false) {
+      $respData = str_ireplace(parent::CONNECTION_ESTABLISHED, '', $respData);
     }
 
     if ($headerSize) {
@@ -214,7 +178,7 @@ class Google_CurlIO implements Google_IO {
     return array($responseHeaders, $responseBody);
   }
 
-  public static function parseResponseHeaders($rawHeaders) {
+  private static function parseResponseHeaders($rawHeaders) {
     $responseHeaders = array();
 
     $responseHeaderLines = explode("\r\n", $rawHeaders);
@@ -230,49 +194,5 @@ class Google_CurlIO implements Google_IO {
       }
     }
     return $responseHeaders;
-  }
-
-  /**
-   * @visible for testing
-   * Process an http request that contains an enclosed entity.
-   * @param Google_HttpRequest $request
-   * @return Google_HttpRequest Processed request with the enclosed entity.
-   */
-  public function processEntityRequest(Google_HttpRequest $request) {
-    $postBody = $request->getPostBody();
-    $contentType = $request->getRequestHeader("content-type");
-
-    // Set the default content-type as application/x-www-form-urlencoded.
-    if (false == $contentType) {
-      $contentType = self::FORM_URLENCODED;
-      $request->setRequestHeaders(array('content-type' => $contentType));
-    }
-
-    // Force the payload to match the content-type asserted in the header.
-    if ($contentType == self::FORM_URLENCODED && is_array($postBody)) {
-      $postBody = http_build_query($postBody, '', '&');
-      $request->setPostBody($postBody);
-    }
-
-    // Make sure the content-length header is set.
-    if (!$postBody || is_string($postBody)) {
-      $postsLength = strlen($postBody);
-      $request->setRequestHeaders(array('content-length' => $postsLength));
-    }
-
-    return $request;
-  }
-
-  /**
-   * Set options that update cURL's default behavior.
-   * The list of accepted options are:
-   * {@link http://php.net/manual/en/function.curl-setopt.php]
-   *
-   * @param array $optCurlParams Multiple options used by a cURL session.
-   */
-  public function setOptions($optCurlParams) {
-    foreach ($optCurlParams as $key => $val) {
-      $this->curlParams[$key] = $val;
-    }
   }
 }

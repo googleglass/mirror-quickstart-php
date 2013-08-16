@@ -15,12 +15,8 @@
  * limitations under the License.
  */
 
-// Check for the required json and curl extensions, the Google APIs PHP Client
-// won't function without them.
-if (! function_exists('curl_init')) {
-  throw new Exception('Google PHP API Client requires the CURL PHP extension');
-}
-
+// Check for the json extension, the Google APIs PHP Client won't function
+// without it.
 if (! function_exists('json_decode')) {
   throw new Exception('Google PHP API Client requires the JSON PHP extension');
 }
@@ -363,6 +359,19 @@ class Google_Client {
    */
   public function getScopes() {
      return $this->scopes;
+  }
+
+  /**
+   * If 'plus.login' is included in the list of requested scopes, you can use
+   * this method to define types of app activities that your app will write.
+   * You can find a list of available types here:
+   * @link https://developers.google.com/+/api/moment-types
+   *
+   * @param array $requestVisibleActions Array of app activity types
+   */
+  public function setRequestVisibleActions($requestVisibleActions) {
+    self::$auth->requestVisibleActions =
+            join(" ", $requestVisibleActions);
   }
 
   /**

@@ -1,7 +1,5 @@
 <?php
 /*
- * Copyright 2010 Google Inc.
- *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
@@ -25,7 +23,6 @@
    *  </code>
    */
   class Google_AccountsServiceResource extends Google_ServiceResource {
-
 
     /**
      * Gets one account by ID. (accounts.get)
@@ -108,7 +105,6 @@
    */
   class Google_CreativesServiceResource extends Google_ServiceResource {
 
-
     /**
      * Gets the status for a single creative. (creatives.get)
      *
@@ -149,9 +145,9 @@
      *
      * @param array $optParams Optional parameters.
      *
-     * @opt_param string statusFilter When specified, only creatives having the given status are returned.
-     * @opt_param string pageToken A continuation token, used to page through ad clients. To retrieve the next page, set this parameter to the value of "nextPageToken" from the previous response. Optional.
      * @opt_param string maxResults Maximum number of entries returned on one result page. If not set, the default is 100. Optional.
+     * @opt_param string pageToken A continuation token, used to page through ad clients. To retrieve the next page, set this parameter to the value of "nextPageToken" from the previous response. Optional.
+     * @opt_param string statusFilter When specified, only creatives having the given status are returned.
      * @return Google_CreativesList
      */
     public function listCreatives($optParams = array()) {
@@ -175,7 +171,6 @@
    *  </code>
    */
   class Google_DirectDealsServiceResource extends Google_ServiceResource {
-
 
     /**
      * Gets one direct deal by ID. (directDeals.get)
@@ -212,6 +207,37 @@
     }
   }
 
+  /**
+   * The "performanceReport" collection of methods.
+   * Typical usage is:
+   *  <code>
+   *   $adexchangebuyerService = new Google_AdexchangebuyerService(...);
+   *   $performanceReport = $adexchangebuyerService->performanceReport;
+   *  </code>
+   */
+  class Google_PerformanceReportServiceResource extends Google_ServiceResource {
+
+    /**
+     * Retrieves the authenticated user's list of performance metrics. (performanceReport.list)
+     *
+     * @param string $accountId The account id to get the reports for.
+     * @param string $endDateTime The end time for the reports.
+     * @param string $startDateTime The start time for the reports.
+     * @param array $optParams Optional parameters.
+     * @return Google_PerformanceReportList
+     */
+    public function listPerformanceReport($accountId, $endDateTime, $startDateTime, $optParams = array()) {
+      $params = array('accountId' => $accountId, 'endDateTime' => $endDateTime, 'startDateTime' => $startDateTime);
+      $params = array_merge($params, $optParams);
+      $data = $this->__call('list', array($params));
+      if ($this->useObjects()) {
+        return new Google_PerformanceReportList($data);
+      } else {
+        return $data;
+      }
+    }
+  }
+
 /**
  * Service definition for Google_Adexchangebuyer (v1.2).
  *
@@ -230,6 +256,7 @@ class Google_AdexchangebuyerService extends Google_Service {
   public $accounts;
   public $creatives;
   public $directDeals;
+  public $performanceReport;
   /**
    * Constructs the internal representation of the Adexchangebuyer service.
    *
@@ -241,12 +268,15 @@ class Google_AdexchangebuyerService extends Google_Service {
     $this->serviceName = 'adexchangebuyer';
 
     $client->addService($this->serviceName, $this->version);
-    $this->accounts = new Google_AccountsServiceResource($this, $this->serviceName, 'accounts', json_decode('{"methods": {"patch": {"scopes": ["https://www.googleapis.com/auth/adexchange.buyer"], "parameters": {"id": {"location": "path", "required": true, "type": "integer", "format": "int32"}}, "request": {"$ref": "Account"}, "response": {"$ref": "Account"}, "httpMethod": "PATCH", "path": "accounts/{id}", "id": "adexchangebuyer.accounts.patch"}, "list": {"scopes": ["https://www.googleapis.com/auth/adexchange.buyer"], "id": "adexchangebuyer.accounts.list", "httpMethod": "GET", "path": "accounts", "response": {"$ref": "AccountsList"}}, "update": {"scopes": ["https://www.googleapis.com/auth/adexchange.buyer"], "parameters": {"id": {"location": "path", "required": true, "type": "integer", "format": "int32"}}, "request": {"$ref": "Account"}, "response": {"$ref": "Account"}, "httpMethod": "PUT", "path": "accounts/{id}", "id": "adexchangebuyer.accounts.update"}, "get": {"scopes": ["https://www.googleapis.com/auth/adexchange.buyer"], "parameters": {"id": {"location": "path", "required": true, "type": "integer", "format": "int32"}}, "response": {"$ref": "Account"}, "httpMethod": "GET", "path": "accounts/{id}", "id": "adexchangebuyer.accounts.get"}}}', true));
-    $this->creatives = new Google_CreativesServiceResource($this, $this->serviceName, 'creatives', json_decode('{"methods": {"insert": {"scopes": ["https://www.googleapis.com/auth/adexchange.buyer"], "request": {"$ref": "Creative"}, "id": "adexchangebuyer.creatives.insert", "httpMethod": "POST", "path": "creatives", "response": {"$ref": "Creative"}}, "list": {"scopes": ["https://www.googleapis.com/auth/adexchange.buyer"], "parameters": {"statusFilter": {"enum": ["approved", "disapproved", "not_checked"], "type": "string", "location": "query"}, "pageToken": {"type": "string", "location": "query"}, "maxResults": {"format": "uint32", "maximum": "1000", "minimum": "1", "location": "query", "type": "integer"}}, "id": "adexchangebuyer.creatives.list", "httpMethod": "GET", "path": "creatives", "response": {"$ref": "CreativesList"}}, "get": {"scopes": ["https://www.googleapis.com/auth/adexchange.buyer"], "parameters": {"buyerCreativeId": {"required": true, "type": "string", "location": "path"}, "accountId": {"location": "path", "required": true, "type": "integer", "format": "int32"}}, "response": {"$ref": "Creative"}, "httpMethod": "GET", "path": "creatives/{accountId}/{buyerCreativeId}", "id": "adexchangebuyer.creatives.get"}}}', true));
-    $this->directDeals = new Google_DirectDealsServiceResource($this, $this->serviceName, 'directDeals', json_decode('{"methods": {"list": {"scopes": ["https://www.googleapis.com/auth/adexchange.buyer"], "id": "adexchangebuyer.directDeals.list", "httpMethod": "GET", "path": "directdeals", "response": {"$ref": "DirectDealsList"}}, "get": {"scopes": ["https://www.googleapis.com/auth/adexchange.buyer"], "parameters": {"id": {"location": "path", "required": true, "type": "string", "format": "int64"}}, "response": {"$ref": "DirectDeal"}, "httpMethod": "GET", "path": "directdeals/{id}", "id": "adexchangebuyer.directDeals.get"}}}', true));
+    $this->accounts = new Google_AccountsServiceResource($this, $this->serviceName, 'accounts', json_decode('{"methods": {"get": {"id": "adexchangebuyer.accounts.get", "path": "accounts/{id}", "httpMethod": "GET", "parameters": {"id": {"type": "integer", "required": true, "format": "int32", "location": "path"}}, "response": {"$ref": "Account"}, "scopes": ["https://www.googleapis.com/auth/adexchange.buyer"]}, "list": {"id": "adexchangebuyer.accounts.list", "path": "accounts", "httpMethod": "GET", "response": {"$ref": "AccountsList"}, "scopes": ["https://www.googleapis.com/auth/adexchange.buyer"]}, "patch": {"id": "adexchangebuyer.accounts.patch", "path": "accounts/{id}", "httpMethod": "PATCH", "parameters": {"id": {"type": "integer", "required": true, "format": "int32", "location": "path"}}, "request": {"$ref": "Account"}, "response": {"$ref": "Account"}, "scopes": ["https://www.googleapis.com/auth/adexchange.buyer"]}, "update": {"id": "adexchangebuyer.accounts.update", "path": "accounts/{id}", "httpMethod": "PUT", "parameters": {"id": {"type": "integer", "required": true, "format": "int32", "location": "path"}}, "request": {"$ref": "Account"}, "response": {"$ref": "Account"}, "scopes": ["https://www.googleapis.com/auth/adexchange.buyer"]}}}', true));
+    $this->creatives = new Google_CreativesServiceResource($this, $this->serviceName, 'creatives', json_decode('{"methods": {"get": {"id": "adexchangebuyer.creatives.get", "path": "creatives/{accountId}/{buyerCreativeId}", "httpMethod": "GET", "parameters": {"accountId": {"type": "integer", "required": true, "format": "int32", "location": "path"}, "buyerCreativeId": {"type": "string", "required": true, "location": "path"}}, "response": {"$ref": "Creative"}, "scopes": ["https://www.googleapis.com/auth/adexchange.buyer"]}, "insert": {"id": "adexchangebuyer.creatives.insert", "path": "creatives", "httpMethod": "POST", "request": {"$ref": "Creative"}, "response": {"$ref": "Creative"}, "scopes": ["https://www.googleapis.com/auth/adexchange.buyer"]}, "list": {"id": "adexchangebuyer.creatives.list", "path": "creatives", "httpMethod": "GET", "parameters": {"maxResults": {"type": "integer", "format": "uint32", "minimum": "1", "maximum": "1000", "location": "query"}, "pageToken": {"type": "string", "location": "query"}, "statusFilter": {"type": "string", "enum": ["approved", "disapproved", "not_checked"], "location": "query"}}, "response": {"$ref": "CreativesList"}, "scopes": ["https://www.googleapis.com/auth/adexchange.buyer"]}}}', true));
+    $this->directDeals = new Google_DirectDealsServiceResource($this, $this->serviceName, 'directDeals', json_decode('{"methods": {"get": {"id": "adexchangebuyer.directDeals.get", "path": "directdeals/{id}", "httpMethod": "GET", "parameters": {"id": {"type": "string", "required": true, "format": "int64", "location": "path"}}, "response": {"$ref": "DirectDeal"}, "scopes": ["https://www.googleapis.com/auth/adexchange.buyer"]}, "list": {"id": "adexchangebuyer.directDeals.list", "path": "directdeals", "httpMethod": "GET", "response": {"$ref": "DirectDealsList"}, "scopes": ["https://www.googleapis.com/auth/adexchange.buyer"]}}}', true));
+    $this->performanceReport = new Google_PerformanceReportServiceResource($this, $this->serviceName, 'performanceReport', json_decode('{"methods": {"list": {"id": "adexchangebuyer.performanceReport.list", "path": "performancereport", "httpMethod": "GET", "parameters": {"accountId": {"type": "string", "required": true, "format": "int64", "location": "query"}, "endDateTime": {"type": "string", "required": true, "format": "int64", "location": "query"}, "startDateTime": {"type": "string", "required": true, "format": "int64", "location": "query"}}, "response": {"$ref": "PerformanceReportList"}, "scopes": ["https://www.googleapis.com/auth/adexchange.buyer"]}}}', true));
 
   }
 }
+
+
 
 class Google_Account extends Google_Model {
   protected $__bidderLocationType = 'Google_AccountBidderLocation';
@@ -264,31 +294,31 @@ class Google_Account extends Google_Model {
   public function getBidderLocation() {
     return $this->bidderLocation;
   }
-  public function setCookieMatchingNid($cookieMatchingNid) {
+  public function setCookieMatchingNid( $cookieMatchingNid) {
     $this->cookieMatchingNid = $cookieMatchingNid;
   }
   public function getCookieMatchingNid() {
     return $this->cookieMatchingNid;
   }
-  public function setCookieMatchingUrl($cookieMatchingUrl) {
+  public function setCookieMatchingUrl( $cookieMatchingUrl) {
     $this->cookieMatchingUrl = $cookieMatchingUrl;
   }
   public function getCookieMatchingUrl() {
     return $this->cookieMatchingUrl;
   }
-  public function setId($id) {
+  public function setId( $id) {
     $this->id = $id;
   }
   public function getId() {
     return $this->id;
   }
-  public function setKind($kind) {
+  public function setKind( $kind) {
     $this->kind = $kind;
   }
   public function getKind() {
     return $this->kind;
   }
-  public function setMaximumTotalQps($maximumTotalQps) {
+  public function setMaximumTotalQps( $maximumTotalQps) {
     $this->maximumTotalQps = $maximumTotalQps;
   }
   public function getMaximumTotalQps() {
@@ -300,19 +330,19 @@ class Google_AccountBidderLocation extends Google_Model {
   public $maximumQps;
   public $region;
   public $url;
-  public function setMaximumQps($maximumQps) {
+  public function setMaximumQps( $maximumQps) {
     $this->maximumQps = $maximumQps;
   }
   public function getMaximumQps() {
     return $this->maximumQps;
   }
-  public function setRegion($region) {
+  public function setRegion( $region) {
     $this->region = $region;
   }
   public function getRegion() {
     return $this->region;
   }
-  public function setUrl($url) {
+  public function setUrl( $url) {
     $this->url = $url;
   }
   public function getUrl() {
@@ -332,7 +362,7 @@ class Google_AccountsList extends Google_Model {
   public function getItems() {
     return $this->items;
   }
-  public function setKind($kind) {
+  public function setKind( $kind) {
     $this->kind = $kind;
   }
   public function getKind() {
@@ -360,13 +390,13 @@ class Google_Creative extends Google_Model {
   public $vendorType;
   public $videoURL;
   public $width;
-  public function setHTMLSnippet($HTMLSnippet) {
+  public function setHTMLSnippet( $HTMLSnippet) {
     $this->HTMLSnippet = $HTMLSnippet;
   }
   public function getHTMLSnippet() {
     return $this->HTMLSnippet;
   }
-  public function setAccountId($accountId) {
+  public function setAccountId( $accountId) {
     $this->accountId = $accountId;
   }
   public function getAccountId() {
@@ -379,13 +409,13 @@ class Google_Creative extends Google_Model {
   public function getAdvertiserId() {
     return $this->advertiserId;
   }
-  public function setAdvertiserName($advertiserName) {
+  public function setAdvertiserName( $advertiserName) {
     $this->advertiserName = $advertiserName;
   }
   public function getAdvertiserName() {
     return $this->advertiserName;
   }
-  public function setAgencyId($agencyId) {
+  public function setAgencyId( $agencyId) {
     $this->agencyId = $agencyId;
   }
   public function getAgencyId() {
@@ -398,7 +428,7 @@ class Google_Creative extends Google_Model {
   public function getAttribute() {
     return $this->attribute;
   }
-  public function setBuyerCreativeId($buyerCreativeId) {
+  public function setBuyerCreativeId( $buyerCreativeId) {
     $this->buyerCreativeId = $buyerCreativeId;
   }
   public function getBuyerCreativeId() {
@@ -418,13 +448,13 @@ class Google_Creative extends Google_Model {
   public function getDisapprovalReasons() {
     return $this->disapprovalReasons;
   }
-  public function setHeight($height) {
+  public function setHeight( $height) {
     $this->height = $height;
   }
   public function getHeight() {
     return $this->height;
   }
-  public function setKind($kind) {
+  public function setKind( $kind) {
     $this->kind = $kind;
   }
   public function getKind() {
@@ -444,7 +474,7 @@ class Google_Creative extends Google_Model {
   public function getSensitiveCategories() {
     return $this->sensitiveCategories;
   }
-  public function setStatus($status) {
+  public function setStatus( $status) {
     $this->status = $status;
   }
   public function getStatus() {
@@ -457,13 +487,13 @@ class Google_Creative extends Google_Model {
   public function getVendorType() {
     return $this->vendorType;
   }
-  public function setVideoURL($videoURL) {
+  public function setVideoURL( $videoURL) {
     $this->videoURL = $videoURL;
   }
   public function getVideoURL() {
     return $this->videoURL;
   }
-  public function setWidth($width) {
+  public function setWidth( $width) {
     $this->width = $width;
   }
   public function getWidth() {
@@ -481,7 +511,7 @@ class Google_CreativeDisapprovalReasons extends Google_Model {
   public function getDetails() {
     return $this->details;
   }
-  public function setReason($reason) {
+  public function setReason( $reason) {
     $this->reason = $reason;
   }
   public function getReason() {
@@ -502,13 +532,13 @@ class Google_CreativesList extends Google_Model {
   public function getItems() {
     return $this->items;
   }
-  public function setKind($kind) {
+  public function setKind( $kind) {
     $this->kind = $kind;
   }
   public function getKind() {
     return $this->kind;
   }
-  public function setNextPageToken($nextPageToken) {
+  public function setNextPageToken( $nextPageToken) {
     $this->nextPageToken = $nextPageToken;
   }
   public function getNextPageToken() {
@@ -527,61 +557,61 @@ class Google_DirectDeal extends Google_Model {
   public $privateExchangeMinCpm;
   public $sellerNetwork;
   public $startTime;
-  public function setAccountId($accountId) {
+  public function setAccountId( $accountId) {
     $this->accountId = $accountId;
   }
   public function getAccountId() {
     return $this->accountId;
   }
-  public function setAdvertiser($advertiser) {
+  public function setAdvertiser( $advertiser) {
     $this->advertiser = $advertiser;
   }
   public function getAdvertiser() {
     return $this->advertiser;
   }
-  public function setCurrencyCode($currencyCode) {
+  public function setCurrencyCode( $currencyCode) {
     $this->currencyCode = $currencyCode;
   }
   public function getCurrencyCode() {
     return $this->currencyCode;
   }
-  public function setEndTime($endTime) {
+  public function setEndTime( $endTime) {
     $this->endTime = $endTime;
   }
   public function getEndTime() {
     return $this->endTime;
   }
-  public function setFixedCpm($fixedCpm) {
+  public function setFixedCpm( $fixedCpm) {
     $this->fixedCpm = $fixedCpm;
   }
   public function getFixedCpm() {
     return $this->fixedCpm;
   }
-  public function setId($id) {
+  public function setId( $id) {
     $this->id = $id;
   }
   public function getId() {
     return $this->id;
   }
-  public function setKind($kind) {
+  public function setKind( $kind) {
     $this->kind = $kind;
   }
   public function getKind() {
     return $this->kind;
   }
-  public function setPrivateExchangeMinCpm($privateExchangeMinCpm) {
+  public function setPrivateExchangeMinCpm( $privateExchangeMinCpm) {
     $this->privateExchangeMinCpm = $privateExchangeMinCpm;
   }
   public function getPrivateExchangeMinCpm() {
     return $this->privateExchangeMinCpm;
   }
-  public function setSellerNetwork($sellerNetwork) {
+  public function setSellerNetwork( $sellerNetwork) {
     $this->sellerNetwork = $sellerNetwork;
   }
   public function getSellerNetwork() {
     return $this->sellerNetwork;
   }
-  public function setStartTime($startTime) {
+  public function setStartTime( $startTime) {
     $this->startTime = $startTime;
   }
   public function getStartTime() {
@@ -601,10 +631,75 @@ class Google_DirectDealsList extends Google_Model {
   public function getDirectDeals() {
     return $this->directDeals;
   }
-  public function setKind($kind) {
+  public function setKind( $kind) {
     $this->kind = $kind;
   }
   public function getKind() {
     return $this->kind;
+  }
+}
+
+class Google_PerformanceReportList extends Google_Model {
+  public $kind;
+  protected $__performance_reportType = 'Google_PerformanceReportListPerformanceReport';
+  protected $__performance_reportDataType = 'array';
+  public $performance_report;
+  public function setKind( $kind) {
+    $this->kind = $kind;
+  }
+  public function getKind() {
+    return $this->kind;
+  }
+  public function setPerformance_report(/* array(Google_PerformanceReportListPerformanceReport) */ $performance_report) {
+    $this->assertIsArray($performance_report, 'Google_PerformanceReportListPerformanceReport', __METHOD__);
+    $this->performance_report = $performance_report;
+  }
+  public function getPerformance_report() {
+    return $this->performance_report;
+  }
+}
+
+class Google_PerformanceReportListPerformanceReport extends Google_Model {
+  public $kind;
+  public $latency50thPercentile;
+  public $latency85thPercentile;
+  public $latency95thPercentile;
+  public $region;
+  public $timestamp;
+  public function setKind( $kind) {
+    $this->kind = $kind;
+  }
+  public function getKind() {
+    return $this->kind;
+  }
+  public function setLatency50thPercentile( $latency50thPercentile) {
+    $this->latency50thPercentile = $latency50thPercentile;
+  }
+  public function getLatency50thPercentile() {
+    return $this->latency50thPercentile;
+  }
+  public function setLatency85thPercentile( $latency85thPercentile) {
+    $this->latency85thPercentile = $latency85thPercentile;
+  }
+  public function getLatency85thPercentile() {
+    return $this->latency85thPercentile;
+  }
+  public function setLatency95thPercentile( $latency95thPercentile) {
+    $this->latency95thPercentile = $latency95thPercentile;
+  }
+  public function getLatency95thPercentile() {
+    return $this->latency95thPercentile;
+  }
+  public function setRegion( $region) {
+    $this->region = $region;
+  }
+  public function getRegion() {
+    return $this->region;
+  }
+  public function setTimestamp( $timestamp) {
+    $this->timestamp = $timestamp;
+  }
+  public function getTimestamp() {
+    return $this->timestamp;
   }
 }

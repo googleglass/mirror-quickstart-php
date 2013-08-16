@@ -97,7 +97,7 @@ class Google_MemcacheCache extends Google_Cache {
     if (($ret = @memcache_get($this->connection, $key)) === false) {
       return false;
     }
-    if (! $expiration || (time() - $ret['time'] > $expiration)) {
+    if (is_numeric($expiration) && (time() - $ret['time'] > $expiration)) {
       $this->delete($key);
       return false;
     }
