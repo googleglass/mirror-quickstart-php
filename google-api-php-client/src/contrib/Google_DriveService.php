@@ -24,7 +24,6 @@
    */
   class Google_AboutServiceResource extends Google_ServiceResource {
 
-
     /**
      * Gets the information about the current user along with Drive API settings (about.get)
      *
@@ -56,7 +55,6 @@
    *  </code>
    */
   class Google_AppsServiceResource extends Google_ServiceResource {
-
 
     /**
      * Gets a specific app. (apps.get)
@@ -103,7 +101,6 @@
    */
   class Google_ChangesServiceResource extends Google_ServiceResource {
 
-
     /**
      * Gets a specific change. (changes.get)
      *
@@ -143,6 +140,53 @@
         return $data;
       }
     }
+    /**
+     * Subscribe to changes for a user. (changes.watch)
+     *
+     * @param Google_Channel $postBody
+     * @param array $optParams Optional parameters.
+     *
+     * @opt_param bool includeDeleted Whether to include deleted items.
+     * @opt_param bool includeSubscribed Whether to include shared files and public files the user has opened. When set to false, the list will include owned files plus any shared or public files the user has explictly added to a folder in Drive.
+     * @opt_param int maxResults Maximum number of changes to return.
+     * @opt_param string pageToken Page token for changes.
+     * @opt_param string startChangeId Change ID to start listing changes from.
+     * @return Google_Channel
+     */
+    public function watch(Google_Channel $postBody, $optParams = array()) {
+      $params = array('postBody' => $postBody);
+      $params = array_merge($params, $optParams);
+      $data = $this->__call('watch', array($params));
+      if ($this->useObjects()) {
+        return new Google_Channel($data);
+      } else {
+        return $data;
+      }
+    }
+  }
+
+  /**
+   * The "channels" collection of methods.
+   * Typical usage is:
+   *  <code>
+   *   $driveService = new Google_DriveService(...);
+   *   $channels = $driveService->channels;
+   *  </code>
+   */
+  class Google_ChannelsServiceResource extends Google_ServiceResource {
+
+    /**
+     * (channels.stop)
+     *
+     * @param Google_Channel $postBody
+     * @param array $optParams Optional parameters.
+     */
+    public function stop(Google_Channel $postBody, $optParams = array()) {
+      $params = array('postBody' => $postBody);
+      $params = array_merge($params, $optParams);
+      $data = $this->__call('stop', array($params));
+      return $data;
+    }
   }
 
   /**
@@ -154,7 +198,6 @@
    *  </code>
    */
   class Google_ChildrenServiceResource extends Google_ServiceResource {
-
 
     /**
      * Removes a child from a folder. (children.delete)
@@ -237,7 +280,6 @@
    *  </code>
    */
   class Google_CommentsServiceResource extends Google_ServiceResource {
-
 
     /**
      * Deletes a comment. (comments.delete)
@@ -362,7 +404,6 @@
    */
   class Google_FilesServiceResource extends Google_ServiceResource {
 
-
     /**
      * Creates a copy of the specified file. (files.copy)
      *
@@ -376,6 +417,7 @@
      * @opt_param bool pinned Whether to pin the head revision of the new copy.
      * @opt_param string timedTextLanguage The language of the timed text.
      * @opt_param string timedTextTrackName The timed text track name.
+     * @opt_param string visibility The visibility of the new file. This parameter is only relevant when the source is not a native Google Doc and convert=false.
      * @return Google_DriveFile
      */
     public function copy($fileId, Google_DriveFile $postBody, $optParams = array()) {
@@ -433,6 +475,7 @@
      * @opt_param string timedTextLanguage The language of the timed text.
      * @opt_param string timedTextTrackName The timed text track name.
      * @opt_param bool useContentAsIndexableText Whether to use the content as indexable text.
+     * @opt_param string visibility The visibility of the new file. This parameter is only relevant when convert=false.
      * @return Google_DriveFile
      */
     public function insert(Google_DriveFile $postBody, $optParams = array()) {
@@ -575,6 +618,27 @@
         return $data;
       }
     }
+    /**
+     * Subscribe to changes on a file (files.watch)
+     *
+     * @param string $fileId The ID for the file in question.
+     * @param Google_Channel $postBody
+     * @param array $optParams Optional parameters.
+     *
+     * @opt_param string projection This parameter is deprecated and has no function.
+     * @opt_param bool updateViewedDate Whether to update the view date after successfully retrieving the file.
+     * @return Google_Channel
+     */
+    public function watch($fileId, Google_Channel $postBody, $optParams = array()) {
+      $params = array('fileId' => $fileId, 'postBody' => $postBody);
+      $params = array_merge($params, $optParams);
+      $data = $this->__call('watch', array($params));
+      if ($this->useObjects()) {
+        return new Google_Channel($data);
+      } else {
+        return $data;
+      }
+    }
   }
 
   /**
@@ -586,7 +650,6 @@
    *  </code>
    */
   class Google_ParentsServiceResource extends Google_ServiceResource {
-
 
     /**
      * Removes a parent from a file. (parents.delete)
@@ -665,7 +728,6 @@
    *  </code>
    */
   class Google_PermissionsServiceResource extends Google_ServiceResource {
-
 
     /**
      * Deletes a permission from a file. (permissions.delete)
@@ -790,7 +852,6 @@
    */
   class Google_PropertiesServiceResource extends Google_ServiceResource {
 
-
     /**
      * Deletes a property. (properties.delete)
      *
@@ -906,6 +967,31 @@
   }
 
   /**
+   * The "realtime" collection of methods.
+   * Typical usage is:
+   *  <code>
+   *   $driveService = new Google_DriveService(...);
+   *   $realtime = $driveService->realtime;
+   *  </code>
+   */
+  class Google_RealtimeServiceResource extends Google_ServiceResource {
+
+    /**
+     * Exports the contents of the Realtime API data model associated with this file as JSON.
+     * (realtime.get)
+     *
+     * @param string $fileId The ID of the file that the Realtime API data model is associated with.
+     * @param array $optParams Optional parameters.
+     */
+    public function get($fileId, $optParams = array()) {
+      $params = array('fileId' => $fileId);
+      $params = array_merge($params, $optParams);
+      $data = $this->__call('get', array($params));
+      return $data;
+    }
+  }
+
+  /**
    * The "replies" collection of methods.
    * Typical usage is:
    *  <code>
@@ -914,7 +1000,6 @@
    *  </code>
    */
   class Google_RepliesServiceResource extends Google_ServiceResource {
-
 
     /**
      * Deletes a reply. (replies.delete)
@@ -1044,7 +1129,6 @@
    */
   class Google_RevisionsServiceResource extends Google_ServiceResource {
 
-
     /**
      * Removes a revision. (revisions.delete)
      *
@@ -1151,12 +1235,14 @@ class Google_DriveService extends Google_Service {
   public $about;
   public $apps;
   public $changes;
+  public $channels;
   public $children;
   public $comments;
   public $files;
   public $parents;
   public $permissions;
   public $properties;
+  public $realtime;
   public $replies;
   public $revisions;
   /**
@@ -1172,13 +1258,15 @@ class Google_DriveService extends Google_Service {
     $client->addService($this->serviceName, $this->version);
     $this->about = new Google_AboutServiceResource($this, $this->serviceName, 'about', json_decode('{"methods": {"get": {"id": "drive.about.get", "path": "about", "httpMethod": "GET", "parameters": {"includeSubscribed": {"type": "boolean", "default": "true", "location": "query"}, "maxChangeIdCount": {"type": "string", "default": "1", "format": "int64", "location": "query"}, "startChangeId": {"type": "string", "format": "int64", "location": "query"}}, "response": {"$ref": "About"}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive.metadata.readonly", "https://www.googleapis.com/auth/drive.readonly"]}}}', true));
     $this->apps = new Google_AppsServiceResource($this, $this->serviceName, 'apps', json_decode('{"methods": {"get": {"id": "drive.apps.get", "path": "apps/{appId}", "httpMethod": "GET", "parameters": {"appId": {"type": "string", "required": true, "location": "path"}}, "response": {"$ref": "App"}, "scopes": ["https://www.googleapis.com/auth/drive.apps.readonly"]}, "list": {"id": "drive.apps.list", "path": "apps", "httpMethod": "GET", "response": {"$ref": "AppList"}, "scopes": ["https://www.googleapis.com/auth/drive.apps.readonly"]}}}', true));
-    $this->changes = new Google_ChangesServiceResource($this, $this->serviceName, 'changes', json_decode('{"methods": {"get": {"id": "drive.changes.get", "path": "changes/{changeId}", "httpMethod": "GET", "parameters": {"changeId": {"type": "string", "required": true, "location": "path"}}, "response": {"$ref": "Change"}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive.metadata.readonly", "https://www.googleapis.com/auth/drive.readonly"]}, "list": {"id": "drive.changes.list", "path": "changes", "httpMethod": "GET", "parameters": {"includeDeleted": {"type": "boolean", "default": "true", "location": "query"}, "includeSubscribed": {"type": "boolean", "default": "true", "location": "query"}, "maxResults": {"type": "integer", "default": "100", "format": "int32", "minimum": "0", "location": "query"}, "pageToken": {"type": "string", "location": "query"}, "startChangeId": {"type": "string", "format": "int64", "location": "query"}}, "response": {"$ref": "ChangeList"}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive.metadata.readonly", "https://www.googleapis.com/auth/drive.readonly"], "supportsSubscription": true}}}', true));
+    $this->changes = new Google_ChangesServiceResource($this, $this->serviceName, 'changes', json_decode('{"methods": {"get": {"id": "drive.changes.get", "path": "changes/{changeId}", "httpMethod": "GET", "parameters": {"changeId": {"type": "string", "required": true, "location": "path"}}, "response": {"$ref": "Change"}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.apps.readonly", "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive.metadata.readonly", "https://www.googleapis.com/auth/drive.readonly"]}, "list": {"id": "drive.changes.list", "path": "changes", "httpMethod": "GET", "parameters": {"includeDeleted": {"type": "boolean", "default": "true", "location": "query"}, "includeSubscribed": {"type": "boolean", "default": "true", "location": "query"}, "maxResults": {"type": "integer", "default": "100", "format": "int32", "minimum": "0", "location": "query"}, "pageToken": {"type": "string", "location": "query"}, "startChangeId": {"type": "string", "format": "int64", "location": "query"}}, "response": {"$ref": "ChangeList"}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.apps.readonly", "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive.metadata.readonly", "https://www.googleapis.com/auth/drive.readonly"], "supportsSubscription": true}, "watch": {"id": "drive.changes.watch", "path": "changes/watch", "httpMethod": "POST", "parameters": {"includeDeleted": {"type": "boolean", "default": "true", "location": "query"}, "includeSubscribed": {"type": "boolean", "default": "true", "location": "query"}, "maxResults": {"type": "integer", "default": "100", "format": "int32", "minimum": "0", "location": "query"}, "pageToken": {"type": "string", "location": "query"}, "startChangeId": {"type": "string", "format": "int64", "location": "query"}}, "request": {"$ref": "Channel"}, "response": {"$ref": "Channel"}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.apps.readonly", "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive.metadata.readonly", "https://www.googleapis.com/auth/drive.readonly"], "supportsSubscription": true}}}', true));
+    $this->channels = new Google_ChannelsServiceResource($this, $this->serviceName, 'channels', json_decode('{"methods": {"stop": {"id": "drive.channels.stop", "path": "channels/stop", "httpMethod": "POST", "request": {"$ref": "Channel"}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.apps.readonly", "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive.metadata.readonly", "https://www.googleapis.com/auth/drive.readonly"]}}}', true));
     $this->children = new Google_ChildrenServiceResource($this, $this->serviceName, 'children', json_decode('{"methods": {"delete": {"id": "drive.children.delete", "path": "files/{folderId}/children/{childId}", "httpMethod": "DELETE", "parameters": {"childId": {"type": "string", "required": true, "location": "path"}, "folderId": {"type": "string", "required": true, "location": "path"}}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.file"]}, "get": {"id": "drive.children.get", "path": "files/{folderId}/children/{childId}", "httpMethod": "GET", "parameters": {"childId": {"type": "string", "required": true, "location": "path"}, "folderId": {"type": "string", "required": true, "location": "path"}}, "response": {"$ref": "ChildReference"}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive.metadata.readonly", "https://www.googleapis.com/auth/drive.readonly"]}, "insert": {"id": "drive.children.insert", "path": "files/{folderId}/children", "httpMethod": "POST", "parameters": {"folderId": {"type": "string", "required": true, "location": "path"}}, "request": {"$ref": "ChildReference"}, "response": {"$ref": "ChildReference"}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.file"]}, "list": {"id": "drive.children.list", "path": "files/{folderId}/children", "httpMethod": "GET", "parameters": {"folderId": {"type": "string", "required": true, "location": "path"}, "maxResults": {"type": "integer", "default": "100", "format": "int32", "minimum": "0", "location": "query"}, "pageToken": {"type": "string", "location": "query"}, "q": {"type": "string", "location": "query"}}, "response": {"$ref": "ChildList"}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive.metadata.readonly", "https://www.googleapis.com/auth/drive.readonly"]}}}', true));
     $this->comments = new Google_CommentsServiceResource($this, $this->serviceName, 'comments', json_decode('{"methods": {"delete": {"id": "drive.comments.delete", "path": "files/{fileId}/comments/{commentId}", "httpMethod": "DELETE", "parameters": {"commentId": {"type": "string", "required": true, "location": "path"}, "fileId": {"type": "string", "required": true, "location": "path"}}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive.readonly"]}, "get": {"id": "drive.comments.get", "path": "files/{fileId}/comments/{commentId}", "httpMethod": "GET", "parameters": {"commentId": {"type": "string", "required": true, "location": "path"}, "fileId": {"type": "string", "required": true, "location": "path"}, "includeDeleted": {"type": "boolean", "default": "false", "location": "query"}}, "response": {"$ref": "Comment"}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive.readonly"]}, "insert": {"id": "drive.comments.insert", "path": "files/{fileId}/comments", "httpMethod": "POST", "parameters": {"fileId": {"type": "string", "required": true, "location": "path"}}, "request": {"$ref": "Comment"}, "response": {"$ref": "Comment"}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive.readonly"]}, "list": {"id": "drive.comments.list", "path": "files/{fileId}/comments", "httpMethod": "GET", "parameters": {"fileId": {"type": "string", "required": true, "location": "path"}, "includeDeleted": {"type": "boolean", "default": "false", "location": "query"}, "maxResults": {"type": "integer", "default": "20", "format": "int32", "minimum": "0", "maximum": "100", "location": "query"}, "pageToken": {"type": "string", "location": "query"}, "updatedMin": {"type": "string", "location": "query"}}, "response": {"$ref": "CommentList"}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive.readonly"]}, "patch": {"id": "drive.comments.patch", "path": "files/{fileId}/comments/{commentId}", "httpMethod": "PATCH", "parameters": {"commentId": {"type": "string", "required": true, "location": "path"}, "fileId": {"type": "string", "required": true, "location": "path"}}, "request": {"$ref": "Comment"}, "response": {"$ref": "Comment"}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.file"]}, "update": {"id": "drive.comments.update", "path": "files/{fileId}/comments/{commentId}", "httpMethod": "PUT", "parameters": {"commentId": {"type": "string", "required": true, "location": "path"}, "fileId": {"type": "string", "required": true, "location": "path"}}, "request": {"$ref": "Comment"}, "response": {"$ref": "Comment"}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.file"]}}}', true));
-    $this->files = new Google_FilesServiceResource($this, $this->serviceName, 'files', json_decode('{"methods": {"copy": {"id": "drive.files.copy", "path": "files/{fileId}/copy", "httpMethod": "POST", "parameters": {"convert": {"type": "boolean", "default": "false", "location": "query"}, "fileId": {"type": "string", "required": true, "location": "path"}, "ocr": {"type": "boolean", "default": "false", "location": "query"}, "ocrLanguage": {"type": "string", "location": "query"}, "pinned": {"type": "boolean", "default": "false", "location": "query"}, "timedTextLanguage": {"type": "string", "location": "query"}, "timedTextTrackName": {"type": "string", "location": "query"}}, "request": {"$ref": "File"}, "response": {"$ref": "File"}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.file"]}, "delete": {"id": "drive.files.delete", "path": "files/{fileId}", "httpMethod": "DELETE", "parameters": {"fileId": {"type": "string", "required": true, "location": "path"}}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.file"]}, "get": {"id": "drive.files.get", "path": "files/{fileId}", "httpMethod": "GET", "parameters": {"fileId": {"type": "string", "required": true, "location": "path"}, "projection": {"type": "string", "enum": ["BASIC", "FULL"], "location": "query"}, "updateViewedDate": {"type": "boolean", "default": "false", "location": "query"}}, "response": {"$ref": "File"}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive.metadata.readonly", "https://www.googleapis.com/auth/drive.readonly"], "supportsSubscription": true}, "insert": {"id": "drive.files.insert", "path": "files", "httpMethod": "POST", "parameters": {"convert": {"type": "boolean", "default": "false", "location": "query"}, "ocr": {"type": "boolean", "default": "false", "location": "query"}, "ocrLanguage": {"type": "string", "location": "query"}, "pinned": {"type": "boolean", "default": "false", "location": "query"}, "timedTextLanguage": {"type": "string", "location": "query"}, "timedTextTrackName": {"type": "string", "location": "query"}, "useContentAsIndexableText": {"type": "boolean", "default": "false", "location": "query"}}, "request": {"$ref": "File"}, "response": {"$ref": "File"}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.file"], "supportsMediaUpload": true, "mediaUpload": {"accept": ["*/*"], "maxSize": "10GB", "protocols": {"simple": {"multipart": true, "path": "/upload/drive/v2/files"}, "resumable": {"multipart": true, "path": "/resumable/upload/drive/v2/files"}}}, "supportsSubscription": true}, "list": {"id": "drive.files.list", "path": "files", "httpMethod": "GET", "parameters": {"maxResults": {"type": "integer", "default": "100", "format": "int32", "minimum": "0", "location": "query"}, "pageToken": {"type": "string", "location": "query"}, "projection": {"type": "string", "enum": ["BASIC", "FULL"], "location": "query"}, "q": {"type": "string", "location": "query"}}, "response": {"$ref": "FileList"}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive.metadata.readonly", "https://www.googleapis.com/auth/drive.readonly"]}, "patch": {"id": "drive.files.patch", "path": "files/{fileId}", "httpMethod": "PATCH", "parameters": {"convert": {"type": "boolean", "default": "false", "location": "query"}, "fileId": {"type": "string", "required": true, "location": "path"}, "newRevision": {"type": "boolean", "default": "true", "location": "query"}, "ocr": {"type": "boolean", "default": "false", "location": "query"}, "ocrLanguage": {"type": "string", "location": "query"}, "pinned": {"type": "boolean", "default": "false", "location": "query"}, "setModifiedDate": {"type": "boolean", "default": "false", "location": "query"}, "timedTextLanguage": {"type": "string", "location": "query"}, "timedTextTrackName": {"type": "string", "location": "query"}, "updateViewedDate": {"type": "boolean", "default": "true", "location": "query"}, "useContentAsIndexableText": {"type": "boolean", "default": "false", "location": "query"}}, "request": {"$ref": "File"}, "response": {"$ref": "File"}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive.scripts"]}, "touch": {"id": "drive.files.touch", "path": "files/{fileId}/touch", "httpMethod": "POST", "parameters": {"fileId": {"type": "string", "required": true, "location": "path"}}, "response": {"$ref": "File"}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.file"]}, "trash": {"id": "drive.files.trash", "path": "files/{fileId}/trash", "httpMethod": "POST", "parameters": {"fileId": {"type": "string", "required": true, "location": "path"}}, "response": {"$ref": "File"}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.file"]}, "untrash": {"id": "drive.files.untrash", "path": "files/{fileId}/untrash", "httpMethod": "POST", "parameters": {"fileId": {"type": "string", "required": true, "location": "path"}}, "response": {"$ref": "File"}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.file"]}, "update": {"id": "drive.files.update", "path": "files/{fileId}", "httpMethod": "PUT", "parameters": {"convert": {"type": "boolean", "default": "false", "location": "query"}, "fileId": {"type": "string", "required": true, "location": "path"}, "newRevision": {"type": "boolean", "default": "true", "location": "query"}, "ocr": {"type": "boolean", "default": "false", "location": "query"}, "ocrLanguage": {"type": "string", "location": "query"}, "pinned": {"type": "boolean", "default": "false", "location": "query"}, "setModifiedDate": {"type": "boolean", "default": "false", "location": "query"}, "timedTextLanguage": {"type": "string", "location": "query"}, "timedTextTrackName": {"type": "string", "location": "query"}, "updateViewedDate": {"type": "boolean", "default": "true", "location": "query"}, "useContentAsIndexableText": {"type": "boolean", "default": "false", "location": "query"}}, "request": {"$ref": "File"}, "response": {"$ref": "File"}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive.scripts"], "supportsMediaUpload": true, "mediaUpload": {"accept": ["*/*"], "maxSize": "10GB", "protocols": {"simple": {"multipart": true, "path": "/upload/drive/v2/files/{fileId}"}, "resumable": {"multipart": true, "path": "/resumable/upload/drive/v2/files/{fileId}"}}}}}}', true));
+    $this->files = new Google_FilesServiceResource($this, $this->serviceName, 'files', json_decode('{"methods": {"copy": {"id": "drive.files.copy", "path": "files/{fileId}/copy", "httpMethod": "POST", "parameters": {"convert": {"type": "boolean", "default": "false", "location": "query"}, "fileId": {"type": "string", "required": true, "location": "path"}, "ocr": {"type": "boolean", "default": "false", "location": "query"}, "ocrLanguage": {"type": "string", "location": "query"}, "pinned": {"type": "boolean", "default": "false", "location": "query"}, "timedTextLanguage": {"type": "string", "location": "query"}, "timedTextTrackName": {"type": "string", "location": "query"}, "visibility": {"type": "string", "default": "DEFAULT", "enum": ["DEFAULT", "PRIVATE"], "location": "query"}}, "request": {"$ref": "File"}, "response": {"$ref": "File"}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.apps.readonly", "https://www.googleapis.com/auth/drive.file"]}, "delete": {"id": "drive.files.delete", "path": "files/{fileId}", "httpMethod": "DELETE", "parameters": {"fileId": {"type": "string", "required": true, "location": "path"}}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.file"]}, "get": {"id": "drive.files.get", "path": "files/{fileId}", "httpMethod": "GET", "parameters": {"fileId": {"type": "string", "required": true, "location": "path"}, "projection": {"type": "string", "enum": ["BASIC", "FULL"], "location": "query"}, "updateViewedDate": {"type": "boolean", "default": "false", "location": "query"}}, "response": {"$ref": "File"}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.apps.readonly", "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive.metadata.readonly", "https://www.googleapis.com/auth/drive.readonly"], "supportsSubscription": true}, "insert": {"id": "drive.files.insert", "path": "files", "httpMethod": "POST", "parameters": {"convert": {"type": "boolean", "default": "false", "location": "query"}, "ocr": {"type": "boolean", "default": "false", "location": "query"}, "ocrLanguage": {"type": "string", "location": "query"}, "pinned": {"type": "boolean", "default": "false", "location": "query"}, "timedTextLanguage": {"type": "string", "location": "query"}, "timedTextTrackName": {"type": "string", "location": "query"}, "useContentAsIndexableText": {"type": "boolean", "default": "false", "location": "query"}, "visibility": {"type": "string", "default": "DEFAULT", "enum": ["DEFAULT", "PRIVATE"], "location": "query"}}, "request": {"$ref": "File"}, "response": {"$ref": "File"}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.apps.readonly", "https://www.googleapis.com/auth/drive.file"], "supportsMediaUpload": true, "mediaUpload": {"accept": ["*/*"], "maxSize": "10GB", "protocols": {"simple": {"multipart": true, "path": "/upload/drive/v2/files"}, "resumable": {"multipart": true, "path": "/resumable/upload/drive/v2/files"}}}, "supportsSubscription": true}, "list": {"id": "drive.files.list", "path": "files", "httpMethod": "GET", "parameters": {"maxResults": {"type": "integer", "default": "100", "format": "int32", "minimum": "0", "location": "query"}, "pageToken": {"type": "string", "location": "query"}, "projection": {"type": "string", "enum": ["BASIC", "FULL"], "location": "query"}, "q": {"type": "string", "location": "query"}}, "response": {"$ref": "FileList"}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.apps.readonly", "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive.metadata.readonly", "https://www.googleapis.com/auth/drive.readonly"]}, "patch": {"id": "drive.files.patch", "path": "files/{fileId}", "httpMethod": "PATCH", "parameters": {"convert": {"type": "boolean", "default": "false", "location": "query"}, "fileId": {"type": "string", "required": true, "location": "path"}, "newRevision": {"type": "boolean", "default": "true", "location": "query"}, "ocr": {"type": "boolean", "default": "false", "location": "query"}, "ocrLanguage": {"type": "string", "location": "query"}, "pinned": {"type": "boolean", "default": "false", "location": "query"}, "setModifiedDate": {"type": "boolean", "default": "false", "location": "query"}, "timedTextLanguage": {"type": "string", "location": "query"}, "timedTextTrackName": {"type": "string", "location": "query"}, "updateViewedDate": {"type": "boolean", "default": "true", "location": "query"}, "useContentAsIndexableText": {"type": "boolean", "default": "false", "location": "query"}}, "request": {"$ref": "File"}, "response": {"$ref": "File"}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.apps.readonly", "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive.scripts"]}, "touch": {"id": "drive.files.touch", "path": "files/{fileId}/touch", "httpMethod": "POST", "parameters": {"fileId": {"type": "string", "required": true, "location": "path"}}, "response": {"$ref": "File"}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.apps.readonly", "https://www.googleapis.com/auth/drive.file"]}, "trash": {"id": "drive.files.trash", "path": "files/{fileId}/trash", "httpMethod": "POST", "parameters": {"fileId": {"type": "string", "required": true, "location": "path"}}, "response": {"$ref": "File"}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.apps.readonly", "https://www.googleapis.com/auth/drive.file"]}, "untrash": {"id": "drive.files.untrash", "path": "files/{fileId}/untrash", "httpMethod": "POST", "parameters": {"fileId": {"type": "string", "required": true, "location": "path"}}, "response": {"$ref": "File"}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.apps.readonly", "https://www.googleapis.com/auth/drive.file"]}, "update": {"id": "drive.files.update", "path": "files/{fileId}", "httpMethod": "PUT", "parameters": {"convert": {"type": "boolean", "default": "false", "location": "query"}, "fileId": {"type": "string", "required": true, "location": "path"}, "newRevision": {"type": "boolean", "default": "true", "location": "query"}, "ocr": {"type": "boolean", "default": "false", "location": "query"}, "ocrLanguage": {"type": "string", "location": "query"}, "pinned": {"type": "boolean", "default": "false", "location": "query"}, "setModifiedDate": {"type": "boolean", "default": "false", "location": "query"}, "timedTextLanguage": {"type": "string", "location": "query"}, "timedTextTrackName": {"type": "string", "location": "query"}, "updateViewedDate": {"type": "boolean", "default": "true", "location": "query"}, "useContentAsIndexableText": {"type": "boolean", "default": "false", "location": "query"}}, "request": {"$ref": "File"}, "response": {"$ref": "File"}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.apps.readonly", "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive.scripts"], "supportsMediaUpload": true, "mediaUpload": {"accept": ["*/*"], "maxSize": "10GB", "protocols": {"simple": {"multipart": true, "path": "/upload/drive/v2/files/{fileId}"}, "resumable": {"multipart": true, "path": "/resumable/upload/drive/v2/files/{fileId}"}}}}, "watch": {"id": "drive.files.watch", "path": "files/{fileId}/watch", "httpMethod": "POST", "parameters": {"fileId": {"type": "string", "required": true, "location": "path"}, "projection": {"type": "string", "enum": ["BASIC", "FULL"], "location": "query"}, "updateViewedDate": {"type": "boolean", "default": "false", "location": "query"}}, "request": {"$ref": "Channel"}, "response": {"$ref": "Channel"}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.apps.readonly", "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive.metadata.readonly", "https://www.googleapis.com/auth/drive.readonly"], "supportsSubscription": true}}}', true));
     $this->parents = new Google_ParentsServiceResource($this, $this->serviceName, 'parents', json_decode('{"methods": {"delete": {"id": "drive.parents.delete", "path": "files/{fileId}/parents/{parentId}", "httpMethod": "DELETE", "parameters": {"fileId": {"type": "string", "required": true, "location": "path"}, "parentId": {"type": "string", "required": true, "location": "path"}}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.file"]}, "get": {"id": "drive.parents.get", "path": "files/{fileId}/parents/{parentId}", "httpMethod": "GET", "parameters": {"fileId": {"type": "string", "required": true, "location": "path"}, "parentId": {"type": "string", "required": true, "location": "path"}}, "response": {"$ref": "ParentReference"}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive.metadata.readonly", "https://www.googleapis.com/auth/drive.readonly"]}, "insert": {"id": "drive.parents.insert", "path": "files/{fileId}/parents", "httpMethod": "POST", "parameters": {"fileId": {"type": "string", "required": true, "location": "path"}}, "request": {"$ref": "ParentReference"}, "response": {"$ref": "ParentReference"}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.file"]}, "list": {"id": "drive.parents.list", "path": "files/{fileId}/parents", "httpMethod": "GET", "parameters": {"fileId": {"type": "string", "required": true, "location": "path"}}, "response": {"$ref": "ParentList"}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive.metadata.readonly", "https://www.googleapis.com/auth/drive.readonly"]}}}', true));
     $this->permissions = new Google_PermissionsServiceResource($this, $this->serviceName, 'permissions', json_decode('{"methods": {"delete": {"id": "drive.permissions.delete", "path": "files/{fileId}/permissions/{permissionId}", "httpMethod": "DELETE", "parameters": {"fileId": {"type": "string", "required": true, "location": "path"}, "permissionId": {"type": "string", "required": true, "location": "path"}}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.file"]}, "get": {"id": "drive.permissions.get", "path": "files/{fileId}/permissions/{permissionId}", "httpMethod": "GET", "parameters": {"fileId": {"type": "string", "required": true, "location": "path"}, "permissionId": {"type": "string", "required": true, "location": "path"}}, "response": {"$ref": "Permission"}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive.metadata.readonly", "https://www.googleapis.com/auth/drive.readonly"]}, "insert": {"id": "drive.permissions.insert", "path": "files/{fileId}/permissions", "httpMethod": "POST", "parameters": {"emailMessage": {"type": "string", "location": "query"}, "fileId": {"type": "string", "required": true, "location": "path"}, "sendNotificationEmails": {"type": "boolean", "default": "true", "location": "query"}}, "request": {"$ref": "Permission"}, "response": {"$ref": "Permission"}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.file"]}, "list": {"id": "drive.permissions.list", "path": "files/{fileId}/permissions", "httpMethod": "GET", "parameters": {"fileId": {"type": "string", "required": true, "location": "path"}}, "response": {"$ref": "PermissionList"}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive.metadata.readonly", "https://www.googleapis.com/auth/drive.readonly"]}, "patch": {"id": "drive.permissions.patch", "path": "files/{fileId}/permissions/{permissionId}", "httpMethod": "PATCH", "parameters": {"fileId": {"type": "string", "required": true, "location": "path"}, "permissionId": {"type": "string", "required": true, "location": "path"}, "transferOwnership": {"type": "boolean", "default": "false", "location": "query"}}, "request": {"$ref": "Permission"}, "response": {"$ref": "Permission"}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.file"]}, "update": {"id": "drive.permissions.update", "path": "files/{fileId}/permissions/{permissionId}", "httpMethod": "PUT", "parameters": {"fileId": {"type": "string", "required": true, "location": "path"}, "permissionId": {"type": "string", "required": true, "location": "path"}, "transferOwnership": {"type": "boolean", "default": "false", "location": "query"}}, "request": {"$ref": "Permission"}, "response": {"$ref": "Permission"}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.file"]}}}', true));
     $this->properties = new Google_PropertiesServiceResource($this, $this->serviceName, 'properties', json_decode('{"methods": {"delete": {"id": "drive.properties.delete", "path": "files/{fileId}/properties/{propertyKey}", "httpMethod": "DELETE", "parameters": {"fileId": {"type": "string", "required": true, "location": "path"}, "propertyKey": {"type": "string", "required": true, "location": "path"}, "visibility": {"type": "string", "default": "private", "location": "query"}}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.file"]}, "get": {"id": "drive.properties.get", "path": "files/{fileId}/properties/{propertyKey}", "httpMethod": "GET", "parameters": {"fileId": {"type": "string", "required": true, "location": "path"}, "propertyKey": {"type": "string", "required": true, "location": "path"}, "visibility": {"type": "string", "default": "private", "location": "query"}}, "response": {"$ref": "Property"}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive.metadata.readonly", "https://www.googleapis.com/auth/drive.readonly"]}, "insert": {"id": "drive.properties.insert", "path": "files/{fileId}/properties", "httpMethod": "POST", "parameters": {"fileId": {"type": "string", "required": true, "location": "path"}}, "request": {"$ref": "Property"}, "response": {"$ref": "Property"}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.file"]}, "list": {"id": "drive.properties.list", "path": "files/{fileId}/properties", "httpMethod": "GET", "parameters": {"fileId": {"type": "string", "required": true, "location": "path"}}, "response": {"$ref": "PropertyList"}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive.metadata.readonly", "https://www.googleapis.com/auth/drive.readonly"]}, "patch": {"id": "drive.properties.patch", "path": "files/{fileId}/properties/{propertyKey}", "httpMethod": "PATCH", "parameters": {"fileId": {"type": "string", "required": true, "location": "path"}, "propertyKey": {"type": "string", "required": true, "location": "path"}, "visibility": {"type": "string", "default": "private", "location": "query"}}, "request": {"$ref": "Property"}, "response": {"$ref": "Property"}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.file"]}, "update": {"id": "drive.properties.update", "path": "files/{fileId}/properties/{propertyKey}", "httpMethod": "PUT", "parameters": {"fileId": {"type": "string", "required": true, "location": "path"}, "propertyKey": {"type": "string", "required": true, "location": "path"}, "visibility": {"type": "string", "default": "private", "location": "query"}}, "request": {"$ref": "Property"}, "response": {"$ref": "Property"}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.file"]}}}', true));
+    $this->realtime = new Google_RealtimeServiceResource($this, $this->serviceName, 'realtime', json_decode('{"methods": {"get": {"id": "drive.realtime.get", "path": "files/{fileId}/realtime", "httpMethod": "GET", "parameters": {"fileId": {"type": "string", "required": true, "location": "path"}}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive.readonly"], "supportsMediaDownload": true}}}', true));
     $this->replies = new Google_RepliesServiceResource($this, $this->serviceName, 'replies', json_decode('{"methods": {"delete": {"id": "drive.replies.delete", "path": "files/{fileId}/comments/{commentId}/replies/{replyId}", "httpMethod": "DELETE", "parameters": {"commentId": {"type": "string", "required": true, "location": "path"}, "fileId": {"type": "string", "required": true, "location": "path"}, "replyId": {"type": "string", "required": true, "location": "path"}}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.file"]}, "get": {"id": "drive.replies.get", "path": "files/{fileId}/comments/{commentId}/replies/{replyId}", "httpMethod": "GET", "parameters": {"commentId": {"type": "string", "required": true, "location": "path"}, "fileId": {"type": "string", "required": true, "location": "path"}, "includeDeleted": {"type": "boolean", "default": "false", "location": "query"}, "replyId": {"type": "string", "required": true, "location": "path"}}, "response": {"$ref": "CommentReply"}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive.readonly"]}, "insert": {"id": "drive.replies.insert", "path": "files/{fileId}/comments/{commentId}/replies", "httpMethod": "POST", "parameters": {"commentId": {"type": "string", "required": true, "location": "path"}, "fileId": {"type": "string", "required": true, "location": "path"}}, "request": {"$ref": "CommentReply"}, "response": {"$ref": "CommentReply"}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.file"]}, "list": {"id": "drive.replies.list", "path": "files/{fileId}/comments/{commentId}/replies", "httpMethod": "GET", "parameters": {"commentId": {"type": "string", "required": true, "location": "path"}, "fileId": {"type": "string", "required": true, "location": "path"}, "includeDeleted": {"type": "boolean", "default": "false", "location": "query"}, "maxResults": {"type": "integer", "default": "20", "format": "int32", "minimum": "0", "maximum": "100", "location": "query"}, "pageToken": {"type": "string", "location": "query"}}, "response": {"$ref": "CommentReplyList"}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive.readonly"]}, "patch": {"id": "drive.replies.patch", "path": "files/{fileId}/comments/{commentId}/replies/{replyId}", "httpMethod": "PATCH", "parameters": {"commentId": {"type": "string", "required": true, "location": "path"}, "fileId": {"type": "string", "required": true, "location": "path"}, "replyId": {"type": "string", "required": true, "location": "path"}}, "request": {"$ref": "CommentReply"}, "response": {"$ref": "CommentReply"}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.file"]}, "update": {"id": "drive.replies.update", "path": "files/{fileId}/comments/{commentId}/replies/{replyId}", "httpMethod": "PUT", "parameters": {"commentId": {"type": "string", "required": true, "location": "path"}, "fileId": {"type": "string", "required": true, "location": "path"}, "replyId": {"type": "string", "required": true, "location": "path"}}, "request": {"$ref": "CommentReply"}, "response": {"$ref": "CommentReply"}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.file"]}}}', true));
     $this->revisions = new Google_RevisionsServiceResource($this, $this->serviceName, 'revisions', json_decode('{"methods": {"delete": {"id": "drive.revisions.delete", "path": "files/{fileId}/revisions/{revisionId}", "httpMethod": "DELETE", "parameters": {"fileId": {"type": "string", "required": true, "location": "path"}, "revisionId": {"type": "string", "required": true, "location": "path"}}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.file"]}, "get": {"id": "drive.revisions.get", "path": "files/{fileId}/revisions/{revisionId}", "httpMethod": "GET", "parameters": {"fileId": {"type": "string", "required": true, "location": "path"}, "revisionId": {"type": "string", "required": true, "location": "path"}}, "response": {"$ref": "Revision"}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive.metadata.readonly", "https://www.googleapis.com/auth/drive.readonly"]}, "list": {"id": "drive.revisions.list", "path": "files/{fileId}/revisions", "httpMethod": "GET", "parameters": {"fileId": {"type": "string", "required": true, "location": "path"}}, "response": {"$ref": "RevisionList"}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive.metadata.readonly", "https://www.googleapis.com/auth/drive.readonly"]}, "patch": {"id": "drive.revisions.patch", "path": "files/{fileId}/revisions/{revisionId}", "httpMethod": "PATCH", "parameters": {"fileId": {"type": "string", "required": true, "location": "path"}, "revisionId": {"type": "string", "required": true, "location": "path"}}, "request": {"$ref": "Revision"}, "response": {"$ref": "Revision"}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.file"]}, "update": {"id": "drive.revisions.update", "path": "files/{fileId}/revisions/{revisionId}", "httpMethod": "PUT", "parameters": {"fileId": {"type": "string", "required": true, "location": "path"}, "revisionId": {"type": "string", "required": true, "location": "path"}}, "request": {"$ref": "Revision"}, "response": {"$ref": "Revision"}, "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.file"]}}}', true));
 
@@ -1227,13 +1315,13 @@ class Google_About extends Google_Model {
   public function getAdditionalRoleInfo() {
     return $this->additionalRoleInfo;
   }
-  public function setDomainSharingPolicy($domainSharingPolicy) {
+  public function setDomainSharingPolicy( $domainSharingPolicy) {
     $this->domainSharingPolicy = $domainSharingPolicy;
   }
   public function getDomainSharingPolicy() {
     return $this->domainSharingPolicy;
   }
-  public function setEtag($etag) {
+  public function setEtag( $etag) {
     $this->etag = $etag;
   }
   public function getEtag() {
@@ -1260,19 +1348,19 @@ class Google_About extends Google_Model {
   public function getImportFormats() {
     return $this->importFormats;
   }
-  public function setIsCurrentAppInstalled($isCurrentAppInstalled) {
+  public function setIsCurrentAppInstalled( $isCurrentAppInstalled) {
     $this->isCurrentAppInstalled = $isCurrentAppInstalled;
   }
   public function getIsCurrentAppInstalled() {
     return $this->isCurrentAppInstalled;
   }
-  public function setKind($kind) {
+  public function setKind( $kind) {
     $this->kind = $kind;
   }
   public function getKind() {
     return $this->kind;
   }
-  public function setLargestChangeId($largestChangeId) {
+  public function setLargestChangeId( $largestChangeId) {
     $this->largestChangeId = $largestChangeId;
   }
   public function getLargestChangeId() {
@@ -1285,55 +1373,55 @@ class Google_About extends Google_Model {
   public function getMaxUploadSizes() {
     return $this->maxUploadSizes;
   }
-  public function setName($name) {
+  public function setName( $name) {
     $this->name = $name;
   }
   public function getName() {
     return $this->name;
   }
-  public function setPermissionId($permissionId) {
+  public function setPermissionId( $permissionId) {
     $this->permissionId = $permissionId;
   }
   public function getPermissionId() {
     return $this->permissionId;
   }
-  public function setQuotaBytesTotal($quotaBytesTotal) {
+  public function setQuotaBytesTotal( $quotaBytesTotal) {
     $this->quotaBytesTotal = $quotaBytesTotal;
   }
   public function getQuotaBytesTotal() {
     return $this->quotaBytesTotal;
   }
-  public function setQuotaBytesUsed($quotaBytesUsed) {
+  public function setQuotaBytesUsed( $quotaBytesUsed) {
     $this->quotaBytesUsed = $quotaBytesUsed;
   }
   public function getQuotaBytesUsed() {
     return $this->quotaBytesUsed;
   }
-  public function setQuotaBytesUsedAggregate($quotaBytesUsedAggregate) {
+  public function setQuotaBytesUsedAggregate( $quotaBytesUsedAggregate) {
     $this->quotaBytesUsedAggregate = $quotaBytesUsedAggregate;
   }
   public function getQuotaBytesUsedAggregate() {
     return $this->quotaBytesUsedAggregate;
   }
-  public function setQuotaBytesUsedInTrash($quotaBytesUsedInTrash) {
+  public function setQuotaBytesUsedInTrash( $quotaBytesUsedInTrash) {
     $this->quotaBytesUsedInTrash = $quotaBytesUsedInTrash;
   }
   public function getQuotaBytesUsedInTrash() {
     return $this->quotaBytesUsedInTrash;
   }
-  public function setRemainingChangeIds($remainingChangeIds) {
+  public function setRemainingChangeIds( $remainingChangeIds) {
     $this->remainingChangeIds = $remainingChangeIds;
   }
   public function getRemainingChangeIds() {
     return $this->remainingChangeIds;
   }
-  public function setRootFolderId($rootFolderId) {
+  public function setRootFolderId( $rootFolderId) {
     $this->rootFolderId = $rootFolderId;
   }
   public function getRootFolderId() {
     return $this->rootFolderId;
   }
-  public function setSelfLink($selfLink) {
+  public function setSelfLink( $selfLink) {
     $this->selfLink = $selfLink;
   }
   public function getSelfLink() {
@@ -1359,7 +1447,7 @@ class Google_AboutAdditionalRoleInfo extends Google_Model {
   public function getRoleSets() {
     return $this->roleSets;
   }
-  public function setType($type) {
+  public function setType( $type) {
     $this->type = $type;
   }
   public function getType() {
@@ -1377,7 +1465,7 @@ class Google_AboutAdditionalRoleInfoRoleSets extends Google_Model {
   public function getAdditionalRoles() {
     return $this->additionalRoles;
   }
-  public function setPrimaryRole($primaryRole) {
+  public function setPrimaryRole( $primaryRole) {
     $this->primaryRole = $primaryRole;
   }
   public function getPrimaryRole() {
@@ -1388,7 +1476,7 @@ class Google_AboutAdditionalRoleInfoRoleSets extends Google_Model {
 class Google_AboutExportFormats extends Google_Model {
   public $source;
   public $targets;
-  public function setSource($source) {
+  public function setSource( $source) {
     $this->source = $source;
   }
   public function getSource() {
@@ -1406,13 +1494,13 @@ class Google_AboutExportFormats extends Google_Model {
 class Google_AboutFeatures extends Google_Model {
   public $featureName;
   public $featureRate;
-  public function setFeatureName($featureName) {
+  public function setFeatureName( $featureName) {
     $this->featureName = $featureName;
   }
   public function getFeatureName() {
     return $this->featureName;
   }
-  public function setFeatureRate($featureRate) {
+  public function setFeatureRate( $featureRate) {
     $this->featureRate = $featureRate;
   }
   public function getFeatureRate() {
@@ -1423,7 +1511,7 @@ class Google_AboutFeatures extends Google_Model {
 class Google_AboutImportFormats extends Google_Model {
   public $source;
   public $targets;
-  public function setSource($source) {
+  public function setSource( $source) {
     $this->source = $source;
   }
   public function getSource() {
@@ -1441,13 +1529,13 @@ class Google_AboutImportFormats extends Google_Model {
 class Google_AboutMaxUploadSizes extends Google_Model {
   public $size;
   public $type;
-  public function setSize($size) {
+  public function setSize( $size) {
     $this->size = $size;
   }
   public function getSize() {
     return $this->size;
   }
-  public function setType($type) {
+  public function setType( $type) {
     $this->type = $type;
   }
   public function getType() {
@@ -1463,17 +1551,22 @@ class Google_App extends Google_Model {
   public $id;
   public $installed;
   public $kind;
+  public $longDescription;
   public $name;
   public $objectType;
+  public $openUrlTemplate;
   public $primaryFileExtensions;
   public $primaryMimeTypes;
+  public $productId;
   public $productUrl;
   public $secondaryFileExtensions;
   public $secondaryMimeTypes;
+  public $shortDescription;
   public $supportsCreate;
   public $supportsImport;
+  public $supportsMultiOpen;
   public $useByDefault;
-  public function setAuthorized($authorized) {
+  public function setAuthorized( $authorized) {
     $this->authorized = $authorized;
   }
   public function getAuthorized() {
@@ -1486,35 +1579,47 @@ class Google_App extends Google_Model {
   public function getIcons() {
     return $this->icons;
   }
-  public function setId($id) {
+  public function setId( $id) {
     $this->id = $id;
   }
   public function getId() {
     return $this->id;
   }
-  public function setInstalled($installed) {
+  public function setInstalled( $installed) {
     $this->installed = $installed;
   }
   public function getInstalled() {
     return $this->installed;
   }
-  public function setKind($kind) {
+  public function setKind( $kind) {
     $this->kind = $kind;
   }
   public function getKind() {
     return $this->kind;
   }
-  public function setName($name) {
+  public function setLongDescription( $longDescription) {
+    $this->longDescription = $longDescription;
+  }
+  public function getLongDescription() {
+    return $this->longDescription;
+  }
+  public function setName( $name) {
     $this->name = $name;
   }
   public function getName() {
     return $this->name;
   }
-  public function setObjectType($objectType) {
+  public function setObjectType( $objectType) {
     $this->objectType = $objectType;
   }
   public function getObjectType() {
     return $this->objectType;
+  }
+  public function setOpenUrlTemplate( $openUrlTemplate) {
+    $this->openUrlTemplate = $openUrlTemplate;
+  }
+  public function getOpenUrlTemplate() {
+    return $this->openUrlTemplate;
   }
   public function setPrimaryFileExtensions(/* array(Google_string) */ $primaryFileExtensions) {
     $this->assertIsArray($primaryFileExtensions, 'Google_string', __METHOD__);
@@ -1530,7 +1635,13 @@ class Google_App extends Google_Model {
   public function getPrimaryMimeTypes() {
     return $this->primaryMimeTypes;
   }
-  public function setProductUrl($productUrl) {
+  public function setProductId( $productId) {
+    $this->productId = $productId;
+  }
+  public function getProductId() {
+    return $this->productId;
+  }
+  public function setProductUrl( $productUrl) {
     $this->productUrl = $productUrl;
   }
   public function getProductUrl() {
@@ -1550,19 +1661,31 @@ class Google_App extends Google_Model {
   public function getSecondaryMimeTypes() {
     return $this->secondaryMimeTypes;
   }
-  public function setSupportsCreate($supportsCreate) {
+  public function setShortDescription( $shortDescription) {
+    $this->shortDescription = $shortDescription;
+  }
+  public function getShortDescription() {
+    return $this->shortDescription;
+  }
+  public function setSupportsCreate( $supportsCreate) {
     $this->supportsCreate = $supportsCreate;
   }
   public function getSupportsCreate() {
     return $this->supportsCreate;
   }
-  public function setSupportsImport($supportsImport) {
+  public function setSupportsImport( $supportsImport) {
     $this->supportsImport = $supportsImport;
   }
   public function getSupportsImport() {
     return $this->supportsImport;
   }
-  public function setUseByDefault($useByDefault) {
+  public function setSupportsMultiOpen( $supportsMultiOpen) {
+    $this->supportsMultiOpen = $supportsMultiOpen;
+  }
+  public function getSupportsMultiOpen() {
+    return $this->supportsMultiOpen;
+  }
+  public function setUseByDefault( $useByDefault) {
     $this->useByDefault = $useByDefault;
   }
   public function getUseByDefault() {
@@ -1574,19 +1697,19 @@ class Google_AppIcons extends Google_Model {
   public $category;
   public $iconUrl;
   public $size;
-  public function setCategory($category) {
+  public function setCategory( $category) {
     $this->category = $category;
   }
   public function getCategory() {
     return $this->category;
   }
-  public function setIconUrl($iconUrl) {
+  public function setIconUrl( $iconUrl) {
     $this->iconUrl = $iconUrl;
   }
   public function getIconUrl() {
     return $this->iconUrl;
   }
-  public function setSize($size) {
+  public function setSize( $size) {
     $this->size = $size;
   }
   public function getSize() {
@@ -1601,7 +1724,7 @@ class Google_AppList extends Google_Model {
   public $items;
   public $kind;
   public $selfLink;
-  public function setEtag($etag) {
+  public function setEtag( $etag) {
     $this->etag = $etag;
   }
   public function getEtag() {
@@ -1614,13 +1737,13 @@ class Google_AppList extends Google_Model {
   public function getItems() {
     return $this->items;
   }
-  public function setKind($kind) {
+  public function setKind( $kind) {
     $this->kind = $kind;
   }
   public function getKind() {
     return $this->kind;
   }
-  public function setSelfLink($selfLink) {
+  public function setSelfLink( $selfLink) {
     $this->selfLink = $selfLink;
   }
   public function getSelfLink() {
@@ -1637,7 +1760,7 @@ class Google_Change extends Google_Model {
   public $id;
   public $kind;
   public $selfLink;
-  public function setDeleted($deleted) {
+  public function setDeleted( $deleted) {
     $this->deleted = $deleted;
   }
   public function getDeleted() {
@@ -1649,25 +1772,25 @@ class Google_Change extends Google_Model {
   public function getFile() {
     return $this->file;
   }
-  public function setFileId($fileId) {
+  public function setFileId( $fileId) {
     $this->fileId = $fileId;
   }
   public function getFileId() {
     return $this->fileId;
   }
-  public function setId($id) {
+  public function setId( $id) {
     $this->id = $id;
   }
   public function getId() {
     return $this->id;
   }
-  public function setKind($kind) {
+  public function setKind( $kind) {
     $this->kind = $kind;
   }
   public function getKind() {
     return $this->kind;
   }
-  public function setSelfLink($selfLink) {
+  public function setSelfLink( $selfLink) {
     $this->selfLink = $selfLink;
   }
   public function getSelfLink() {
@@ -1685,7 +1808,7 @@ class Google_ChangeList extends Google_Model {
   public $nextLink;
   public $nextPageToken;
   public $selfLink;
-  public function setEtag($etag) {
+  public function setEtag( $etag) {
     $this->etag = $etag;
   }
   public function getEtag() {
@@ -1698,35 +1821,101 @@ class Google_ChangeList extends Google_Model {
   public function getItems() {
     return $this->items;
   }
-  public function setKind($kind) {
+  public function setKind( $kind) {
     $this->kind = $kind;
   }
   public function getKind() {
     return $this->kind;
   }
-  public function setLargestChangeId($largestChangeId) {
+  public function setLargestChangeId( $largestChangeId) {
     $this->largestChangeId = $largestChangeId;
   }
   public function getLargestChangeId() {
     return $this->largestChangeId;
   }
-  public function setNextLink($nextLink) {
+  public function setNextLink( $nextLink) {
     $this->nextLink = $nextLink;
   }
   public function getNextLink() {
     return $this->nextLink;
   }
-  public function setNextPageToken($nextPageToken) {
+  public function setNextPageToken( $nextPageToken) {
     $this->nextPageToken = $nextPageToken;
   }
   public function getNextPageToken() {
     return $this->nextPageToken;
   }
-  public function setSelfLink($selfLink) {
+  public function setSelfLink( $selfLink) {
     $this->selfLink = $selfLink;
   }
   public function getSelfLink() {
     return $this->selfLink;
+  }
+}
+
+class Google_Channel extends Google_Model {
+  public $address;
+  public $expiration;
+  public $id;
+  public $kind;
+  public $params;
+  public $resourceId;
+  public $resourceUri;
+  public $token;
+  public $type;
+  public function setAddress( $address) {
+    $this->address = $address;
+  }
+  public function getAddress() {
+    return $this->address;
+  }
+  public function setExpiration( $expiration) {
+    $this->expiration = $expiration;
+  }
+  public function getExpiration() {
+    return $this->expiration;
+  }
+  public function setId( $id) {
+    $this->id = $id;
+  }
+  public function getId() {
+    return $this->id;
+  }
+  public function setKind( $kind) {
+    $this->kind = $kind;
+  }
+  public function getKind() {
+    return $this->kind;
+  }
+  public function setParams( $params) {
+    $this->params = $params;
+  }
+  public function getParams() {
+    return $this->params;
+  }
+  public function setResourceId( $resourceId) {
+    $this->resourceId = $resourceId;
+  }
+  public function getResourceId() {
+    return $this->resourceId;
+  }
+  public function setResourceUri( $resourceUri) {
+    $this->resourceUri = $resourceUri;
+  }
+  public function getResourceUri() {
+    return $this->resourceUri;
+  }
+  public function setToken( $token) {
+    $this->token = $token;
+  }
+  public function getToken() {
+    return $this->token;
+  }
+  public function setType( $type) {
+    $this->type = $type;
+  }
+  public function getType() {
+    return $this->type;
   }
 }
 
@@ -1739,7 +1928,7 @@ class Google_ChildList extends Google_Model {
   public $nextLink;
   public $nextPageToken;
   public $selfLink;
-  public function setEtag($etag) {
+  public function setEtag( $etag) {
     $this->etag = $etag;
   }
   public function getEtag() {
@@ -1752,25 +1941,25 @@ class Google_ChildList extends Google_Model {
   public function getItems() {
     return $this->items;
   }
-  public function setKind($kind) {
+  public function setKind( $kind) {
     $this->kind = $kind;
   }
   public function getKind() {
     return $this->kind;
   }
-  public function setNextLink($nextLink) {
+  public function setNextLink( $nextLink) {
     $this->nextLink = $nextLink;
   }
   public function getNextLink() {
     return $this->nextLink;
   }
-  public function setNextPageToken($nextPageToken) {
+  public function setNextPageToken( $nextPageToken) {
     $this->nextPageToken = $nextPageToken;
   }
   public function getNextPageToken() {
     return $this->nextPageToken;
   }
-  public function setSelfLink($selfLink) {
+  public function setSelfLink( $selfLink) {
     $this->selfLink = $selfLink;
   }
   public function getSelfLink() {
@@ -1783,25 +1972,25 @@ class Google_ChildReference extends Google_Model {
   public $id;
   public $kind;
   public $selfLink;
-  public function setChildLink($childLink) {
+  public function setChildLink( $childLink) {
     $this->childLink = $childLink;
   }
   public function getChildLink() {
     return $this->childLink;
   }
-  public function setId($id) {
+  public function setId( $id) {
     $this->id = $id;
   }
   public function getId() {
     return $this->id;
   }
-  public function setKind($kind) {
+  public function setKind( $kind) {
     $this->kind = $kind;
   }
   public function getKind() {
     return $this->kind;
   }
-  public function setSelfLink($selfLink) {
+  public function setSelfLink( $selfLink) {
     $this->selfLink = $selfLink;
   }
   public function getSelfLink() {
@@ -1831,7 +2020,7 @@ class Google_Comment extends Google_Model {
   public $replies;
   public $selfLink;
   public $status;
-  public function setAnchor($anchor) {
+  public function setAnchor( $anchor) {
     $this->anchor = $anchor;
   }
   public function getAnchor() {
@@ -1843,13 +2032,13 @@ class Google_Comment extends Google_Model {
   public function getAuthor() {
     return $this->author;
   }
-  public function setCommentId($commentId) {
+  public function setCommentId( $commentId) {
     $this->commentId = $commentId;
   }
   public function getCommentId() {
     return $this->commentId;
   }
-  public function setContent($content) {
+  public function setContent( $content) {
     $this->content = $content;
   }
   public function getContent() {
@@ -1861,43 +2050,43 @@ class Google_Comment extends Google_Model {
   public function getContext() {
     return $this->context;
   }
-  public function setCreatedDate($createdDate) {
+  public function setCreatedDate( $createdDate) {
     $this->createdDate = $createdDate;
   }
   public function getCreatedDate() {
     return $this->createdDate;
   }
-  public function setDeleted($deleted) {
+  public function setDeleted( $deleted) {
     $this->deleted = $deleted;
   }
   public function getDeleted() {
     return $this->deleted;
   }
-  public function setFileId($fileId) {
+  public function setFileId( $fileId) {
     $this->fileId = $fileId;
   }
   public function getFileId() {
     return $this->fileId;
   }
-  public function setFileTitle($fileTitle) {
+  public function setFileTitle( $fileTitle) {
     $this->fileTitle = $fileTitle;
   }
   public function getFileTitle() {
     return $this->fileTitle;
   }
-  public function setHtmlContent($htmlContent) {
+  public function setHtmlContent( $htmlContent) {
     $this->htmlContent = $htmlContent;
   }
   public function getHtmlContent() {
     return $this->htmlContent;
   }
-  public function setKind($kind) {
+  public function setKind( $kind) {
     $this->kind = $kind;
   }
   public function getKind() {
     return $this->kind;
   }
-  public function setModifiedDate($modifiedDate) {
+  public function setModifiedDate( $modifiedDate) {
     $this->modifiedDate = $modifiedDate;
   }
   public function getModifiedDate() {
@@ -1910,13 +2099,13 @@ class Google_Comment extends Google_Model {
   public function getReplies() {
     return $this->replies;
   }
-  public function setSelfLink($selfLink) {
+  public function setSelfLink( $selfLink) {
     $this->selfLink = $selfLink;
   }
   public function getSelfLink() {
     return $this->selfLink;
   }
-  public function setStatus($status) {
+  public function setStatus( $status) {
     $this->status = $status;
   }
   public function getStatus() {
@@ -1927,13 +2116,13 @@ class Google_Comment extends Google_Model {
 class Google_CommentContext extends Google_Model {
   public $type;
   public $value;
-  public function setType($type) {
+  public function setType( $type) {
     $this->type = $type;
   }
   public function getType() {
     return $this->type;
   }
-  public function setValue($value) {
+  public function setValue( $value) {
     $this->value = $value;
   }
   public function getValue() {
@@ -1946,7 +2135,9 @@ class Google_CommentList extends Google_Model {
   protected $__itemsDataType = 'array';
   public $items;
   public $kind;
+  public $nextLink;
   public $nextPageToken;
+  public $selfLink;
   public function setItems(/* array(Google_Comment) */ $items) {
     $this->assertIsArray($items, 'Google_Comment', __METHOD__);
     $this->items = $items;
@@ -1954,17 +2145,29 @@ class Google_CommentList extends Google_Model {
   public function getItems() {
     return $this->items;
   }
-  public function setKind($kind) {
+  public function setKind( $kind) {
     $this->kind = $kind;
   }
   public function getKind() {
     return $this->kind;
   }
-  public function setNextPageToken($nextPageToken) {
+  public function setNextLink( $nextLink) {
+    $this->nextLink = $nextLink;
+  }
+  public function getNextLink() {
+    return $this->nextLink;
+  }
+  public function setNextPageToken( $nextPageToken) {
     $this->nextPageToken = $nextPageToken;
   }
   public function getNextPageToken() {
     return $this->nextPageToken;
+  }
+  public function setSelfLink( $selfLink) {
+    $this->selfLink = $selfLink;
+  }
+  public function getSelfLink() {
+    return $this->selfLink;
   }
 }
 
@@ -1986,49 +2189,49 @@ class Google_CommentReply extends Google_Model {
   public function getAuthor() {
     return $this->author;
   }
-  public function setContent($content) {
+  public function setContent( $content) {
     $this->content = $content;
   }
   public function getContent() {
     return $this->content;
   }
-  public function setCreatedDate($createdDate) {
+  public function setCreatedDate( $createdDate) {
     $this->createdDate = $createdDate;
   }
   public function getCreatedDate() {
     return $this->createdDate;
   }
-  public function setDeleted($deleted) {
+  public function setDeleted( $deleted) {
     $this->deleted = $deleted;
   }
   public function getDeleted() {
     return $this->deleted;
   }
-  public function setHtmlContent($htmlContent) {
+  public function setHtmlContent( $htmlContent) {
     $this->htmlContent = $htmlContent;
   }
   public function getHtmlContent() {
     return $this->htmlContent;
   }
-  public function setKind($kind) {
+  public function setKind( $kind) {
     $this->kind = $kind;
   }
   public function getKind() {
     return $this->kind;
   }
-  public function setModifiedDate($modifiedDate) {
+  public function setModifiedDate( $modifiedDate) {
     $this->modifiedDate = $modifiedDate;
   }
   public function getModifiedDate() {
     return $this->modifiedDate;
   }
-  public function setReplyId($replyId) {
+  public function setReplyId( $replyId) {
     $this->replyId = $replyId;
   }
   public function getReplyId() {
     return $this->replyId;
   }
-  public function setVerb($verb) {
+  public function setVerb( $verb) {
     $this->verb = $verb;
   }
   public function getVerb() {
@@ -2041,7 +2244,9 @@ class Google_CommentReplyList extends Google_Model {
   protected $__itemsDataType = 'array';
   public $items;
   public $kind;
+  public $nextLink;
   public $nextPageToken;
+  public $selfLink;
   public function setItems(/* array(Google_CommentReply) */ $items) {
     $this->assertIsArray($items, 'Google_CommentReply', __METHOD__);
     $this->items = $items;
@@ -2049,17 +2254,29 @@ class Google_CommentReplyList extends Google_Model {
   public function getItems() {
     return $this->items;
   }
-  public function setKind($kind) {
+  public function setKind( $kind) {
     $this->kind = $kind;
   }
   public function getKind() {
     return $this->kind;
   }
-  public function setNextPageToken($nextPageToken) {
+  public function setNextLink( $nextLink) {
+    $this->nextLink = $nextLink;
+  }
+  public function getNextLink() {
+    return $this->nextLink;
+  }
+  public function setNextPageToken( $nextPageToken) {
     $this->nextPageToken = $nextPageToken;
   }
   public function getNextPageToken() {
     return $this->nextPageToken;
+  }
+  public function setSelfLink( $selfLink) {
+    $this->selfLink = $selfLink;
+  }
+  public function getSelfLink() {
+    return $this->selfLink;
   }
 }
 
@@ -2067,6 +2284,7 @@ class Google_DriveFile extends Google_Model {
   public $alternateLink;
   public $appDataContents;
   public $createdDate;
+  public $defaultOpenWithLink;
   public $description;
   public $downloadUrl;
   public $editable;
@@ -2076,6 +2294,7 @@ class Google_DriveFile extends Google_Model {
   public $exportLinks;
   public $fileExtension;
   public $fileSize;
+  public $headRevisionId;
   public $iconLink;
   public $id;
   protected $__imageMediaMetadataType = 'Google_DriveFileImageMediaMetadata';
@@ -2097,6 +2316,7 @@ class Google_DriveFile extends Google_Model {
   public $mimeType;
   public $modifiedByMeDate;
   public $modifiedDate;
+  public $openWithLinks;
   public $originalFilename;
   public $ownerNames;
   protected $__ownersType = 'Google_User';
@@ -2120,85 +2340,97 @@ class Google_DriveFile extends Google_Model {
   public $webContentLink;
   public $webViewLink;
   public $writersCanShare;
-  public function setAlternateLink($alternateLink) {
+  public function setAlternateLink( $alternateLink) {
     $this->alternateLink = $alternateLink;
   }
   public function getAlternateLink() {
     return $this->alternateLink;
   }
-  public function setAppDataContents($appDataContents) {
+  public function setAppDataContents( $appDataContents) {
     $this->appDataContents = $appDataContents;
   }
   public function getAppDataContents() {
     return $this->appDataContents;
   }
-  public function setCreatedDate($createdDate) {
+  public function setCreatedDate( $createdDate) {
     $this->createdDate = $createdDate;
   }
   public function getCreatedDate() {
     return $this->createdDate;
   }
-  public function setDescription($description) {
+  public function setDefaultOpenWithLink( $defaultOpenWithLink) {
+    $this->defaultOpenWithLink = $defaultOpenWithLink;
+  }
+  public function getDefaultOpenWithLink() {
+    return $this->defaultOpenWithLink;
+  }
+  public function setDescription( $description) {
     $this->description = $description;
   }
   public function getDescription() {
     return $this->description;
   }
-  public function setDownloadUrl($downloadUrl) {
+  public function setDownloadUrl( $downloadUrl) {
     $this->downloadUrl = $downloadUrl;
   }
   public function getDownloadUrl() {
     return $this->downloadUrl;
   }
-  public function setEditable($editable) {
+  public function setEditable( $editable) {
     $this->editable = $editable;
   }
   public function getEditable() {
     return $this->editable;
   }
-  public function setEmbedLink($embedLink) {
+  public function setEmbedLink( $embedLink) {
     $this->embedLink = $embedLink;
   }
   public function getEmbedLink() {
     return $this->embedLink;
   }
-  public function setEtag($etag) {
+  public function setEtag( $etag) {
     $this->etag = $etag;
   }
   public function getEtag() {
     return $this->etag;
   }
-  public function setExplicitlyTrashed($explicitlyTrashed) {
+  public function setExplicitlyTrashed( $explicitlyTrashed) {
     $this->explicitlyTrashed = $explicitlyTrashed;
   }
   public function getExplicitlyTrashed() {
     return $this->explicitlyTrashed;
   }
-  public function setExportLinks($exportLinks) {
+  public function setExportLinks( $exportLinks) {
     $this->exportLinks = $exportLinks;
   }
   public function getExportLinks() {
     return $this->exportLinks;
   }
-  public function setFileExtension($fileExtension) {
+  public function setFileExtension( $fileExtension) {
     $this->fileExtension = $fileExtension;
   }
   public function getFileExtension() {
     return $this->fileExtension;
   }
-  public function setFileSize($fileSize) {
+  public function setFileSize( $fileSize) {
     $this->fileSize = $fileSize;
   }
   public function getFileSize() {
     return $this->fileSize;
   }
-  public function setIconLink($iconLink) {
+  public function setHeadRevisionId( $headRevisionId) {
+    $this->headRevisionId = $headRevisionId;
+  }
+  public function getHeadRevisionId() {
+    return $this->headRevisionId;
+  }
+  public function setIconLink( $iconLink) {
     $this->iconLink = $iconLink;
   }
   public function getIconLink() {
     return $this->iconLink;
   }
-  public function setId($id) {
+  public function setId( $id) {
     $this->id = $id;
   }
   public function getId() {
@@ -2216,7 +2448,7 @@ class Google_DriveFile extends Google_Model {
   public function getIndexableText() {
     return $this->indexableText;
   }
-  public function setKind($kind) {
+  public function setKind( $kind) {
     $this->kind = $kind;
   }
   public function getKind() {
@@ -2234,43 +2466,49 @@ class Google_DriveFile extends Google_Model {
   public function getLastModifyingUser() {
     return $this->lastModifyingUser;
   }
-  public function setLastModifyingUserName($lastModifyingUserName) {
+  public function setLastModifyingUserName( $lastModifyingUserName) {
     $this->lastModifyingUserName = $lastModifyingUserName;
   }
   public function getLastModifyingUserName() {
     return $this->lastModifyingUserName;
   }
-  public function setLastViewedByMeDate($lastViewedByMeDate) {
+  public function setLastViewedByMeDate( $lastViewedByMeDate) {
     $this->lastViewedByMeDate = $lastViewedByMeDate;
   }
   public function getLastViewedByMeDate() {
     return $this->lastViewedByMeDate;
   }
-  public function setMd5Checksum($md5Checksum) {
+  public function setMd5Checksum( $md5Checksum) {
     $this->md5Checksum = $md5Checksum;
   }
   public function getMd5Checksum() {
     return $this->md5Checksum;
   }
-  public function setMimeType($mimeType) {
+  public function setMimeType( $mimeType) {
     $this->mimeType = $mimeType;
   }
   public function getMimeType() {
     return $this->mimeType;
   }
-  public function setModifiedByMeDate($modifiedByMeDate) {
+  public function setModifiedByMeDate( $modifiedByMeDate) {
     $this->modifiedByMeDate = $modifiedByMeDate;
   }
   public function getModifiedByMeDate() {
     return $this->modifiedByMeDate;
   }
-  public function setModifiedDate($modifiedDate) {
+  public function setModifiedDate( $modifiedDate) {
     $this->modifiedDate = $modifiedDate;
   }
   public function getModifiedDate() {
     return $this->modifiedDate;
   }
-  public function setOriginalFilename($originalFilename) {
+  public function setOpenWithLinks( $openWithLinks) {
+    $this->openWithLinks = $openWithLinks;
+  }
+  public function getOpenWithLinks() {
+    return $this->openWithLinks;
+  }
+  public function setOriginalFilename( $originalFilename) {
     $this->originalFilename = $originalFilename;
   }
   public function getOriginalFilename() {
@@ -2297,25 +2535,25 @@ class Google_DriveFile extends Google_Model {
   public function getParents() {
     return $this->parents;
   }
-  public function setQuotaBytesUsed($quotaBytesUsed) {
+  public function setQuotaBytesUsed( $quotaBytesUsed) {
     $this->quotaBytesUsed = $quotaBytesUsed;
   }
   public function getQuotaBytesUsed() {
     return $this->quotaBytesUsed;
   }
-  public function setSelfLink($selfLink) {
+  public function setSelfLink( $selfLink) {
     $this->selfLink = $selfLink;
   }
   public function getSelfLink() {
     return $this->selfLink;
   }
-  public function setShared($shared) {
+  public function setShared( $shared) {
     $this->shared = $shared;
   }
   public function getShared() {
     return $this->shared;
   }
-  public function setSharedWithMeDate($sharedWithMeDate) {
+  public function setSharedWithMeDate( $sharedWithMeDate) {
     $this->sharedWithMeDate = $sharedWithMeDate;
   }
   public function getSharedWithMeDate() {
@@ -2327,13 +2565,13 @@ class Google_DriveFile extends Google_Model {
   public function getThumbnail() {
     return $this->thumbnail;
   }
-  public function setThumbnailLink($thumbnailLink) {
+  public function setThumbnailLink( $thumbnailLink) {
     $this->thumbnailLink = $thumbnailLink;
   }
   public function getThumbnailLink() {
     return $this->thumbnailLink;
   }
-  public function setTitle($title) {
+  public function setTitle( $title) {
     $this->title = $title;
   }
   public function getTitle() {
@@ -2345,19 +2583,19 @@ class Google_DriveFile extends Google_Model {
   public function getUserPermission() {
     return $this->userPermission;
   }
-  public function setWebContentLink($webContentLink) {
+  public function setWebContentLink( $webContentLink) {
     $this->webContentLink = $webContentLink;
   }
   public function getWebContentLink() {
     return $this->webContentLink;
   }
-  public function setWebViewLink($webViewLink) {
+  public function setWebViewLink( $webViewLink) {
     $this->webViewLink = $webViewLink;
   }
   public function getWebViewLink() {
     return $this->webViewLink;
   }
-  public function setWritersCanShare($writersCanShare) {
+  public function setWritersCanShare( $writersCanShare) {
     $this->writersCanShare = $writersCanShare;
   }
   public function getWritersCanShare() {
@@ -2389,79 +2627,79 @@ class Google_DriveFileImageMediaMetadata extends Google_Model {
   public $subjectDistance;
   public $whiteBalance;
   public $width;
-  public function setAperture($aperture) {
+  public function setAperture( $aperture) {
     $this->aperture = $aperture;
   }
   public function getAperture() {
     return $this->aperture;
   }
-  public function setCameraMake($cameraMake) {
+  public function setCameraMake( $cameraMake) {
     $this->cameraMake = $cameraMake;
   }
   public function getCameraMake() {
     return $this->cameraMake;
   }
-  public function setCameraModel($cameraModel) {
+  public function setCameraModel( $cameraModel) {
     $this->cameraModel = $cameraModel;
   }
   public function getCameraModel() {
     return $this->cameraModel;
   }
-  public function setColorSpace($colorSpace) {
+  public function setColorSpace( $colorSpace) {
     $this->colorSpace = $colorSpace;
   }
   public function getColorSpace() {
     return $this->colorSpace;
   }
-  public function setDate($date) {
+  public function setDate( $date) {
     $this->date = $date;
   }
   public function getDate() {
     return $this->date;
   }
-  public function setExposureBias($exposureBias) {
+  public function setExposureBias( $exposureBias) {
     $this->exposureBias = $exposureBias;
   }
   public function getExposureBias() {
     return $this->exposureBias;
   }
-  public function setExposureMode($exposureMode) {
+  public function setExposureMode( $exposureMode) {
     $this->exposureMode = $exposureMode;
   }
   public function getExposureMode() {
     return $this->exposureMode;
   }
-  public function setExposureTime($exposureTime) {
+  public function setExposureTime( $exposureTime) {
     $this->exposureTime = $exposureTime;
   }
   public function getExposureTime() {
     return $this->exposureTime;
   }
-  public function setFlashUsed($flashUsed) {
+  public function setFlashUsed( $flashUsed) {
     $this->flashUsed = $flashUsed;
   }
   public function getFlashUsed() {
     return $this->flashUsed;
   }
-  public function setFocalLength($focalLength) {
+  public function setFocalLength( $focalLength) {
     $this->focalLength = $focalLength;
   }
   public function getFocalLength() {
     return $this->focalLength;
   }
-  public function setHeight($height) {
+  public function setHeight( $height) {
     $this->height = $height;
   }
   public function getHeight() {
     return $this->height;
   }
-  public function setIsoSpeed($isoSpeed) {
+  public function setIsoSpeed( $isoSpeed) {
     $this->isoSpeed = $isoSpeed;
   }
   public function getIsoSpeed() {
     return $this->isoSpeed;
   }
-  public function setLens($lens) {
+  public function setLens( $lens) {
     $this->lens = $lens;
   }
   public function getLens() {
@@ -2473,43 +2711,43 @@ class Google_DriveFileImageMediaMetadata extends Google_Model {
   public function getLocation() {
     return $this->location;
   }
-  public function setMaxApertureValue($maxApertureValue) {
+  public function setMaxApertureValue( $maxApertureValue) {
     $this->maxApertureValue = $maxApertureValue;
   }
   public function getMaxApertureValue() {
     return $this->maxApertureValue;
   }
-  public function setMeteringMode($meteringMode) {
+  public function setMeteringMode( $meteringMode) {
     $this->meteringMode = $meteringMode;
   }
   public function getMeteringMode() {
     return $this->meteringMode;
   }
-  public function setRotation($rotation) {
+  public function setRotation( $rotation) {
     $this->rotation = $rotation;
   }
   public function getRotation() {
     return $this->rotation;
   }
-  public function setSensor($sensor) {
+  public function setSensor( $sensor) {
     $this->sensor = $sensor;
   }
   public function getSensor() {
     return $this->sensor;
   }
-  public function setSubjectDistance($subjectDistance) {
+  public function setSubjectDistance( $subjectDistance) {
     $this->subjectDistance = $subjectDistance;
   }
   public function getSubjectDistance() {
     return $this->subjectDistance;
   }
-  public function setWhiteBalance($whiteBalance) {
+  public function setWhiteBalance( $whiteBalance) {
     $this->whiteBalance = $whiteBalance;
   }
   public function getWhiteBalance() {
     return $this->whiteBalance;
   }
-  public function setWidth($width) {
+  public function setWidth( $width) {
     $this->width = $width;
   }
   public function getWidth() {
@@ -2521,19 +2759,19 @@ class Google_DriveFileImageMediaMetadataLocation extends Google_Model {
   public $altitude;
   public $latitude;
   public $longitude;
-  public function setAltitude($altitude) {
+  public function setAltitude( $altitude) {
     $this->altitude = $altitude;
   }
   public function getAltitude() {
     return $this->altitude;
   }
-  public function setLatitude($latitude) {
+  public function setLatitude( $latitude) {
     $this->latitude = $latitude;
   }
   public function getLatitude() {
     return $this->latitude;
   }
-  public function setLongitude($longitude) {
+  public function setLongitude( $longitude) {
     $this->longitude = $longitude;
   }
   public function getLongitude() {
@@ -2543,7 +2781,7 @@ class Google_DriveFileImageMediaMetadataLocation extends Google_Model {
 
 class Google_DriveFileIndexableText extends Google_Model {
   public $text;
-  public function setText($text) {
+  public function setText( $text) {
     $this->text = $text;
   }
   public function getText() {
@@ -2557,31 +2795,31 @@ class Google_DriveFileLabels extends Google_Model {
   public $starred;
   public $trashed;
   public $viewed;
-  public function setHidden($hidden) {
+  public function setHidden( $hidden) {
     $this->hidden = $hidden;
   }
   public function getHidden() {
     return $this->hidden;
   }
-  public function setRestricted($restricted) {
+  public function setRestricted( $restricted) {
     $this->restricted = $restricted;
   }
   public function getRestricted() {
     return $this->restricted;
   }
-  public function setStarred($starred) {
+  public function setStarred( $starred) {
     $this->starred = $starred;
   }
   public function getStarred() {
     return $this->starred;
   }
-  public function setTrashed($trashed) {
+  public function setTrashed( $trashed) {
     $this->trashed = $trashed;
   }
   public function getTrashed() {
     return $this->trashed;
   }
-  public function setViewed($viewed) {
+  public function setViewed( $viewed) {
     $this->viewed = $viewed;
   }
   public function getViewed() {
@@ -2592,13 +2830,13 @@ class Google_DriveFileLabels extends Google_Model {
 class Google_DriveFileThumbnail extends Google_Model {
   public $image;
   public $mimeType;
-  public function setImage($image) {
+  public function setImage( $image) {
     $this->image = $image;
   }
   public function getImage() {
     return $this->image;
   }
-  public function setMimeType($mimeType) {
+  public function setMimeType( $mimeType) {
     $this->mimeType = $mimeType;
   }
   public function getMimeType() {
@@ -2615,7 +2853,7 @@ class Google_FileList extends Google_Model {
   public $nextLink;
   public $nextPageToken;
   public $selfLink;
-  public function setEtag($etag) {
+  public function setEtag( $etag) {
     $this->etag = $etag;
   }
   public function getEtag() {
@@ -2628,25 +2866,25 @@ class Google_FileList extends Google_Model {
   public function getItems() {
     return $this->items;
   }
-  public function setKind($kind) {
+  public function setKind( $kind) {
     $this->kind = $kind;
   }
   public function getKind() {
     return $this->kind;
   }
-  public function setNextLink($nextLink) {
+  public function setNextLink( $nextLink) {
     $this->nextLink = $nextLink;
   }
   public function getNextLink() {
     return $this->nextLink;
   }
-  public function setNextPageToken($nextPageToken) {
+  public function setNextPageToken( $nextPageToken) {
     $this->nextPageToken = $nextPageToken;
   }
   public function getNextPageToken() {
     return $this->nextPageToken;
   }
-  public function setSelfLink($selfLink) {
+  public function setSelfLink( $selfLink) {
     $this->selfLink = $selfLink;
   }
   public function getSelfLink() {
@@ -2661,7 +2899,7 @@ class Google_ParentList extends Google_Model {
   public $items;
   public $kind;
   public $selfLink;
-  public function setEtag($etag) {
+  public function setEtag( $etag) {
     $this->etag = $etag;
   }
   public function getEtag() {
@@ -2674,13 +2912,13 @@ class Google_ParentList extends Google_Model {
   public function getItems() {
     return $this->items;
   }
-  public function setKind($kind) {
+  public function setKind( $kind) {
     $this->kind = $kind;
   }
   public function getKind() {
     return $this->kind;
   }
-  public function setSelfLink($selfLink) {
+  public function setSelfLink( $selfLink) {
     $this->selfLink = $selfLink;
   }
   public function getSelfLink() {
@@ -2694,31 +2932,31 @@ class Google_ParentReference extends Google_Model {
   public $kind;
   public $parentLink;
   public $selfLink;
-  public function setId($id) {
+  public function setId( $id) {
     $this->id = $id;
   }
   public function getId() {
     return $this->id;
   }
-  public function setIsRoot($isRoot) {
+  public function setIsRoot( $isRoot) {
     $this->isRoot = $isRoot;
   }
   public function getIsRoot() {
     return $this->isRoot;
   }
-  public function setKind($kind) {
+  public function setKind( $kind) {
     $this->kind = $kind;
   }
   public function getKind() {
     return $this->kind;
   }
-  public function setParentLink($parentLink) {
+  public function setParentLink( $parentLink) {
     $this->parentLink = $parentLink;
   }
   public function getParentLink() {
     return $this->parentLink;
   }
-  public function setSelfLink($selfLink) {
+  public function setSelfLink( $selfLink) {
     $this->selfLink = $selfLink;
   }
   public function getSelfLink() {
@@ -2746,67 +2984,67 @@ class Google_Permission extends Google_Model {
   public function getAdditionalRoles() {
     return $this->additionalRoles;
   }
-  public function setAuthKey($authKey) {
+  public function setAuthKey( $authKey) {
     $this->authKey = $authKey;
   }
   public function getAuthKey() {
     return $this->authKey;
   }
-  public function setEtag($etag) {
+  public function setEtag( $etag) {
     $this->etag = $etag;
   }
   public function getEtag() {
     return $this->etag;
   }
-  public function setId($id) {
+  public function setId( $id) {
     $this->id = $id;
   }
   public function getId() {
     return $this->id;
   }
-  public function setKind($kind) {
+  public function setKind( $kind) {
     $this->kind = $kind;
   }
   public function getKind() {
     return $this->kind;
   }
-  public function setName($name) {
+  public function setName( $name) {
     $this->name = $name;
   }
   public function getName() {
     return $this->name;
   }
-  public function setPhotoLink($photoLink) {
+  public function setPhotoLink( $photoLink) {
     $this->photoLink = $photoLink;
   }
   public function getPhotoLink() {
     return $this->photoLink;
   }
-  public function setRole($role) {
+  public function setRole( $role) {
     $this->role = $role;
   }
   public function getRole() {
     return $this->role;
   }
-  public function setSelfLink($selfLink) {
+  public function setSelfLink( $selfLink) {
     $this->selfLink = $selfLink;
   }
   public function getSelfLink() {
     return $this->selfLink;
   }
-  public function setType($type) {
+  public function setType( $type) {
     $this->type = $type;
   }
   public function getType() {
     return $this->type;
   }
-  public function setValue($value) {
+  public function setValue( $value) {
     $this->value = $value;
   }
   public function getValue() {
     return $this->value;
   }
-  public function setWithLink($withLink) {
+  public function setWithLink( $withLink) {
     $this->withLink = $withLink;
   }
   public function getWithLink() {
@@ -2821,7 +3059,7 @@ class Google_PermissionList extends Google_Model {
   public $items;
   public $kind;
   public $selfLink;
-  public function setEtag($etag) {
+  public function setEtag( $etag) {
     $this->etag = $etag;
   }
   public function getEtag() {
@@ -2834,13 +3072,13 @@ class Google_PermissionList extends Google_Model {
   public function getItems() {
     return $this->items;
   }
-  public function setKind($kind) {
+  public function setKind( $kind) {
     $this->kind = $kind;
   }
   public function getKind() {
     return $this->kind;
   }
-  public function setSelfLink($selfLink) {
+  public function setSelfLink( $selfLink) {
     $this->selfLink = $selfLink;
   }
   public function getSelfLink() {
@@ -2855,37 +3093,37 @@ class Google_Property extends Google_Model {
   public $selfLink;
   public $value;
   public $visibility;
-  public function setEtag($etag) {
+  public function setEtag( $etag) {
     $this->etag = $etag;
   }
   public function getEtag() {
     return $this->etag;
   }
-  public function setKey($key) {
+  public function setKey( $key) {
     $this->key = $key;
   }
   public function getKey() {
     return $this->key;
   }
-  public function setKind($kind) {
+  public function setKind( $kind) {
     $this->kind = $kind;
   }
   public function getKind() {
     return $this->kind;
   }
-  public function setSelfLink($selfLink) {
+  public function setSelfLink( $selfLink) {
     $this->selfLink = $selfLink;
   }
   public function getSelfLink() {
     return $this->selfLink;
   }
-  public function setValue($value) {
+  public function setValue( $value) {
     $this->value = $value;
   }
   public function getValue() {
     return $this->value;
   }
-  public function setVisibility($visibility) {
+  public function setVisibility( $visibility) {
     $this->visibility = $visibility;
   }
   public function getVisibility() {
@@ -2900,7 +3138,7 @@ class Google_PropertyList extends Google_Model {
   public $items;
   public $kind;
   public $selfLink;
-  public function setEtag($etag) {
+  public function setEtag( $etag) {
     $this->etag = $etag;
   }
   public function getEtag() {
@@ -2913,13 +3151,13 @@ class Google_PropertyList extends Google_Model {
   public function getItems() {
     return $this->items;
   }
-  public function setKind($kind) {
+  public function setKind( $kind) {
     $this->kind = $kind;
   }
   public function getKind() {
     return $this->kind;
   }
-  public function setSelfLink($selfLink) {
+  public function setSelfLink( $selfLink) {
     $this->selfLink = $selfLink;
   }
   public function getSelfLink() {
@@ -2948,37 +3186,37 @@ class Google_Revision extends Google_Model {
   public $publishedLink;
   public $publishedOutsideDomain;
   public $selfLink;
-  public function setDownloadUrl($downloadUrl) {
+  public function setDownloadUrl( $downloadUrl) {
     $this->downloadUrl = $downloadUrl;
   }
   public function getDownloadUrl() {
     return $this->downloadUrl;
   }
-  public function setEtag($etag) {
+  public function setEtag( $etag) {
     $this->etag = $etag;
   }
   public function getEtag() {
     return $this->etag;
   }
-  public function setExportLinks($exportLinks) {
+  public function setExportLinks( $exportLinks) {
     $this->exportLinks = $exportLinks;
   }
   public function getExportLinks() {
     return $this->exportLinks;
   }
-  public function setFileSize($fileSize) {
+  public function setFileSize( $fileSize) {
     $this->fileSize = $fileSize;
   }
   public function getFileSize() {
     return $this->fileSize;
   }
-  public function setId($id) {
+  public function setId( $id) {
     $this->id = $id;
   }
   public function getId() {
     return $this->id;
   }
-  public function setKind($kind) {
+  public function setKind( $kind) {
     $this->kind = $kind;
   }
   public function getKind() {
@@ -2990,67 +3228,67 @@ class Google_Revision extends Google_Model {
   public function getLastModifyingUser() {
     return $this->lastModifyingUser;
   }
-  public function setLastModifyingUserName($lastModifyingUserName) {
+  public function setLastModifyingUserName( $lastModifyingUserName) {
     $this->lastModifyingUserName = $lastModifyingUserName;
   }
   public function getLastModifyingUserName() {
     return $this->lastModifyingUserName;
   }
-  public function setMd5Checksum($md5Checksum) {
+  public function setMd5Checksum( $md5Checksum) {
     $this->md5Checksum = $md5Checksum;
   }
   public function getMd5Checksum() {
     return $this->md5Checksum;
   }
-  public function setMimeType($mimeType) {
+  public function setMimeType( $mimeType) {
     $this->mimeType = $mimeType;
   }
   public function getMimeType() {
     return $this->mimeType;
   }
-  public function setModifiedDate($modifiedDate) {
+  public function setModifiedDate( $modifiedDate) {
     $this->modifiedDate = $modifiedDate;
   }
   public function getModifiedDate() {
     return $this->modifiedDate;
   }
-  public function setOriginalFilename($originalFilename) {
+  public function setOriginalFilename( $originalFilename) {
     $this->originalFilename = $originalFilename;
   }
   public function getOriginalFilename() {
     return $this->originalFilename;
   }
-  public function setPinned($pinned) {
+  public function setPinned( $pinned) {
     $this->pinned = $pinned;
   }
   public function getPinned() {
     return $this->pinned;
   }
-  public function setPublishAuto($publishAuto) {
+  public function setPublishAuto( $publishAuto) {
     $this->publishAuto = $publishAuto;
   }
   public function getPublishAuto() {
     return $this->publishAuto;
   }
-  public function setPublished($published) {
+  public function setPublished( $published) {
     $this->published = $published;
   }
   public function getPublished() {
     return $this->published;
   }
-  public function setPublishedLink($publishedLink) {
+  public function setPublishedLink( $publishedLink) {
     $this->publishedLink = $publishedLink;
   }
   public function getPublishedLink() {
     return $this->publishedLink;
   }
-  public function setPublishedOutsideDomain($publishedOutsideDomain) {
+  public function setPublishedOutsideDomain( $publishedOutsideDomain) {
     $this->publishedOutsideDomain = $publishedOutsideDomain;
   }
   public function getPublishedOutsideDomain() {
     return $this->publishedOutsideDomain;
   }
-  public function setSelfLink($selfLink) {
+  public function setSelfLink( $selfLink) {
     $this->selfLink = $selfLink;
   }
   public function getSelfLink() {
@@ -3065,7 +3303,7 @@ class Google_RevisionList extends Google_Model {
   public $items;
   public $kind;
   public $selfLink;
-  public function setEtag($etag) {
+  public function setEtag( $etag) {
     $this->etag = $etag;
   }
   public function getEtag() {
@@ -3078,13 +3316,13 @@ class Google_RevisionList extends Google_Model {
   public function getItems() {
     return $this->items;
   }
-  public function setKind($kind) {
+  public function setKind( $kind) {
     $this->kind = $kind;
   }
   public function getKind() {
     return $this->kind;
   }
-  public function setSelfLink($selfLink) {
+  public function setSelfLink( $selfLink) {
     $this->selfLink = $selfLink;
   }
   public function getSelfLink() {
@@ -3100,25 +3338,25 @@ class Google_User extends Google_Model {
   protected $__pictureType = 'Google_UserPicture';
   protected $__pictureDataType = '';
   public $picture;
-  public function setDisplayName($displayName) {
+  public function setDisplayName( $displayName) {
     $this->displayName = $displayName;
   }
   public function getDisplayName() {
     return $this->displayName;
   }
-  public function setIsAuthenticatedUser($isAuthenticatedUser) {
+  public function setIsAuthenticatedUser( $isAuthenticatedUser) {
     $this->isAuthenticatedUser = $isAuthenticatedUser;
   }
   public function getIsAuthenticatedUser() {
     return $this->isAuthenticatedUser;
   }
-  public function setKind($kind) {
+  public function setKind( $kind) {
     $this->kind = $kind;
   }
   public function getKind() {
     return $this->kind;
   }
-  public function setPermissionId($permissionId) {
+  public function setPermissionId( $permissionId) {
     $this->permissionId = $permissionId;
   }
   public function getPermissionId() {
@@ -3134,7 +3372,7 @@ class Google_User extends Google_Model {
 
 class Google_UserPicture extends Google_Model {
   public $url;
-  public function setUrl($url) {
+  public function setUrl( $url) {
     $this->url = $url;
   }
   public function getUrl() {

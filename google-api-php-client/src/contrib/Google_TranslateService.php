@@ -15,6 +15,35 @@
 
 
   /**
+   * The "detections" collection of methods.
+   * Typical usage is:
+   *  <code>
+   *   $translateService = new Google_TranslateService(...);
+   *   $detections = $translateService->detections;
+   *  </code>
+   */
+  class Google_DetectionsServiceResource extends Google_ServiceResource {
+
+    /**
+     * Detect the language of text. (detections.list)
+     *
+     * @param string $q The text to detect
+     * @param array $optParams Optional parameters.
+     * @return Google_DetectionsListResponse
+     */
+    public function listDetections($q, $optParams = array()) {
+      $params = array('q' => $q);
+      $params = array_merge($params, $optParams);
+      $data = $this->__call('list', array($params));
+      if ($this->useObjects()) {
+        return new Google_DetectionsListResponse($data);
+      } else {
+        return $data;
+      }
+    }
+  }
+
+  /**
    * The "languages" collection of methods.
    * Typical usage is:
    *  <code>
@@ -23,7 +52,6 @@
    *  </code>
    */
   class Google_LanguagesServiceResource extends Google_ServiceResource {
-
 
     /**
      * List the source/target languages supported by the API (languages.list)
@@ -46,36 +74,6 @@
   }
 
   /**
-   * The "detections" collection of methods.
-   * Typical usage is:
-   *  <code>
-   *   $translateService = new Google_TranslateService(...);
-   *   $detections = $translateService->detections;
-   *  </code>
-   */
-  class Google_DetectionsServiceResource extends Google_ServiceResource {
-
-
-    /**
-     * Detect the language of text. (detections.list)
-     *
-     * @param string $q The text to detect
-     * @param array $optParams Optional parameters.
-     * @return Google_DetectionsListResponse
-     */
-    public function listDetections($q, $optParams = array()) {
-      $params = array('q' => $q);
-      $params = array_merge($params, $optParams);
-      $data = $this->__call('list', array($params));
-      if ($this->useObjects()) {
-        return new Google_DetectionsListResponse($data);
-      } else {
-        return $data;
-      }
-    }
-  }
-
-  /**
    * The "translations" collection of methods.
    * Typical usage is:
    *  <code>
@@ -85,7 +83,6 @@
    */
   class Google_TranslationsServiceResource extends Google_ServiceResource {
 
-
     /**
      * Returns text translations from one language to another. (translations.list)
      *
@@ -93,9 +90,9 @@
      * @param string $target The target language into which the text should be translated
      * @param array $optParams Optional parameters.
      *
-     * @opt_param string source The source language of the text
-     * @opt_param string format The format of the text
      * @opt_param string cid The customization id for translate
+     * @opt_param string format The format of the text
+     * @opt_param string source The source language of the text
      * @return Google_TranslationsListResponse
      */
     public function listTranslations($q, $target, $optParams = array()) {
@@ -119,14 +116,14 @@
  *
  * <p>
  * For more information about this service, see the
- * <a href="http://code.google.com/apis/language/translate/v2/using_rest.html" target="_blank">API Documentation</a>
+ * <a href="https://developers.google.com/translate/v2/using_rest" target="_blank">API Documentation</a>
  * </p>
  *
  * @author Google, Inc.
  */
 class Google_TranslateService extends Google_Service {
-  public $languages;
   public $detections;
+  public $languages;
   public $translations;
   /**
    * Constructs the internal representation of the Translate service.
@@ -139,12 +136,14 @@ class Google_TranslateService extends Google_Service {
     $this->serviceName = 'translate';
 
     $client->addService($this->serviceName, $this->version);
-    $this->languages = new Google_LanguagesServiceResource($this, $this->serviceName, 'languages', json_decode('{"methods": {"list": {"httpMethod": "GET", "response": {"$ref": "LanguagesListResponse"}, "id": "language.languages.list", "parameters": {"target": {"type": "string", "location": "query"}}, "path": "v2/languages"}}}', true));
-    $this->detections = new Google_DetectionsServiceResource($this, $this->serviceName, 'detections', json_decode('{"methods": {"list": {"httpMethod": "GET", "response": {"$ref": "DetectionsListResponse"}, "id": "language.detections.list", "parameters": {"q": {"repeated": true, "required": true, "type": "string", "location": "query"}}, "path": "v2/detect"}}}', true));
-    $this->translations = new Google_TranslationsServiceResource($this, $this->serviceName, 'translations', json_decode('{"methods": {"list": {"httpMethod": "GET", "response": {"$ref": "TranslationsListResponse"}, "id": "language.translations.list", "parameters": {"q": {"repeated": true, "required": true, "type": "string", "location": "query"}, "source": {"type": "string", "location": "query"}, "format": {"enum": ["html", "text"], "type": "string", "location": "query"}, "target": {"required": true, "type": "string", "location": "query"}, "cid": {"repeated": true, "type": "string", "location": "query"}}, "path": "v2"}}}', true));
+    $this->detections = new Google_DetectionsServiceResource($this, $this->serviceName, 'detections', json_decode('{"methods": {"list": {"id": "language.detections.list", "path": "v2/detect", "httpMethod": "GET", "parameters": {"q": {"type": "string", "required": true, "repeated": true, "location": "query"}}, "response": {"$ref": "DetectionsListResponse"}}}}', true));
+    $this->languages = new Google_LanguagesServiceResource($this, $this->serviceName, 'languages', json_decode('{"methods": {"list": {"id": "language.languages.list", "path": "v2/languages", "httpMethod": "GET", "parameters": {"target": {"type": "string", "location": "query"}}, "response": {"$ref": "LanguagesListResponse"}}}}', true));
+    $this->translations = new Google_TranslationsServiceResource($this, $this->serviceName, 'translations', json_decode('{"methods": {"list": {"id": "language.translations.list", "path": "v2", "httpMethod": "GET", "parameters": {"cid": {"type": "string", "repeated": true, "location": "query"}, "format": {"type": "string", "enum": ["html", "text"], "location": "query"}, "q": {"type": "string", "required": true, "repeated": true, "location": "query"}, "source": {"type": "string", "location": "query"}, "target": {"type": "string", "required": true, "location": "query"}}, "response": {"$ref": "TranslationsListResponse"}}}}', true));
 
   }
 }
+
+
 
 class Google_DetectionsListResponse extends Google_Model {
   protected $__detectionsType = 'Google_DetectionsResourceItems';
@@ -160,22 +159,22 @@ class Google_DetectionsListResponse extends Google_Model {
 }
 
 class Google_DetectionsResourceItems extends Google_Model {
-  public $isReliable;
   public $confidence;
+  public $isReliable;
   public $language;
-  public function setIsReliable($isReliable) {
-    $this->isReliable = $isReliable;
-  }
-  public function getIsReliable() {
-    return $this->isReliable;
-  }
-  public function setConfidence($confidence) {
+  public function setConfidence( $confidence) {
     $this->confidence = $confidence;
   }
   public function getConfidence() {
     return $this->confidence;
   }
-  public function setLanguage($language) {
+  public function setIsReliable( $isReliable) {
+    $this->isReliable = $isReliable;
+  }
+  public function getIsReliable() {
+    return $this->isReliable;
+  }
+  public function setLanguage( $language) {
     $this->language = $language;
   }
   public function getLanguage() {
@@ -197,19 +196,19 @@ class Google_LanguagesListResponse extends Google_Model {
 }
 
 class Google_LanguagesResource extends Google_Model {
-  public $name;
   public $language;
-  public function setName($name) {
-    $this->name = $name;
-  }
-  public function getName() {
-    return $this->name;
-  }
-  public function setLanguage($language) {
+  public $name;
+  public function setLanguage( $language) {
     $this->language = $language;
   }
   public function getLanguage() {
     return $this->language;
+  }
+  public function setName( $name) {
+    $this->name = $name;
+  }
+  public function getName() {
+    return $this->name;
   }
 }
 
@@ -229,13 +228,13 @@ class Google_TranslationsListResponse extends Google_Model {
 class Google_TranslationsResource extends Google_Model {
   public $detectedSourceLanguage;
   public $translatedText;
-  public function setDetectedSourceLanguage($detectedSourceLanguage) {
+  public function setDetectedSourceLanguage( $detectedSourceLanguage) {
     $this->detectedSourceLanguage = $detectedSourceLanguage;
   }
   public function getDetectedSourceLanguage() {
     return $this->detectedSourceLanguage;
   }
-  public function setTranslatedText($translatedText) {
+  public function setTranslatedText( $translatedText) {
     $this->translatedText = $translatedText;
   }
   public function getTranslatedText() {

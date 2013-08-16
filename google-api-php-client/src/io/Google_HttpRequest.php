@@ -24,7 +24,7 @@
  *
  */
 class Google_HttpRequest {
-  const USER_AGENT_SUFFIX = "google-api-php-client/0.6.0";
+  const USER_AGENT_SUFFIX = "google-api-php-client/0.6.5";
   private $batchHeaders = array(
     'Content-Type' => 'application/http',
     'Content-Transfer-Encoding' => 'binary',

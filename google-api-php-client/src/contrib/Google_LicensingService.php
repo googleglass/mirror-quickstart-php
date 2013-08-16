@@ -24,25 +24,19 @@
    */
   class Google_LicenseAssignmentsServiceResource extends Google_ServiceResource {
 
-
     /**
-     * Assign License. (licenseAssignments.insert)
+     * Revoke License. (licenseAssignments.delete)
      *
      * @param string $productId Name for product
      * @param string $skuId Name for sku
-     * @param Google_LicenseAssignmentInsert $postBody
+     * @param string $userId email id or unique Id of the user
      * @param array $optParams Optional parameters.
-     * @return Google_LicenseAssignment
      */
-    public function insert($productId, $skuId, Google_LicenseAssignmentInsert $postBody, $optParams = array()) {
-      $params = array('productId' => $productId, 'skuId' => $skuId, 'postBody' => $postBody);
+    public function delete($productId, $skuId, $userId, $optParams = array()) {
+      $params = array('productId' => $productId, 'skuId' => $skuId, 'userId' => $userId);
       $params = array_merge($params, $optParams);
-      $data = $this->__call('insert', array($params));
-      if ($this->useObjects()) {
-        return new Google_LicenseAssignment($data);
-      } else {
-        return $data;
-      }
+      $data = $this->__call('delete', array($params));
+      return $data;
     }
     /**
      * Get license assignment of a particular product and sku for a user (licenseAssignments.get)
@@ -64,24 +58,20 @@
       }
     }
     /**
-     * List license assignments for given product and sku of the customer.
-     * (licenseAssignments.listForProductAndSku)
+     * Assign License. (licenseAssignments.insert)
      *
      * @param string $productId Name for product
      * @param string $skuId Name for sku
-     * @param string $customerId CustomerId represents the customer for whom licenseassignments are queried
+     * @param Google_LicenseAssignmentInsert $postBody
      * @param array $optParams Optional parameters.
-     *
-     * @opt_param string pageToken Token to fetch the next page.Optional. By default server will return first page
-     * @opt_param string maxResults Maximum number of campaigns to return at one time. Must be positive. Optional. Default value is 100.
-     * @return Google_LicenseAssignmentList
+     * @return Google_LicenseAssignment
      */
-    public function listForProductAndSku($productId, $skuId, $customerId, $optParams = array()) {
-      $params = array('productId' => $productId, 'skuId' => $skuId, 'customerId' => $customerId);
+    public function insert($productId, $skuId, Google_LicenseAssignmentInsert $postBody, $optParams = array()) {
+      $params = array('productId' => $productId, 'skuId' => $skuId, 'postBody' => $postBody);
       $params = array_merge($params, $optParams);
-      $data = $this->__call('listForProductAndSku', array($params));
+      $data = $this->__call('insert', array($params));
       if ($this->useObjects()) {
-        return new Google_LicenseAssignmentList($data);
+        return new Google_LicenseAssignment($data);
       } else {
         return $data;
       }
@@ -93,8 +83,8 @@
      * @param string $customerId CustomerId represents the customer for whom licenseassignments are queried
      * @param array $optParams Optional parameters.
      *
-     * @opt_param string pageToken Token to fetch the next page.Optional. By default server will return first page
      * @opt_param string maxResults Maximum number of campaigns to return at one time. Must be positive. Optional. Default value is 100.
+     * @opt_param string pageToken Token to fetch the next page.Optional. By default server will return first page
      * @return Google_LicenseAssignmentList
      */
     public function listForProduct($productId, $customerId, $optParams = array()) {
@@ -108,21 +98,24 @@
       }
     }
     /**
-     * Assign License. (licenseAssignments.update)
+     * List license assignments for given product and sku of the customer.
+     * (licenseAssignments.listForProductAndSku)
      *
      * @param string $productId Name for product
-     * @param string $skuId Name for sku for which license would be revoked
-     * @param string $userId email id or unique Id of the user
-     * @param Google_LicenseAssignment $postBody
+     * @param string $skuId Name for sku
+     * @param string $customerId CustomerId represents the customer for whom licenseassignments are queried
      * @param array $optParams Optional parameters.
-     * @return Google_LicenseAssignment
+     *
+     * @opt_param string maxResults Maximum number of campaigns to return at one time. Must be positive. Optional. Default value is 100.
+     * @opt_param string pageToken Token to fetch the next page.Optional. By default server will return first page
+     * @return Google_LicenseAssignmentList
      */
-    public function update($productId, $skuId, $userId, Google_LicenseAssignment $postBody, $optParams = array()) {
-      $params = array('productId' => $productId, 'skuId' => $skuId, 'userId' => $userId, 'postBody' => $postBody);
+    public function listForProductAndSku($productId, $skuId, $customerId, $optParams = array()) {
+      $params = array('productId' => $productId, 'skuId' => $skuId, 'customerId' => $customerId);
       $params = array_merge($params, $optParams);
-      $data = $this->__call('update', array($params));
+      $data = $this->__call('listForProductAndSku', array($params));
       if ($this->useObjects()) {
-        return new Google_LicenseAssignment($data);
+        return new Google_LicenseAssignmentList($data);
       } else {
         return $data;
       }
@@ -148,18 +141,24 @@
       }
     }
     /**
-     * Revoke License. (licenseAssignments.delete)
+     * Assign License. (licenseAssignments.update)
      *
      * @param string $productId Name for product
-     * @param string $skuId Name for sku
+     * @param string $skuId Name for sku for which license would be revoked
      * @param string $userId email id or unique Id of the user
+     * @param Google_LicenseAssignment $postBody
      * @param array $optParams Optional parameters.
+     * @return Google_LicenseAssignment
      */
-    public function delete($productId, $skuId, $userId, $optParams = array()) {
-      $params = array('productId' => $productId, 'skuId' => $skuId, 'userId' => $userId);
+    public function update($productId, $skuId, $userId, Google_LicenseAssignment $postBody, $optParams = array()) {
+      $params = array('productId' => $productId, 'skuId' => $skuId, 'userId' => $userId, 'postBody' => $postBody);
       $params = array_merge($params, $optParams);
-      $data = $this->__call('delete', array($params));
-      return $data;
+      $data = $this->__call('update', array($params));
+      if ($this->useObjects()) {
+        return new Google_LicenseAssignment($data);
+      } else {
+        return $data;
+      }
     }
   }
 
@@ -190,59 +189,61 @@ class Google_LicensingService extends Google_Service {
     $this->serviceName = 'licensing';
 
     $client->addService($this->serviceName, $this->version);
-    $this->licenseAssignments = new Google_LicenseAssignmentsServiceResource($this, $this->serviceName, 'licenseAssignments', json_decode('{"methods": {"insert": {"parameters": {"skuId": {"required": true, "type": "string", "location": "path"}, "productId": {"required": true, "type": "string", "location": "path"}}, "request": {"$ref": "LicenseAssignmentInsert"}, "id": "licensing.licenseAssignments.insert", "httpMethod": "POST", "path": "{productId}/sku/{skuId}/user", "response": {"$ref": "LicenseAssignment"}}, "get": {"httpMethod": "GET", "response": {"$ref": "LicenseAssignment"}, "id": "licensing.licenseAssignments.get", "parameters": {"skuId": {"required": true, "type": "string", "location": "path"}, "userId": {"required": true, "type": "string", "location": "path"}, "productId": {"required": true, "type": "string", "location": "path"}}, "path": "{productId}/sku/{skuId}/user/{userId}"}, "listForProductAndSku": {"httpMethod": "GET", "response": {"$ref": "LicenseAssignmentList"}, "id": "licensing.licenseAssignments.listForProductAndSku", "parameters": {"pageToken": {"default": "", "type": "string", "location": "query"}, "skuId": {"required": true, "type": "string", "location": "path"}, "customerId": {"required": true, "type": "string", "location": "query"}, "maxResults": {"format": "uint32", "default": "100", "maximum": "1000", "minimum": "1", "location": "query", "type": "integer"}, "productId": {"required": true, "type": "string", "location": "path"}}, "path": "{productId}/sku/{skuId}/users"}, "listForProduct": {"httpMethod": "GET", "response": {"$ref": "LicenseAssignmentList"}, "id": "licensing.licenseAssignments.listForProduct", "parameters": {"pageToken": {"default": "", "type": "string", "location": "query"}, "customerId": {"required": true, "type": "string", "location": "query"}, "maxResults": {"format": "uint32", "default": "100", "maximum": "1000", "minimum": "1", "location": "query", "type": "integer"}, "productId": {"required": true, "type": "string", "location": "path"}}, "path": "{productId}/users"}, "update": {"parameters": {"skuId": {"required": true, "type": "string", "location": "path"}, "userId": {"required": true, "type": "string", "location": "path"}, "productId": {"required": true, "type": "string", "location": "path"}}, "request": {"$ref": "LicenseAssignment"}, "id": "licensing.licenseAssignments.update", "httpMethod": "PUT", "path": "{productId}/sku/{skuId}/user/{userId}", "response": {"$ref": "LicenseAssignment"}}, "patch": {"parameters": {"skuId": {"required": true, "type": "string", "location": "path"}, "userId": {"required": true, "type": "string", "location": "path"}, "productId": {"required": true, "type": "string", "location": "path"}}, "request": {"$ref": "LicenseAssignment"}, "id": "licensing.licenseAssignments.patch", "httpMethod": "PATCH", "path": "{productId}/sku/{skuId}/user/{userId}", "response": {"$ref": "LicenseAssignment"}}, "delete": {"httpMethod": "DELETE", "id": "licensing.licenseAssignments.delete", "parameters": {"skuId": {"required": true, "type": "string", "location": "path"}, "userId": {"required": true, "type": "string", "location": "path"}, "productId": {"required": true, "type": "string", "location": "path"}}, "path": "{productId}/sku/{skuId}/user/{userId}"}}}', true));
+    $this->licenseAssignments = new Google_LicenseAssignmentsServiceResource($this, $this->serviceName, 'licenseAssignments', json_decode('{"methods": {"delete": {"id": "licensing.licenseAssignments.delete", "path": "{productId}/sku/{skuId}/user/{userId}", "httpMethod": "DELETE", "parameters": {"productId": {"type": "string", "required": true, "location": "path"}, "skuId": {"type": "string", "required": true, "location": "path"}, "userId": {"type": "string", "required": true, "location": "path"}}}, "get": {"id": "licensing.licenseAssignments.get", "path": "{productId}/sku/{skuId}/user/{userId}", "httpMethod": "GET", "parameters": {"productId": {"type": "string", "required": true, "location": "path"}, "skuId": {"type": "string", "required": true, "location": "path"}, "userId": {"type": "string", "required": true, "location": "path"}}, "response": {"$ref": "LicenseAssignment"}}, "insert": {"id": "licensing.licenseAssignments.insert", "path": "{productId}/sku/{skuId}/user", "httpMethod": "POST", "parameters": {"productId": {"type": "string", "required": true, "location": "path"}, "skuId": {"type": "string", "required": true, "location": "path"}}, "request": {"$ref": "LicenseAssignmentInsert"}, "response": {"$ref": "LicenseAssignment"}}, "listForProduct": {"id": "licensing.licenseAssignments.listForProduct", "path": "{productId}/users", "httpMethod": "GET", "parameters": {"customerId": {"type": "string", "required": true, "location": "query"}, "maxResults": {"type": "integer", "default": "100", "format": "uint32", "minimum": "1", "maximum": "1000", "location": "query"}, "pageToken": {"type": "string", "default": "", "location": "query"}, "productId": {"type": "string", "required": true, "location": "path"}}, "response": {"$ref": "LicenseAssignmentList"}}, "listForProductAndSku": {"id": "licensing.licenseAssignments.listForProductAndSku", "path": "{productId}/sku/{skuId}/users", "httpMethod": "GET", "parameters": {"customerId": {"type": "string", "required": true, "location": "query"}, "maxResults": {"type": "integer", "default": "100", "format": "uint32", "minimum": "1", "maximum": "1000", "location": "query"}, "pageToken": {"type": "string", "default": "", "location": "query"}, "productId": {"type": "string", "required": true, "location": "path"}, "skuId": {"type": "string", "required": true, "location": "path"}}, "response": {"$ref": "LicenseAssignmentList"}}, "patch": {"id": "licensing.licenseAssignments.patch", "path": "{productId}/sku/{skuId}/user/{userId}", "httpMethod": "PATCH", "parameters": {"productId": {"type": "string", "required": true, "location": "path"}, "skuId": {"type": "string", "required": true, "location": "path"}, "userId": {"type": "string", "required": true, "location": "path"}}, "request": {"$ref": "LicenseAssignment"}, "response": {"$ref": "LicenseAssignment"}}, "update": {"id": "licensing.licenseAssignments.update", "path": "{productId}/sku/{skuId}/user/{userId}", "httpMethod": "PUT", "parameters": {"productId": {"type": "string", "required": true, "location": "path"}, "skuId": {"type": "string", "required": true, "location": "path"}, "userId": {"type": "string", "required": true, "location": "path"}}, "request": {"$ref": "LicenseAssignment"}, "response": {"$ref": "LicenseAssignment"}}}}', true));
 
   }
 }
 
+
+
 class Google_LicenseAssignment extends Google_Model {
-  public $skuId;
-  public $kind;
-  public $userId;
   public $etags;
-  public $selfLink;
+  public $kind;
   public $productId;
-  public function setSkuId($skuId) {
-    $this->skuId = $skuId;
-  }
-  public function getSkuId() {
-    return $this->skuId;
-  }
-  public function setKind($kind) {
-    $this->kind = $kind;
-  }
-  public function getKind() {
-    return $this->kind;
-  }
-  public function setUserId($userId) {
-    $this->userId = $userId;
-  }
-  public function getUserId() {
-    return $this->userId;
-  }
-  public function setEtags($etags) {
+  public $selfLink;
+  public $skuId;
+  public $userId;
+  public function setEtags( $etags) {
     $this->etags = $etags;
   }
   public function getEtags() {
     return $this->etags;
   }
-  public function setSelfLink($selfLink) {
-    $this->selfLink = $selfLink;
+  public function setKind( $kind) {
+    $this->kind = $kind;
   }
-  public function getSelfLink() {
-    return $this->selfLink;
+  public function getKind() {
+    return $this->kind;
   }
-  public function setProductId($productId) {
+  public function setProductId( $productId) {
     $this->productId = $productId;
   }
   public function getProductId() {
     return $this->productId;
   }
+  public function setSelfLink( $selfLink) {
+    $this->selfLink = $selfLink;
+  }
+  public function getSelfLink() {
+    return $this->selfLink;
+  }
+  public function setSkuId( $skuId) {
+    $this->skuId = $skuId;
+  }
+  public function getSkuId() {
+    return $this->skuId;
+  }
+  public function setUserId( $userId) {
+    $this->userId = $userId;
+  }
+  public function getUserId() {
+    return $this->userId;
+  }
 }
 
 class Google_LicenseAssignmentInsert extends Google_Model {
   public $userId;
-  public function setUserId($userId) {
+  public function setUserId( $userId) {
     $this->userId = $userId;
   }
   public function getUserId() {
@@ -251,17 +252,17 @@ class Google_LicenseAssignmentInsert extends Google_Model {
 }
 
 class Google_LicenseAssignmentList extends Google_Model {
-  public $nextPageToken;
+  public $etag;
   protected $__itemsType = 'Google_LicenseAssignment';
   protected $__itemsDataType = 'array';
   public $items;
   public $kind;
-  public $etag;
-  public function setNextPageToken($nextPageToken) {
-    $this->nextPageToken = $nextPageToken;
+  public $nextPageToken;
+  public function setEtag( $etag) {
+    $this->etag = $etag;
   }
-  public function getNextPageToken() {
-    return $this->nextPageToken;
+  public function getEtag() {
+    return $this->etag;
   }
   public function setItems(/* array(Google_LicenseAssignment) */ $items) {
     $this->assertIsArray($items, 'Google_LicenseAssignment', __METHOD__);
@@ -270,16 +271,16 @@ class Google_LicenseAssignmentList extends Google_Model {
   public function getItems() {
     return $this->items;
   }
-  public function setKind($kind) {
+  public function setKind( $kind) {
     $this->kind = $kind;
   }
   public function getKind() {
     return $this->kind;
   }
-  public function setEtag($etag) {
-    $this->etag = $etag;
+  public function setNextPageToken( $nextPageToken) {
+    $this->nextPageToken = $nextPageToken;
   }
-  public function getEtag() {
-    return $this->etag;
+  public function getNextPageToken() {
+    return $this->nextPageToken;
   }
 }
