@@ -57,8 +57,8 @@ function get_google_api_client() {
  * it uses an HTTP header for the redirect)
  */
 function verify_credentials($credentials) {
-  //TODO: Use the oauth2.tokeninfo() method instead once it's
-  //      exposed by the PHP client library
+  // TODO: Use the oauth2.tokeninfo() method instead once it's
+  //       exposed by the PHP client library
   global $base_url;
 
   $client = get_google_api_client();
@@ -68,13 +68,12 @@ function verify_credentials($credentials) {
   try {
     $token_checker->userinfo->get();
   } catch (Google_ServiceException $e) {
-    if($e->getCode() == 401) {
+    if ($e->getCode() == 401) {
       // This user may have disabled the Glassware on MyGlass.
       // Clean up the mess and attempt to re-auth.
       unset($_SESSION['userid']);
       header('Location: ' . $base_url . '/oauth2callback.php');
       exit;
-
     } else {
       // Let it go...
       throw $e;

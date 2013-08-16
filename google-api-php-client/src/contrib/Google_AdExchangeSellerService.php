@@ -24,7 +24,6 @@
    */
   class Google_AdclientsServiceResource extends Google_ServiceResource {
 
-
     /**
      * List all ad clients in this Ad Exchange account. (adclients.list)
      *
@@ -55,7 +54,6 @@
    *  </code>
    */
   class Google_AdunitsServiceResource extends Google_ServiceResource {
-
 
     /**
      * Gets the specified ad unit in the specified ad client. (adunits.get)
@@ -108,7 +106,6 @@
    */
   class Google_AdunitsCustomchannelsServiceResource extends Google_ServiceResource {
 
-
     /**
      * List all custom channels which the specified ad unit belongs to. (customchannels.list)
      *
@@ -141,7 +138,6 @@
    *  </code>
    */
   class Google_CustomchannelsServiceResource extends Google_ServiceResource {
-
 
     /**
      * Get the specified custom channel from the specified ad client. (customchannels.get)
@@ -194,7 +190,6 @@
    */
   class Google_CustomchannelsAdunitsServiceResource extends Google_ServiceResource {
 
-
     /**
      * List all ad units in the specified custom channel. (adunits.list)
      *
@@ -228,7 +223,6 @@
    *  </code>
    */
   class Google_ReportsServiceResource extends Google_ServiceResource {
-
 
     /**
      * Generate an Ad Exchange report based on the report request sent in the query parameters. Returns
@@ -269,7 +263,6 @@
    *  </code>
    */
   class Google_ReportsSavedServiceResource extends Google_ServiceResource {
-
 
     /**
      * Generate an Ad Exchange report based on the saved report ID sent in the query parameters.
@@ -324,7 +317,6 @@
    */
   class Google_UrlchannelsServiceResource extends Google_ServiceResource {
 
-
     /**
      * List all URL channels in the specified ad client for this Ad Exchange account. (urlchannels.list)
      *
@@ -356,7 +348,7 @@
  *
  * <p>
  * For more information about this service, see the
- * <a href="https://developers.google.com/adsense/management/" target="_blank">API Documentation</a>
+ * <a href="https://developers.google.com/ad-exchange/seller-rest/" target="_blank">API Documentation</a>
  * </p>
  *
  * @author Google, Inc.
@@ -381,17 +373,19 @@ class Google_AdExchangeSellerService extends Google_Service {
     $this->serviceName = 'adexchangeseller';
 
     $client->addService($this->serviceName, $this->version);
-    $this->adclients = new Google_AdclientsServiceResource($this, $this->serviceName, 'adclients', json_decode('{"methods": {"list": {"id": "adexchangeseller.adclients.list", "path": "adclients", "httpMethod": "GET", "parameters": {"maxResults": {"type": "integer", "format": "uint32", "minimum": "0", "maximum": "10000", "location": "query"}, "pageToken": {"type": "string", "location": "query"}}, "response": {"$ref": "AdClients"}}}}', true));
-    $this->adunits = new Google_AdunitsServiceResource($this, $this->serviceName, 'adunits', json_decode('{"methods": {"get": {"id": "adexchangeseller.adunits.get", "path": "adclients/{adClientId}/adunits/{adUnitId}", "httpMethod": "GET", "parameters": {"adClientId": {"type": "string", "required": true, "location": "path"}, "adUnitId": {"type": "string", "required": true, "location": "path"}}, "response": {"$ref": "AdUnit"}}, "list": {"id": "adexchangeseller.adunits.list", "path": "adclients/{adClientId}/adunits", "httpMethod": "GET", "parameters": {"adClientId": {"type": "string", "required": true, "location": "path"}, "includeInactive": {"type": "boolean", "location": "query"}, "maxResults": {"type": "integer", "format": "uint32", "minimum": "0", "maximum": "10000", "location": "query"}, "pageToken": {"type": "string", "location": "query"}}, "response": {"$ref": "AdUnits"}}}}', true));
-    $this->adunits_customchannels = new Google_AdunitsCustomchannelsServiceResource($this, $this->serviceName, 'customchannels', json_decode('{"methods": {"list": {"id": "adexchangeseller.adunits.customchannels.list", "path": "adclients/{adClientId}/adunits/{adUnitId}/customchannels", "httpMethod": "GET", "parameters": {"adClientId": {"type": "string", "required": true, "location": "path"}, "adUnitId": {"type": "string", "required": true, "location": "path"}, "maxResults": {"type": "integer", "format": "uint32", "minimum": "0", "maximum": "10000", "location": "query"}, "pageToken": {"type": "string", "location": "query"}}, "response": {"$ref": "CustomChannels"}}}}', true));
-    $this->customchannels = new Google_CustomchannelsServiceResource($this, $this->serviceName, 'customchannels', json_decode('{"methods": {"get": {"id": "adexchangeseller.customchannels.get", "path": "adclients/{adClientId}/customchannels/{customChannelId}", "httpMethod": "GET", "parameters": {"adClientId": {"type": "string", "required": true, "location": "path"}, "customChannelId": {"type": "string", "required": true, "location": "path"}}, "response": {"$ref": "CustomChannel"}}, "list": {"id": "adexchangeseller.customchannels.list", "path": "adclients/{adClientId}/customchannels", "httpMethod": "GET", "parameters": {"adClientId": {"type": "string", "required": true, "location": "path"}, "maxResults": {"type": "integer", "format": "uint32", "minimum": "0", "maximum": "10000", "location": "query"}, "pageToken": {"type": "string", "location": "query"}}, "response": {"$ref": "CustomChannels"}}}}', true));
-    $this->customchannels_adunits = new Google_CustomchannelsAdunitsServiceResource($this, $this->serviceName, 'adunits', json_decode('{"methods": {"list": {"id": "adexchangeseller.customchannels.adunits.list", "path": "adclients/{adClientId}/customchannels/{customChannelId}/adunits", "httpMethod": "GET", "parameters": {"adClientId": {"type": "string", "required": true, "location": "path"}, "customChannelId": {"type": "string", "required": true, "location": "path"}, "includeInactive": {"type": "boolean", "location": "query"}, "maxResults": {"type": "integer", "format": "uint32", "minimum": "0", "maximum": "10000", "location": "query"}, "pageToken": {"type": "string", "location": "query"}}, "response": {"$ref": "AdUnits"}}}}', true));
-    $this->reports = new Google_ReportsServiceResource($this, $this->serviceName, 'reports', json_decode('{"methods": {"generate": {"id": "adexchangeseller.reports.generate", "path": "reports", "httpMethod": "GET", "parameters": {"dimension": {"type": "string", "repeated": true, "location": "query"}, "endDate": {"type": "string", "required": true, "location": "query"}, "filter": {"type": "string", "repeated": true, "location": "query"}, "locale": {"type": "string", "location": "query"}, "maxResults": {"type": "integer", "format": "uint32", "minimum": "0", "maximum": "50000", "location": "query"}, "metric": {"type": "string", "repeated": true, "location": "query"}, "sort": {"type": "string", "repeated": true, "location": "query"}, "startDate": {"type": "string", "required": true, "location": "query"}, "startIndex": {"type": "integer", "format": "uint32", "minimum": "0", "maximum": "5000", "location": "query"}}, "response": {"$ref": "Report"}, "supportsMediaDownload": true}}}', true));
-    $this->reports_saved = new Google_ReportsSavedServiceResource($this, $this->serviceName, 'saved', json_decode('{"methods": {"generate": {"id": "adexchangeseller.reports.saved.generate", "path": "reports/{savedReportId}", "httpMethod": "GET", "parameters": {"locale": {"type": "string", "location": "query"}, "maxResults": {"type": "integer", "format": "int32", "minimum": "0", "maximum": "50000", "location": "query"}, "savedReportId": {"type": "string", "required": true, "location": "path"}, "startIndex": {"type": "integer", "format": "int32", "minimum": "0", "maximum": "5000", "location": "query"}}, "response": {"$ref": "Report"}}, "list": {"id": "adexchangeseller.reports.saved.list", "path": "reports/saved", "httpMethod": "GET", "parameters": {"maxResults": {"type": "integer", "format": "int32", "minimum": "0", "maximum": "100", "location": "query"}, "pageToken": {"type": "string", "location": "query"}}, "response": {"$ref": "SavedReports"}}}}', true));
-    $this->urlchannels = new Google_UrlchannelsServiceResource($this, $this->serviceName, 'urlchannels', json_decode('{"methods": {"list": {"id": "adexchangeseller.urlchannels.list", "path": "adclients/{adClientId}/urlchannels", "httpMethod": "GET", "parameters": {"adClientId": {"type": "string", "required": true, "location": "path"}, "maxResults": {"type": "integer", "format": "uint32", "minimum": "0", "maximum": "10000", "location": "query"}, "pageToken": {"type": "string", "location": "query"}}, "response": {"$ref": "UrlChannels"}}}}', true));
+    $this->adclients = new Google_AdclientsServiceResource($this, $this->serviceName, 'adclients', json_decode('{"methods": {"list": {"id": "adexchangeseller.adclients.list", "path": "adclients", "httpMethod": "GET", "parameters": {"maxResults": {"type": "integer", "format": "uint32", "minimum": "0", "maximum": "10000", "location": "query"}, "pageToken": {"type": "string", "location": "query"}}, "response": {"$ref": "AdClients"}, "scopes": ["https://www.googleapis.com/auth/adexchange.seller", "https://www.googleapis.com/auth/adexchange.seller.readonly"]}}}', true));
+    $this->adunits = new Google_AdunitsServiceResource($this, $this->serviceName, 'adunits', json_decode('{"methods": {"get": {"id": "adexchangeseller.adunits.get", "path": "adclients/{adClientId}/adunits/{adUnitId}", "httpMethod": "GET", "parameters": {"adClientId": {"type": "string", "required": true, "location": "path"}, "adUnitId": {"type": "string", "required": true, "location": "path"}}, "response": {"$ref": "AdUnit"}, "scopes": ["https://www.googleapis.com/auth/adexchange.seller", "https://www.googleapis.com/auth/adexchange.seller.readonly"]}, "list": {"id": "adexchangeseller.adunits.list", "path": "adclients/{adClientId}/adunits", "httpMethod": "GET", "parameters": {"adClientId": {"type": "string", "required": true, "location": "path"}, "includeInactive": {"type": "boolean", "location": "query"}, "maxResults": {"type": "integer", "format": "uint32", "minimum": "0", "maximum": "10000", "location": "query"}, "pageToken": {"type": "string", "location": "query"}}, "response": {"$ref": "AdUnits"}, "scopes": ["https://www.googleapis.com/auth/adexchange.seller", "https://www.googleapis.com/auth/adexchange.seller.readonly"]}}}', true));
+    $this->adunits_customchannels = new Google_AdunitsCustomchannelsServiceResource($this, $this->serviceName, 'customchannels', json_decode('{"methods": {"list": {"id": "adexchangeseller.adunits.customchannels.list", "path": "adclients/{adClientId}/adunits/{adUnitId}/customchannels", "httpMethod": "GET", "parameters": {"adClientId": {"type": "string", "required": true, "location": "path"}, "adUnitId": {"type": "string", "required": true, "location": "path"}, "maxResults": {"type": "integer", "format": "uint32", "minimum": "0", "maximum": "10000", "location": "query"}, "pageToken": {"type": "string", "location": "query"}}, "response": {"$ref": "CustomChannels"}, "scopes": ["https://www.googleapis.com/auth/adexchange.seller", "https://www.googleapis.com/auth/adexchange.seller.readonly"]}}}', true));
+    $this->customchannels = new Google_CustomchannelsServiceResource($this, $this->serviceName, 'customchannels', json_decode('{"methods": {"get": {"id": "adexchangeseller.customchannels.get", "path": "adclients/{adClientId}/customchannels/{customChannelId}", "httpMethod": "GET", "parameters": {"adClientId": {"type": "string", "required": true, "location": "path"}, "customChannelId": {"type": "string", "required": true, "location": "path"}}, "response": {"$ref": "CustomChannel"}, "scopes": ["https://www.googleapis.com/auth/adexchange.seller", "https://www.googleapis.com/auth/adexchange.seller.readonly"]}, "list": {"id": "adexchangeseller.customchannels.list", "path": "adclients/{adClientId}/customchannels", "httpMethod": "GET", "parameters": {"adClientId": {"type": "string", "required": true, "location": "path"}, "maxResults": {"type": "integer", "format": "uint32", "minimum": "0", "maximum": "10000", "location": "query"}, "pageToken": {"type": "string", "location": "query"}}, "response": {"$ref": "CustomChannels"}, "scopes": ["https://www.googleapis.com/auth/adexchange.seller", "https://www.googleapis.com/auth/adexchange.seller.readonly"]}}}', true));
+    $this->customchannels_adunits = new Google_CustomchannelsAdunitsServiceResource($this, $this->serviceName, 'adunits', json_decode('{"methods": {"list": {"id": "adexchangeseller.customchannels.adunits.list", "path": "adclients/{adClientId}/customchannels/{customChannelId}/adunits", "httpMethod": "GET", "parameters": {"adClientId": {"type": "string", "required": true, "location": "path"}, "customChannelId": {"type": "string", "required": true, "location": "path"}, "includeInactive": {"type": "boolean", "location": "query"}, "maxResults": {"type": "integer", "format": "uint32", "minimum": "0", "maximum": "10000", "location": "query"}, "pageToken": {"type": "string", "location": "query"}}, "response": {"$ref": "AdUnits"}, "scopes": ["https://www.googleapis.com/auth/adexchange.seller", "https://www.googleapis.com/auth/adexchange.seller.readonly"]}}}', true));
+    $this->reports = new Google_ReportsServiceResource($this, $this->serviceName, 'reports', json_decode('{"methods": {"generate": {"id": "adexchangeseller.reports.generate", "path": "reports", "httpMethod": "GET", "parameters": {"dimension": {"type": "string", "repeated": true, "location": "query"}, "endDate": {"type": "string", "required": true, "location": "query"}, "filter": {"type": "string", "repeated": true, "location": "query"}, "locale": {"type": "string", "location": "query"}, "maxResults": {"type": "integer", "format": "uint32", "minimum": "0", "maximum": "50000", "location": "query"}, "metric": {"type": "string", "repeated": true, "location": "query"}, "sort": {"type": "string", "repeated": true, "location": "query"}, "startDate": {"type": "string", "required": true, "location": "query"}, "startIndex": {"type": "integer", "format": "uint32", "minimum": "0", "maximum": "5000", "location": "query"}}, "response": {"$ref": "Report"}, "scopes": ["https://www.googleapis.com/auth/adexchange.seller", "https://www.googleapis.com/auth/adexchange.seller.readonly"], "supportsMediaDownload": true}}}', true));
+    $this->reports_saved = new Google_ReportsSavedServiceResource($this, $this->serviceName, 'saved', json_decode('{"methods": {"generate": {"id": "adexchangeseller.reports.saved.generate", "path": "reports/{savedReportId}", "httpMethod": "GET", "parameters": {"locale": {"type": "string", "location": "query"}, "maxResults": {"type": "integer", "format": "int32", "minimum": "0", "maximum": "50000", "location": "query"}, "savedReportId": {"type": "string", "required": true, "location": "path"}, "startIndex": {"type": "integer", "format": "int32", "minimum": "0", "maximum": "5000", "location": "query"}}, "response": {"$ref": "Report"}, "scopes": ["https://www.googleapis.com/auth/adexchange.seller", "https://www.googleapis.com/auth/adexchange.seller.readonly"]}, "list": {"id": "adexchangeseller.reports.saved.list", "path": "reports/saved", "httpMethod": "GET", "parameters": {"maxResults": {"type": "integer", "format": "int32", "minimum": "0", "maximum": "100", "location": "query"}, "pageToken": {"type": "string", "location": "query"}}, "response": {"$ref": "SavedReports"}, "scopes": ["https://www.googleapis.com/auth/adexchange.seller", "https://www.googleapis.com/auth/adexchange.seller.readonly"]}}}', true));
+    $this->urlchannels = new Google_UrlchannelsServiceResource($this, $this->serviceName, 'urlchannels', json_decode('{"methods": {"list": {"id": "adexchangeseller.urlchannels.list", "path": "adclients/{adClientId}/urlchannels", "httpMethod": "GET", "parameters": {"adClientId": {"type": "string", "required": true, "location": "path"}, "maxResults": {"type": "integer", "format": "uint32", "minimum": "0", "maximum": "10000", "location": "query"}, "pageToken": {"type": "string", "location": "query"}}, "response": {"$ref": "UrlChannels"}, "scopes": ["https://www.googleapis.com/auth/adexchange.seller", "https://www.googleapis.com/auth/adexchange.seller.readonly"]}}}', true));
 
   }
 }
+
+
 
 class Google_AdClient extends Google_Model {
   public $arcOptIn;
@@ -399,31 +393,31 @@ class Google_AdClient extends Google_Model {
   public $kind;
   public $productCode;
   public $supportsReporting;
-  public function setArcOptIn($arcOptIn) {
+  public function setArcOptIn( $arcOptIn) {
     $this->arcOptIn = $arcOptIn;
   }
   public function getArcOptIn() {
     return $this->arcOptIn;
   }
-  public function setId($id) {
+  public function setId( $id) {
     $this->id = $id;
   }
   public function getId() {
     return $this->id;
   }
-  public function setKind($kind) {
+  public function setKind( $kind) {
     $this->kind = $kind;
   }
   public function getKind() {
     return $this->kind;
   }
-  public function setProductCode($productCode) {
+  public function setProductCode( $productCode) {
     $this->productCode = $productCode;
   }
   public function getProductCode() {
     return $this->productCode;
   }
-  public function setSupportsReporting($supportsReporting) {
+  public function setSupportsReporting( $supportsReporting) {
     $this->supportsReporting = $supportsReporting;
   }
   public function getSupportsReporting() {
@@ -438,7 +432,7 @@ class Google_AdClients extends Google_Model {
   public $items;
   public $kind;
   public $nextPageToken;
-  public function setEtag($etag) {
+  public function setEtag( $etag) {
     $this->etag = $etag;
   }
   public function getEtag() {
@@ -451,13 +445,13 @@ class Google_AdClients extends Google_Model {
   public function getItems() {
     return $this->items;
   }
-  public function setKind($kind) {
+  public function setKind( $kind) {
     $this->kind = $kind;
   }
   public function getKind() {
     return $this->kind;
   }
-  public function setNextPageToken($nextPageToken) {
+  public function setNextPageToken( $nextPageToken) {
     $this->nextPageToken = $nextPageToken;
   }
   public function getNextPageToken() {
@@ -471,31 +465,31 @@ class Google_AdUnit extends Google_Model {
   public $kind;
   public $name;
   public $status;
-  public function setCode($code) {
+  public function setCode( $code) {
     $this->code = $code;
   }
   public function getCode() {
     return $this->code;
   }
-  public function setId($id) {
+  public function setId( $id) {
     $this->id = $id;
   }
   public function getId() {
     return $this->id;
   }
-  public function setKind($kind) {
+  public function setKind( $kind) {
     $this->kind = $kind;
   }
   public function getKind() {
     return $this->kind;
   }
-  public function setName($name) {
+  public function setName( $name) {
     $this->name = $name;
   }
   public function getName() {
     return $this->name;
   }
-  public function setStatus($status) {
+  public function setStatus( $status) {
     $this->status = $status;
   }
   public function getStatus() {
@@ -510,7 +504,7 @@ class Google_AdUnits extends Google_Model {
   public $items;
   public $kind;
   public $nextPageToken;
-  public function setEtag($etag) {
+  public function setEtag( $etag) {
     $this->etag = $etag;
   }
   public function getEtag() {
@@ -523,13 +517,13 @@ class Google_AdUnits extends Google_Model {
   public function getItems() {
     return $this->items;
   }
-  public function setKind($kind) {
+  public function setKind( $kind) {
     $this->kind = $kind;
   }
   public function getKind() {
     return $this->kind;
   }
-  public function setNextPageToken($nextPageToken) {
+  public function setNextPageToken( $nextPageToken) {
     $this->nextPageToken = $nextPageToken;
   }
   public function getNextPageToken() {
@@ -545,25 +539,25 @@ class Google_CustomChannel extends Google_Model {
   protected $__targetingInfoType = 'Google_CustomChannelTargetingInfo';
   protected $__targetingInfoDataType = '';
   public $targetingInfo;
-  public function setCode($code) {
+  public function setCode( $code) {
     $this->code = $code;
   }
   public function getCode() {
     return $this->code;
   }
-  public function setId($id) {
+  public function setId( $id) {
     $this->id = $id;
   }
   public function getId() {
     return $this->id;
   }
-  public function setKind($kind) {
+  public function setKind( $kind) {
     $this->kind = $kind;
   }
   public function getKind() {
     return $this->kind;
   }
-  public function setName($name) {
+  public function setName( $name) {
     $this->name = $name;
   }
   public function getName() {
@@ -582,25 +576,25 @@ class Google_CustomChannelTargetingInfo extends Google_Model {
   public $description;
   public $location;
   public $siteLanguage;
-  public function setAdsAppearOn($adsAppearOn) {
+  public function setAdsAppearOn( $adsAppearOn) {
     $this->adsAppearOn = $adsAppearOn;
   }
   public function getAdsAppearOn() {
     return $this->adsAppearOn;
   }
-  public function setDescription($description) {
+  public function setDescription( $description) {
     $this->description = $description;
   }
   public function getDescription() {
     return $this->description;
   }
-  public function setLocation($location) {
+  public function setLocation( $location) {
     $this->location = $location;
   }
   public function getLocation() {
     return $this->location;
   }
-  public function setSiteLanguage($siteLanguage) {
+  public function setSiteLanguage( $siteLanguage) {
     $this->siteLanguage = $siteLanguage;
   }
   public function getSiteLanguage() {
@@ -615,7 +609,7 @@ class Google_CustomChannels extends Google_Model {
   public $items;
   public $kind;
   public $nextPageToken;
-  public function setEtag($etag) {
+  public function setEtag( $etag) {
     $this->etag = $etag;
   }
   public function getEtag() {
@@ -628,13 +622,13 @@ class Google_CustomChannels extends Google_Model {
   public function getItems() {
     return $this->items;
   }
-  public function setKind($kind) {
+  public function setKind( $kind) {
     $this->kind = $kind;
   }
   public function getKind() {
     return $this->kind;
   }
-  public function setNextPageToken($nextPageToken) {
+  public function setNextPageToken( $nextPageToken) {
     $this->nextPageToken = $nextPageToken;
   }
   public function getNextPageToken() {
@@ -652,7 +646,8 @@ class Google_Report extends Google_Model {
   public $totalMatchedRows;
   public $totals;
   public $warnings;
-  public function setAverages( $averages) {
+  public function setAverages(/* array(Google_string) */ $averages) {
+    $this->assertIsArray($averages, 'Google_string', __METHOD__);
     $this->averages = $averages;
   }
   public function getAverages() {
@@ -665,31 +660,34 @@ class Google_Report extends Google_Model {
   public function getHeaders() {
     return $this->headers;
   }
-  public function setKind($kind) {
+  public function setKind( $kind) {
     $this->kind = $kind;
   }
   public function getKind() {
     return $this->kind;
   }
-  public function setRows( $rows) {
+  public function setRows(/* array(Google_string) */ $rows) {
+    $this->assertIsArray($rows, 'Google_string', __METHOD__);
     $this->rows = $rows;
   }
   public function getRows() {
     return $this->rows;
   }
-  public function setTotalMatchedRows($totalMatchedRows) {
+  public function setTotalMatchedRows( $totalMatchedRows) {
     $this->totalMatchedRows = $totalMatchedRows;
   }
   public function getTotalMatchedRows() {
     return $this->totalMatchedRows;
   }
-  public function setTotals( $totals) {
+  public function setTotals(/* array(Google_string) */ $totals) {
+    $this->assertIsArray($totals, 'Google_string', __METHOD__);
     $this->totals = $totals;
   }
   public function getTotals() {
     return $this->totals;
   }
-  public function setWarnings( $warnings) {
+  public function setWarnings(/* array(Google_string) */ $warnings) {
+    $this->assertIsArray($warnings, 'Google_string', __METHOD__);
     $this->warnings = $warnings;
   }
   public function getWarnings() {
@@ -701,19 +699,19 @@ class Google_ReportHeaders extends Google_Model {
   public $currency;
   public $name;
   public $type;
-  public function setCurrency($currency) {
+  public function setCurrency( $currency) {
     $this->currency = $currency;
   }
   public function getCurrency() {
     return $this->currency;
   }
-  public function setName($name) {
+  public function setName( $name) {
     $this->name = $name;
   }
   public function getName() {
     return $this->name;
   }
-  public function setType($type) {
+  public function setType( $type) {
     $this->type = $type;
   }
   public function getType() {
@@ -725,19 +723,19 @@ class Google_SavedReport extends Google_Model {
   public $id;
   public $kind;
   public $name;
-  public function setId($id) {
+  public function setId( $id) {
     $this->id = $id;
   }
   public function getId() {
     return $this->id;
   }
-  public function setKind($kind) {
+  public function setKind( $kind) {
     $this->kind = $kind;
   }
   public function getKind() {
     return $this->kind;
   }
-  public function setName($name) {
+  public function setName( $name) {
     $this->name = $name;
   }
   public function getName() {
@@ -752,7 +750,7 @@ class Google_SavedReports extends Google_Model {
   public $items;
   public $kind;
   public $nextPageToken;
-  public function setEtag($etag) {
+  public function setEtag( $etag) {
     $this->etag = $etag;
   }
   public function getEtag() {
@@ -765,13 +763,13 @@ class Google_SavedReports extends Google_Model {
   public function getItems() {
     return $this->items;
   }
-  public function setKind($kind) {
+  public function setKind( $kind) {
     $this->kind = $kind;
   }
   public function getKind() {
     return $this->kind;
   }
-  public function setNextPageToken($nextPageToken) {
+  public function setNextPageToken( $nextPageToken) {
     $this->nextPageToken = $nextPageToken;
   }
   public function getNextPageToken() {
@@ -783,19 +781,19 @@ class Google_UrlChannel extends Google_Model {
   public $id;
   public $kind;
   public $urlPattern;
-  public function setId($id) {
+  public function setId( $id) {
     $this->id = $id;
   }
   public function getId() {
     return $this->id;
   }
-  public function setKind($kind) {
+  public function setKind( $kind) {
     $this->kind = $kind;
   }
   public function getKind() {
     return $this->kind;
   }
-  public function setUrlPattern($urlPattern) {
+  public function setUrlPattern( $urlPattern) {
     $this->urlPattern = $urlPattern;
   }
   public function getUrlPattern() {
@@ -810,7 +808,7 @@ class Google_UrlChannels extends Google_Model {
   public $items;
   public $kind;
   public $nextPageToken;
-  public function setEtag($etag) {
+  public function setEtag( $etag) {
     $this->etag = $etag;
   }
   public function getEtag() {
@@ -823,13 +821,13 @@ class Google_UrlChannels extends Google_Model {
   public function getItems() {
     return $this->items;
   }
-  public function setKind($kind) {
+  public function setKind( $kind) {
     $this->kind = $kind;
   }
   public function getKind() {
     return $this->kind;
   }
-  public function setNextPageToken($nextPageToken) {
+  public function setNextPageToken( $nextPageToken) {
     $this->nextPageToken = $nextPageToken;
   }
   public function getNextPageToken() {

@@ -1,7 +1,5 @@
 <?php
 /*
- * Copyright 2010 Google Inc.
- *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
@@ -26,7 +24,6 @@
    */
   class Google_ActivitiesServiceResource extends Google_ServiceResource {
 
-
     /**
      * Retrieves a list of activities for a specific customer and application. (activities.list)
      *
@@ -34,15 +31,15 @@
      * @param string $applicationId Application ID of the application on which the event was performed.
      * @param array $optParams Optional parameters.
      *
-     * @opt_param string actorEmail Email address of the user who performed the action.
      * @opt_param string actorApplicationId Application ID of the application which interacted on behalf of the user while performing the event.
+     * @opt_param string actorEmail Email address of the user who performed the action.
      * @opt_param string actorIpAddress IP Address of host where the event was performed. Supports both IPv4 and IPv6 addresses.
      * @opt_param string caller Type of the caller.
-     * @opt_param int maxResults Number of activity records to be shown in each page.
-     * @opt_param string eventName Name of the event being queried.
-     * @opt_param string startTime Return events which occured at or after this time.
-     * @opt_param string endTime Return events which occured at or before this time.
      * @opt_param string continuationToken Next page URL.
+     * @opt_param string endTime Return events which occured at or before this time.
+     * @opt_param string eventName Name of the event being queried.
+     * @opt_param int maxResults Number of activity records to be shown in each page.
+     * @opt_param string startTime Return events which occured at or after this time.
      * @return Google_Activities
      */
     public function listActivities($customerId, $applicationId, $optParams = array()) {
@@ -84,10 +81,12 @@ class Google_AuditService extends Google_Service {
     $this->serviceName = 'audit';
 
     $client->addService($this->serviceName, $this->version);
-    $this->activities = new Google_ActivitiesServiceResource($this, $this->serviceName, 'activities', json_decode('{"methods": {"list": {"parameters": {"actorEmail": {"type": "string", "location": "query"}, "actorApplicationId": {"location": "query", "type": "string", "format": "int64"}, "actorIpAddress": {"type": "string", "location": "query"}, "caller": {"enum": ["application_owner", "customer"], "type": "string", "location": "query"}, "maxResults": {"format": "int32", "maximum": "1000", "minimum": "1", "location": "query", "type": "integer"}, "customerId": {"required": true, "type": "string", "location": "path"}, "eventName": {"type": "string", "location": "query"}, "startTime": {"type": "string", "location": "query"}, "endTime": {"type": "string", "location": "query"}, "applicationId": {"location": "path", "required": true, "type": "string", "format": "int64"}, "continuationToken": {"type": "string", "location": "query"}}, "response": {"$ref": "Activities"}, "httpMethod": "GET", "path": "{customerId}/{applicationId}", "id": "audit.activities.list"}}}', true));
+    $this->activities = new Google_ActivitiesServiceResource($this, $this->serviceName, 'activities', json_decode('{"methods": {"list": {"id": "audit.activities.list", "path": "{customerId}/{applicationId}", "httpMethod": "GET", "parameters": {"actorApplicationId": {"type": "string", "format": "int64", "location": "query"}, "actorEmail": {"type": "string", "location": "query"}, "actorIpAddress": {"type": "string", "location": "query"}, "applicationId": {"type": "string", "required": true, "format": "int64", "location": "path"}, "caller": {"type": "string", "enum": ["application_owner", "customer"], "location": "query"}, "continuationToken": {"type": "string", "location": "query"}, "customerId": {"type": "string", "required": true, "location": "path"}, "endTime": {"type": "string", "location": "query"}, "eventName": {"type": "string", "location": "query"}, "maxResults": {"type": "integer", "format": "int32", "minimum": "1", "maximum": "1000", "location": "query"}, "startTime": {"type": "string", "location": "query"}}, "response": {"$ref": "Activities"}}}}', true));
 
   }
 }
+
+
 
 class Google_Activities extends Google_Model {
   protected $__itemsType = 'Google_Activity';
@@ -102,13 +101,13 @@ class Google_Activities extends Google_Model {
   public function getItems() {
     return $this->items;
   }
-  public function setKind($kind) {
+  public function setKind( $kind) {
     $this->kind = $kind;
   }
   public function getKind() {
     return $this->kind;
   }
-  public function setNext($next) {
+  public function setNext( $next) {
     $this->next = $next;
   }
   public function getNext() {
@@ -148,19 +147,19 @@ class Google_Activity extends Google_Model {
   public function getId() {
     return $this->id;
   }
-  public function setIpAddress($ipAddress) {
+  public function setIpAddress( $ipAddress) {
     $this->ipAddress = $ipAddress;
   }
   public function getIpAddress() {
     return $this->ipAddress;
   }
-  public function setKind($kind) {
+  public function setKind( $kind) {
     $this->kind = $kind;
   }
   public function getKind() {
     return $this->kind;
   }
-  public function setOwnerDomain($ownerDomain) {
+  public function setOwnerDomain( $ownerDomain) {
     $this->ownerDomain = $ownerDomain;
   }
   public function getOwnerDomain() {
@@ -173,25 +172,25 @@ class Google_ActivityActor extends Google_Model {
   public $callerType;
   public $email;
   public $key;
-  public function setApplicationId($applicationId) {
+  public function setApplicationId( $applicationId) {
     $this->applicationId = $applicationId;
   }
   public function getApplicationId() {
     return $this->applicationId;
   }
-  public function setCallerType($callerType) {
+  public function setCallerType( $callerType) {
     $this->callerType = $callerType;
   }
   public function getCallerType() {
     return $this->callerType;
   }
-  public function setEmail($email) {
+  public function setEmail( $email) {
     $this->email = $email;
   }
   public function getEmail() {
     return $this->email;
   }
-  public function setKey($key) {
+  public function setKey( $key) {
     $this->key = $key;
   }
   public function getKey() {
@@ -205,13 +204,13 @@ class Google_ActivityEvents extends Google_Model {
   protected $__parametersType = 'Google_ActivityEventsParameters';
   protected $__parametersDataType = 'array';
   public $parameters;
-  public function setEventType($eventType) {
+  public function setEventType( $eventType) {
     $this->eventType = $eventType;
   }
   public function getEventType() {
     return $this->eventType;
   }
-  public function setName($name) {
+  public function setName( $name) {
     $this->name = $name;
   }
   public function getName() {
@@ -229,13 +228,13 @@ class Google_ActivityEvents extends Google_Model {
 class Google_ActivityEventsParameters extends Google_Model {
   public $name;
   public $value;
-  public function setName($name) {
+  public function setName( $name) {
     $this->name = $name;
   }
   public function getName() {
     return $this->name;
   }
-  public function setValue($value) {
+  public function setValue( $value) {
     $this->value = $value;
   }
   public function getValue() {
@@ -248,25 +247,25 @@ class Google_ActivityId extends Google_Model {
   public $customerId;
   public $time;
   public $uniqQualifier;
-  public function setApplicationId($applicationId) {
+  public function setApplicationId( $applicationId) {
     $this->applicationId = $applicationId;
   }
   public function getApplicationId() {
     return $this->applicationId;
   }
-  public function setCustomerId($customerId) {
+  public function setCustomerId( $customerId) {
     $this->customerId = $customerId;
   }
   public function getCustomerId() {
     return $this->customerId;
   }
-  public function setTime($time) {
+  public function setTime( $time) {
     $this->time = $time;
   }
   public function getTime() {
     return $this->time;
   }
-  public function setUniqQualifier($uniqQualifier) {
+  public function setUniqQualifier( $uniqQualifier) {
     $this->uniqQualifier = $uniqQualifier;
   }
   public function getUniqQualifier() {

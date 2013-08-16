@@ -35,6 +35,7 @@ class Google_OAuth2 extends Google_Auth {
   public $state;
   public $accessType = 'offline';
   public $approvalPrompt = 'force';
+  public $requestVisibleActions;
 
   /** @var Google_AssertionCredentials $assertionCredentials */
   public $assertionCredentials;
@@ -136,6 +137,13 @@ class Google_OAuth2 extends Google_Auth {
         'access_type=' . urlencode($this->accessType),
         'approval_prompt=' . urlencode($this->approvalPrompt),
     );
+
+    // if the list of scopes contains plus.login, add request_visible_actions
+    // to auth URL
+    if(strpos($scope, 'plus.login') && count($this->requestVisibleActions) > 0) {
+        $params[] = 'request_visible_actions=' .
+            urlencode($this->requestVisibleActions);
+    }
 
     if (isset($this->state)) {
       $params[] = 'state=' . urlencode($this->state);
