@@ -98,8 +98,8 @@ switch ($request['collection']) {
     $location = $mirror_service->locations->get($location_id);
     // Insert a new timeline card, with a copy of that photo attached
     $loc_timeline_item = new Google_TimelineItem();
-    $loc_timeline_item->setText("You are at " . $location->getLatitude() . " by " .
-        $location->getLongitude());
+    $loc_timeline_item->setText("PHP Quick Start says you are now at " .
+        $location->getLatitude() . " by " . $location->getLongitude());
 
     insert_timeline_item($mirror_service, $loc_timeline_item, null, null);
     break;
