@@ -40,7 +40,6 @@ function get_google_api_client() {
   // These are set in config.php
   $client->setClientId($api_client_id);
   $client->setClientSecret($api_client_secret);
-  $client->setDeveloperKey($api_simple_key);
   $client->setRedirectUri($base_url."/oauth2callback.php");
 
   $client->setScopes(array(
